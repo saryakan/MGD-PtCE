@@ -1,0 +1,43 @@
+{
+    "name": "Confess your sins",
+    "CardType": "Church",
+    "CardLimit": "0",
+    "Description": "",
+    "requires": [ ""],
+    "Speakers": [
+        {
+            "name": "Lillian",
+            "postName": "",
+            "SpeakerType": ""
+        }
+    ],
+    "EventText": [
+        {
+            "NameOfScene": "confessionChoice",
+            "theScene": [
+                "A small confession booth is located at the eastern side of the church.",
+                "Menu",
+                    "Enter confession booth. (Save Game)",
+                    "Not today",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "Enter confession booth. (Save Game)",
+            "theScene": [
+                "You decide to head into the confession booth.",
+                "It doesn't take long until you hear the sound of someone approaching the other side of the boothand then the opening of it's door.",
+                "The familiar voice of Lillian rings into your ears, dampened by the divider between the two booths.",
+                "Speaks",
+                "Oh poor lost child of Venereae, confess your sins and the holy mother shall cleanse you of your wrongdoings.",
+                "SaveMenu"
+            ]
+        },
+        {
+            "NameOfScene": "Not today",
+            "theScene": [
+                "You don't think you are in need of a confession right now."
+            ]
+        }
+    ]
+}

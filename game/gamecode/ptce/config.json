@@ -1,0 +1,19 @@
+{
+    "fetishMaxLevel": 10000,
+    "stancesByFetish": {
+        "Feet": ["Footjob", "Feet Pussy", "Behind Footjob", "Electric Massage"],
+        "Legs": ["Thighjob", "Kneejob"],
+        "Monstrous": ["Tail Fuck", "Slimed", "Slimed 50%", "Slimed 100%", "Tailjob"],
+        "Ass": ["Anal", "Face Sit"],
+        "Oral": ["Blowjob"],
+        "Breasts": ["Titfuck", "Breast Smother"],
+        "Sex": ["Sex"],
+        "Kissing": ["Making Out"]
+    },
+    "useVanillaExpMod": false,
+    "useVanillaErosMod": false,
+    "bannedFetishes": [],
+    "enemiesLearnWeaknesses": true,
+    "ptceTempFetishCost": 5,
+    "hardcoreMode": false
+}
