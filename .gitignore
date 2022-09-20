@@ -1,1 +1,4 @@
 build
+build.sh
+start.sh
+.vscode
