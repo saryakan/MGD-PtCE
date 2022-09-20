@@ -310,13 +310,13 @@ screen ON_AdventureSetupMenu:
                 if (tabToggle == 1):
                     $ getCurrentCard = getFromName(each, MonsterDatabase)
                     $ currentCard = MonsterDatabase[getCurrentCard]
-                    $ currentMax = 99
+                    $ currentMax = LocationDatabase[targetLocation].MaximumMonsterDeck
                 elif tabToggle == 2:
                     $ getCurrentCard = getFromName(each, EventDatabase)
                     $ currentCard = EventDatabase[getCurrentCard]
                     $ getCurrentProgCard = getFromName(each, ProgressEvent)
                     $ currentProg = ProgressEvent[getCurrentProgCard]
-                    $ currentMax = 99
+                    $ currentMax = LocationDatabase[targetLocation].MaximumEventDeck
                 elif tabToggle == 3:
                     $ getCurrentCard = getFromName(each, EventDatabase)
                     $ currentCard = EventDatabase[getCurrentCard]
@@ -389,7 +389,7 @@ screen ON_AdventureSetupMenu:
                                 if tabToggle == 1:
                                     $ numText = str(numberInDeck)
                                 else:
-                                    $ numText = str(numberInDeck) + "/" + "99"
+                                    $ numText = str(numberInDeck) + "/" + str(currentCard.CardLimit)
 
                                 fixed:
                                     xalign 0.5
@@ -400,7 +400,7 @@ screen ON_AdventureSetupMenu:
                                 $ addible = False
                                 if currentMax > len(currentDeck):
                                     if tabToggle == 2:
-                                        if numberInDeck < 99:
+                                        if numberInDeck < currentCard.CardLimit:
                                             $ addible = True
                                     else:
                                         $ addible = True

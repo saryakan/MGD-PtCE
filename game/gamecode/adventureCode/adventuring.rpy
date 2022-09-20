@@ -73,7 +73,9 @@ label RandomizeAdventure:
     $ monsterDeck = []
     $ eventDeck = []
 
-    $ MakeDeckSize = LocationDatabase[targetLocation].MinimumDeckSize + 10
+    $ maxDeckSize = LocationDatabase[targetLocation].MaximumEventDeck + LocationDatabase[targetLocation].MaximumMonsterDeck
+    $ minDeckSize = LocationDatabase[targetLocation].MinimumDeckSize
+    $ MakeDeckSize = renpy.random.randint(minDeckSize, maxDeckSize)
     $ cardCycle = 1
 
     while MakeDeckSize > len(monsterDeck) + len(eventDeck):
@@ -89,13 +91,13 @@ label RandomizeAdventure:
             $ currentDeck = monsterDeck
             $ getCurrentCard = getFromName(cardSel[renpy.random.randint(0, len(cardSel)-1)], MonsterDatabase)
             $ currentCard = MonsterDatabase[getCurrentCard]
-            $ currentMax = 99
+            $ currentMax = LocationDatabase[targetLocation].MaximumMonsterDeck
         if cardCycle == 2:
             $ cardSel = LocationDatabase[targetLocation].Events
             $ currentDeck = eventDeck
             $ getCurrentCard = getFromName(cardSel[renpy.random.randint(0, len(cardSel)-1)], EventDatabase)
             $ currentCard = EventDatabase[getCurrentCard]
-            $ currentMax = 99
+            $ currentMax = LocationDatabase[targetLocation].MaximumEventDeck
 
         if (len(currentDeck) < currentMax):
             python:
@@ -107,7 +109,7 @@ label RandomizeAdventure:
                     for cycle in currentDeck:
                         if cycle.name == currentCard.name:
                             numberInDeck += 1
-                    if 99 <= numberInDeck:
+                    if currentCard.CardLimit <= numberInDeck:
                         hasReq = 0
                     if ProgressEvent[getFromName(currentCard.name, EventDatabase)].questComplete == 1:
                         hasReq = 0
