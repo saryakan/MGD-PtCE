@@ -606,7 +606,7 @@ label playerClass:
                         resTarget = aquiredPerk.EffectPower[p]
 
                         parsed = aquiredPerk.EffectPower[p].partition("|/|")
-                        baseFetish = self.getFetish(parsed[0])
+                        baseFetish = self.getFetishObject(parsed[0])
 
                         if parsed[2] == "":
                             multi = 1
@@ -614,10 +614,10 @@ label playerClass:
                             multi = int(parsed[2])
 
                         if aquiredPerk.PerkType[p] == "IncreaseFetish" or aquiredPerk.PerkType[p] == "Increase Fetish":
-                            baseFetish += multi * GiveOrTake
+                            baseFetish.increaseMin(multi * GiveOrTake)
                         else:
-                            baseFetish -= multi * GiveOrTake
-                        self.setFetish(parsed[0], baseFetish)
+                            baseFetish.increaseMin(-multi * GiveOrTake)
+
                     p += 1
 
                 if GiveOrTake == 1:

@@ -797,7 +797,7 @@ label combatActionTurn:
 
                 if(skillChoice.skillType == "attack"):
                     python:
-                        holder = AttackCalc(attacker, defender, skillChoice, waiting)
+                        holder = AttackCalc(attacker, defender, skillChoice, waiting, True)
                         finalDamage = holder[0]
                         defender.stats.hp += holder[0]
                         attacker.stats.hp += holder[4]
@@ -2138,7 +2138,7 @@ label combatFunctions:
 
             return [attacker, theTarget, justEscapedStance]
 
-        def AttackCalc(attacker, theTarget, move, autoHits=0):
+        def AttackCalc(attacker, theTarget, move, autoHits=0, increaseFetishOnHit = False):
 
             defenceMod = 1
             stanceApply = "False"
@@ -2257,8 +2257,8 @@ label combatFunctions:
             if renpy.random.randint(0,100) + attackerAcc + move.accuracy >= TargetsEvade - surrenderMod - restrainedMod - fetishMod:
                 Hit = 1
                 stanceApply = "True"
-                if theTarget.species == "Player":
-                    increaseFetishOnBeingHit(lastAttack, attacker)
+                if theTarget.species == "Player" and increaseFetishOnHit:
+                    increaseFetishOnBeingHit(move, attacker)
 
                 if move.statusOutcome != "IgnoreAttack":
                     finalDamage = getDamageEstimate(attacker, move)

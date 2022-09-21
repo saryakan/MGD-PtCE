@@ -1589,35 +1589,42 @@ label resumeSceneAfterCombat:
                 $ player.stats.sp = player.stats.max_true_sp
         
         #################### PTCE additions ####################
-        elif displayingScene.theScene[lineOfScene] == "PlayerOrgasmFromFetish":
-            $ lineOfScene += 1
-            $ player.stats.hp = 0
-            $ spiritLostO = SpiritCalulation(player, int(displayingScene.theScene[lineOfScene]))
-            $ lineOfScene += 1
-            $ fetish = displayingScene.theScene[lineOfScene]
+
+        elif displayingScene.theScene[lineOfScene] == "GiveErosFromInput":
             python:
-                try:
-                    monsterID = (str(actorNames[0])).split(' ')[0]
-                    if len((str(actorNames[0])).split(' ')) > 1:
-                        if ((str(actorNames[0])).split(' ')[1]).isdigit() == False:
-                            monsterID = monsterID + ' ' + (str(actorNames[0])).split(' ')[1]
-                    sceneAttacker = MonsterDatabase[getFromName(monsterID, MonsterDatabase)]
-                    actualLoss = spiritLost0 if spiritLost0 <= player.stats.sp else player.stats.sp
-                    increaseFetishOnOrgasmForFetishes(fetish, sceneAttacker)
- 
-                except:
-                    pass
+                debugInput = renpy.input(_("How many Eros do you want?"), length=20) or _("0")
+                player.inventory.money += int(debugInput)
 
-            $ player.stats.sp -= spiritLostO
-            $ spiritLost += spiritLostO
-            call TimeEvent(CardType="PlayerOrgasm", LoopedList=OnPlayerClimaxList) from _call_TimeEvent_4
-            #$ spiritLost += int(displayingScene.theScene[lineOfScene])
-            #"[spiritLost]"
+        elif displayingScene.theScene[lineOfScene] == "GiveExpFromInput":
+            python:
+                debugInput = renpy.input("How many Eros do you want?", length=20) or ("0")
+                player.stats.Exp += int(debugInput)
+                
+                if int(debugInput) > 0:
+                    display = "Gained " + debugInput + " exp!"
+                else:
+                    amountLost = moneyEarned*-1
+                    display = "Lost " + debugInput + " exp!"
 
-            if player.stats.sp <= 0:
-                $ player.stats.sp = 0
-            if player.stats.sp > player.stats.max_true_sp:
-                $ player.stats.sp = player.stats.max_true_sp
+                "[display]"
+
+            $ expGiven = 1
+            call refreshLevelVar from _call_refreshLevelVar_2
+            call levelUpSpot from _call_levelUpSpot_1
+            $ expGiven = 0
+        
+        elif displayingScene.theScene[lineOfScene] == "GivePerkFromInput":
+            $ debugInput = renpy.input("Which Perk do you want?", length=30) or ("None")
+            if debugInput != "None":
+                $ check = 1
+                python:
+                    for each in player.perks:
+                        if each.name == displayingScene.theScene[lineOfScene]:
+                            check = 0
+                if check == 1 and getFromName(debugInput, PerkDatabase) != -1:
+                    $ player.giveOrTakePerk(debugInput, 1)
+                    $ display = "Got the " + debugInput + " perk!"
+                    "[display]"
 
         elif displayingScene.theScene[lineOfScene] == "SaveMenu":
             python:
@@ -3928,7 +3935,7 @@ label resumeSceneAfterCombat:
         elif displayingScene.theScene[lineOfScene] == "HitMonsterWith":
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(player, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1)
+            $ holder = AttackCalc(player, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1, False)
             $ finalDamage = holder[0]
             $ critText = holder[2]
             $ effectiveText = holder[5]
@@ -3940,7 +3947,7 @@ label resumeSceneAfterCombat:
             $ recoil = 0
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(monsterEncounter[CombatFunctionEnemytarget], player,  SkillsDatabase[skillAt], 1)
+            $ holder = AttackCalc(monsterEncounter[CombatFunctionEnemytarget], player,  SkillsDatabase[skillAt], 1, True)
             $ finalDamage = holder[0]
             $ critText = holder[2]
             $ effectiveText = holder[5]
@@ -3955,7 +3962,7 @@ label resumeSceneAfterCombat:
             $ holder = MonsterDatabase[MonAt]
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(holder, player,  SkillsDatabase[skillAt], 1)
+            $ holder = AttackCalc(holder, player,  SkillsDatabase[skillAt], 1, False)
             $ finalDamage = holder[0]
             if len(monsterEncounter) >= 1:
                 $ critText = holder[2]
@@ -3973,7 +3980,7 @@ label resumeSceneAfterCombat:
             $ holder = MonsterDatabase[MonAt]
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(holder, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1)
+            $ holder = AttackCalc(holder, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1, False)
             $ finalDamage = holder[0]
             if len(monsterEncounter) >= 1:
                 $ critText = holder[2]
