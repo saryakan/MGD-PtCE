@@ -6,3 +6,6 @@ vanilla
 startAndBuild.sh
 todo.md
 **/DEBUG.json
+release.sh
+mgd-ptce.zip
+tools

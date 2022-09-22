@@ -70,32 +70,39 @@ init 1 python:
 
     ## increase Fetish for various occasions
     def increaseFetishOnBeingHit(lastAttack, attacker):
-        fetishGain = attacker.stats.Allure
+        fetishGain = getEffectiveAllure(attacker.stats.Allure)
         fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes())
         difficultyMod = 0.2 if difficulty == "Hard" else 0.05 if difficulty == "Easy" else 0.1
         for f in getPlayerFetishes(fetishTags):
             f.increaseTemp(attacker.stats.Allure * difficultyMod)
 
     def increaseFetishOnOrgasm(lastAttack, attacker, spiritLost = 1):
-        fetishGain = attacker.stats.Allure
+        fetishGain = getEffectiveAllure(attacker.stats.Allure)
         fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes())
-        difficultyMod = 1.25 if difficulty == "Hard" else 0.75 if difficulty == "Easy" else 1
+        difficultyModTemp = 0.85 if difficulty == "Hard" else 0.65 if difficulty == "Easy" else 0.8
+        difficultyModPerm = 0.4 if difficulty == "Hard" else 0.1 if difficulty == "Easy" else 0.2
         for f in getPlayerFetishes(fetishTags):
-            f.increasePerm(attacker.stats.Allure * difficultyMod * max(1, spiritLost))
+            f.increaseTemp(fetishGain * difficultyModTemp * max(1, spiritLost))
+            f.increasePerm(fetishGain * difficultyModPerm * max(1, spiritLost))
 
     def increaseFetishOnOrgasmForFetishes(fetish, attacker, spiritLost = 1):
         if fetish not in ptceConfig["bannedFetishes"]:
-            fetishGain = attacker.stats.Allure
-            difficultyMod = 1.25 if difficulty == "Hard" else 0.75 if difficulty == "Easy" else 1
+            fetishGain = getEffectiveAllure(attacker.stats.Allure)
+            difficultyModTemp = 0.85 if difficulty == "Hard" else 0.65 if difficulty == "Easy" else 0.8
+            difficultyModPerm = 0.4 if difficulty == "Hard" else 0.1 if difficulty == "Easy" else 0.2
             for f in getPlayerFetishes([fetish]):
-                f.increasePerm(attacker.stats.Allure * difficultyMod * max(1, spiritLost))
+                f.increaseTemp(fetishGain * difficultyModTemp * max(1, spiritLost))
+                f.increasePerm(fetishGain * difficultyModPerm * max(1, spiritLost))
 
     def increaseFetishOnLoss(lastAttack, attacker):
-        fetishGain = attacker.stats.Allure
+        fetishGain = getEffectiveAllure(attacker.stats.Allure)
         fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes())
-        difficultyMod = 2 if difficulty == "Hard" else 1 if difficulty == "Easy" else 1.5
+        difficultyMod = 1.25 if difficulty == "Hard" else 0.75 if difficulty == "Easy" else 1
         for f in getPlayerFetishes(fetishTags):
             f.increasePerm(max(10, attacker.stats.Allure * difficultyMod))
+    
+    def getEffectiveAllure(allure):
+        return int(math.sqrt(25 * allure) - 0.1 * allure);
 
     def getUnbannedFetishTagsOnly(fetishTags):
         if len(ptceConfig["bannedFetishes"]) <= 0:
