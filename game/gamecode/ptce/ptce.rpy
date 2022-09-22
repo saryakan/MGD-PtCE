@@ -54,7 +54,7 @@ init 1 python:
 
     def getVanillaExpModForLevelDiff(targetLvl, playerLvl):
         lvlDifference = math.fabs(targetLvl - playerLvl)
-        exppMod = 1 - lvlDifference * 0.05 + playerLvl * 0.01
+        expMod = 1 - lvlDifference * 0.05 + playerLvl * 0.01
         return max(0.7, min(1, expMod))
 
     ## used to adjust eros gain based on level difference.

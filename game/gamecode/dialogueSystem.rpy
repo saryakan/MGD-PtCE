@@ -1590,6 +1590,12 @@ label resumeSceneAfterCombat:
         
         #################### PTCE additions ####################
 
+        elif displayingScene.theScene[lineOfScene] == "DEBUG_ME_DADDY":
+            # This is supposed to be used for whatever I need to debug rn
+            python:
+                debugOutput = ", ".join(ptceConfig["bannedFetishes"])
+            "[debugOutput]"                
+
         elif displayingScene.theScene[lineOfScene] == "GiveErosFromInput":
             python:
                 debugInput = renpy.input(_("How many Eros do you want?"), length=20) or _("0")

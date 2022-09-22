@@ -1,7 +1,7 @@
 init python:
     import re
     def dynamic_loader(where):
-      return [thing for thing in jsonList if re.match(where, thing)]
+        return [thing for thing in jsonList if re.match(where, thing)]
 
     #Thanks to Andy_kl for initial filter_list_files
     @renpy.pure
@@ -627,6 +627,7 @@ label splashscreen:
 
 # The game starts here.
 label start:
+    define config.after_load_callbacks = [loadPtCEConfigs]
     $ cmenu_columns = []
     $ cmenu_breadcrumb = []
     $ persistantMonSetData = []
