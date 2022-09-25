@@ -948,13 +948,14 @@ init python:
             return 1
         
         def getActualFetishes(self):
-            stancesByFetish = ptceConfig["stancesByFetish"]
+            stancesByFetish = ptceConfig.get("fetishGain").get("stancesByFetish")
             fetishes = filter(lambda f: f != "Penetration", self.fetishTags)
             for fetish, stances in stancesByFetish.items():
                 if self.requiresStance in stances or self.startsStance in stances:
                     if fetish not in fetishes:
                         fetishes.append(fetish)
-            
+
+            # TODO: actually fix penetration always being delegated to sex
             if "Penetration" in self.fetishTags:
                 if "Sex" in self.skillTags:
                     if "Sex" not in fetishes:
@@ -1348,23 +1349,23 @@ init python:
             self.LevelPerm = 0
         
         def increaseMin(self, increase):
-            ptceConfig["fetishMaxLevel"]
-            self.LevelMin = min(ptceConfig["fetishMaxLevel"], self.LevelMin + max(0, increase))
+            ptceConfig.get("fetishGain").get("fetishMaxLevel")
+            self.LevelMin = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin + max(0, increase))
             self.increasePerm(increase)
         
         def increasePerm(self, increase):
-            self.LevelPerm = min(ptceConfig["fetishMaxLevel"], self.LevelPerm + max(0, increase))
+            self.LevelPerm = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm + max(0, increase))
             self.increaseTemp(increase)
 
         def increaseTemp(self, increase):
-            self.Level = min(ptceConfig["fetishMaxLevel"], self.Level + max(0, increase))
+            self.Level = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.Level + max(0, increase))
         
         def resetTemp(self):
-            self.Level = min(ptceConfig["fetishMaxLevel"], self.LevelPerm)
+            self.Level = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm)
         
 
         def resetPerm(self):
-            self.LevelPerm = min(ptceConfig["fetishMaxLevel"], self.LevelMin)
+            self.LevelPerm = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin)
         
         def getPurgeableAmount(self):
             return self.Level - self.LevelPerm

@@ -1473,7 +1473,7 @@ label resumeSceneAfterCombat:
                 "[display]"
 
         elif displayingScene.theScene[lineOfScene] == "ChangeFetish":
-            $ FETISH_MAX_LEVEL = ptceConfig["fetishMaxLevel"]
+            $ FETISH_MAX_LEVEL = ptceConfig.get("fetishGain").get("fetishMaxLevel")
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
             $ lineOfScene += 1
@@ -1509,7 +1509,7 @@ label resumeSceneAfterCombat:
 
 
         elif displayingScene.theScene[lineOfScene] == "PermanentlyChangeFetish":
-            $ FETISH_MAX_LEVEL = ptceConfig["fetishMaxLevel"]
+            $ FETISH_MAX_LEVEL = ptceConfig.get("fetishGain").get("fetishMaxLevel")
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
             $ lineOfScene += 1
@@ -1593,8 +1593,8 @@ label resumeSceneAfterCombat:
         elif displayingScene.theScene[lineOfScene] == "DEBUG_ME_DADDY":
             # This is supposed to be used for whatever I need to debug rn
             python:
-                debugOutput = ", ".join(ptceConfig["bannedFetishes"])
-            "[debugOutput]"                
+                debugOutput = "nothing to debug atm"
+            "[debugOutput]"
 
         elif displayingScene.theScene[lineOfScene] == "GiveErosFromInput":
             python:
@@ -1636,7 +1636,7 @@ label resumeSceneAfterCombat:
             python:
                 _game_menu_screen = "save"
                 renpy.call_in_new_context('_game_menu')
-                _game_menu_screen = "ON_CharacterDisplayScreen" if ptceConfig["hardcoreMode"] else "save"
+                _game_menu_screen = "ON_CharacterDisplayScreen" if ptceConfig.get("hardcoreMode") else "save"
         
         #################### PTCE additions ####################
 

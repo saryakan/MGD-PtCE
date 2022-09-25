@@ -1,56 +1,46 @@
-init -1 python:
-
-    import json
-
-    ##################### CONFIG #####################
-    PTCE_CONFIG_PATH = renpy.loader.transfn("gamecode/ptce/config.json")
-
-    global ptceConfig
-
-    ptceConfig = {
-        "fetishMaxLevel": 10000,
-        "stancesByFetish": {
-            "Feet": ["Footjob", "Feet Pussy", "Behind Footjob", "Electric Massage"],
-            "Legs": ["Thighjob", "Kneejob"],
-            "Monstrous": ["Tail Fuck", "Slimed", "Slimed 50%", "Slimed 100%", "Tailjob"],
-            "Ass": ["Anal", "Face Sit"],
-            "Oral": ["Blowjob"],
-            "Breasts": ["Titfuck", "Breast Smother", "Nursing"],
-            "Sex": ["Sex"],
-            "Kissing": ["Making Out"]
-        },
-        "useVanillaExpMod": False,
-        "useVanillaErosMod": False,
-        "bannedFetishes": [],
-        "enemiesLearnWeaknesses": True,
-        "ptceTempFetishCost": 5,
-        "hardcoreMode": False
-    }
-    
-    def loadPtCEConfigs():
-        global ptceConfig
-        try:
-            file = open(PTCE_CONFIG_PATH, "r")
-            ptceConfig = json.load(file)
-            file.close()
-            
-        except:
-            pass
-    ##################### CONFIG #####################
-
 init 1 python:
+
+    def ptceCalculate(calculation, value):
+        if calculation.get("calculationType") == "quadratic":
+            return calculateQuadratic(calculation, value)
+        elif calculation.get("calculationType") == "squareRoot":
+            return calculateRoot(calculation, value)
+        elif calculation.get("calculationType") == "inverseQuadratic":
+            return calculateInverseQuadratic(calculation, value)
+        elif calculation.get("calculationType") == "inverseSquareRoot":
+            return calculateInverseRoot(calculation, value)
+        else:
+            raise Exception("Can't determine calculation for value '{0}' and calculation '{1}'".format(value, calculation))
+
+    def calculateQuadratic(calculation, value):
+        return calculation.get("quadraticMultiplier") * math.pow(value, 2) + calculation.get("flatMultiplier") * value + calculation.get("flatBonus")
+
+    def calculateRoot(calculation, value):
+        return calculation.get("rootMultiplier") * math.sqrt(value) + calculation.get("flatMultiplier") * value + calculation.get("flatBonus")
+
+    def calculateInverseQuadratic(calculation, value):
+        return (calculation.get("dividend") / calculateQuadratic(calculation, value)) + calculation.get("flatOverallBonus")
+
+    def calculateInverseRoot(calculation, value):
+        return (calculation.get("dividend") / calculateRoot(calculation, value)) + calculation.get("flatOverallBonus")
+
     ## used to adjust exp gain based on level difference.
-    def getExpModForLvlDiff(targetLvl, playerLvl, difficulty):
-        if ptceConfig["useVanillaExpMod"]:
+    def getExpModForLvlDiff(targetLvl, playerLvl):
+        expConfig = ptceConfig.get("expGain")
+
+        if expConfig.get("useVanilla"):
             return getVanillaExpModForLevelDiff(targetLvl, playerLvl)
 
         if targetLvl >= playerLvl:
             return 1
 
         lvlDifference = math.fabs(targetLvl - playerLvl)
-        difficultyMod = 0.03 if difficulty == "Hard" else 0.01 if difficulty == "Easy" else 0.021
-        expMod = 1 - difficultyMod * math.pow(lvlDifference, 2)
-        return max(0, min(1, expMod))
+        difficultyMod = expConfig.get("multiplier").get(difficulty)
+        lvlMod = ptceCalculate(expConfig.get("calculation"), lvlDifference)
+        floor = expConfig.get("floor").get(difficulty)
+
+        expMod = 1 + difficultyMod * lvlMod
+        return round(max(floor, min(1, expMod)), 0)
 
     def getVanillaExpModForLevelDiff(targetLvl, playerLvl):
         lvlDifference = math.fabs(targetLvl - playerLvl)
@@ -58,59 +48,61 @@ init 1 python:
         return max(0.7, min(1, expMod))
 
     ## used to adjust eros gain based on level difference.
-    def getErosModForLvlDiff(targetLvl, playerLvl, difficulty):
-        if ptceConfig["useVanillaErosMod"] or targetLvl >= playerLvl:
+    def getErosModForLvlDiff(targetLvl, playerLvl):
+        erosConfig = ptceConfig.get("erosGain")
+
+        if erosConfig.get("useVanilla") or targetLvl >= playerLvl:
             return 1
 
         lvlDifference = math.fabs(targetLvl - playerLvl)
-        difficultyMod = 0.1 if difficulty == "Hard" else 0.025 if difficulty == "Easy" else 0.05
-        difficultyMin = 0.25 if difficulty == "Hard" else 0.75 if difficulty == "Easy" else 0.5
-        erosMod = 1 - difficultyMod * lvlDifference
-        return max(difficultyMin, min(1, erosMod))
+        difficultyMod = erosConfig.get("multiplier").get(difficulty)
+        lvlMod = ptceCalculate(erosConfig.get("calculation"), value)
+        floor = erosConfig.get("floor").get(difficulty)
+
+        erosMod = 1 + difficultyMod * lvlDifference
+        return round(max(floor, min(1, erosMod)), 0)
+    
+    def getPurgeCost(fetish):
+        purgeConfig = ptceConfig.get("fetishPurge")
+        purgeableAmount = fetish.getPurgeableAmount()
+        if purgeConfig.get("useVanilla"):
+            return purgeableAmount * 25
+        
+        return round(ptceCalculate(purgeConfig.get("calculation"), purgeableAmount), 0)
 
     ## increase Fetish for various occasions
     def increaseFetishOnBeingHit(lastAttack, attacker):
-        fetishGain = getEffectiveAllure(attacker.stats.Allure)
-        fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes())
-        difficultyMod = 0.2 if difficulty == "Hard" else 0.05 if difficulty == "Easy" else 0.1
-        for f in getPlayerFetishes(fetishTags):
-            f.increaseTemp(attacker.stats.Allure * difficultyMod)
+        fetishConfig = ptceConfig.get("fetishGain")
+        handleFetishGain(lastAttack, attacker, ["onHitTemp", "onHitPerm"], fetishConfig)
 
     def increaseFetishOnOrgasm(lastAttack, attacker, spiritLost = 1):
-        fetishGain = getEffectiveAllure(attacker.stats.Allure)
-        fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes())
-        difficultyModTemp = 0.85 if difficulty == "Hard" else 0.65 if difficulty == "Easy" else 0.8
-        difficultyModPerm = 0.4 if difficulty == "Hard" else 0.1 if difficulty == "Easy" else 0.2
-        for f in getPlayerFetishes(fetishTags):
-            f.increaseTemp(fetishGain * difficultyModTemp * max(1, spiritLost))
-            f.increasePerm(fetishGain * difficultyModPerm * max(1, spiritLost))
-
-    def increaseFetishOnOrgasmForFetishes(fetish, attacker, spiritLost = 1):
-        if fetish not in ptceConfig["bannedFetishes"]:
-            fetishGain = getEffectiveAllure(attacker.stats.Allure)
-            difficultyModTemp = 0.85 if difficulty == "Hard" else 0.65 if difficulty == "Easy" else 0.8
-            difficultyModPerm = 0.4 if difficulty == "Hard" else 0.1 if difficulty == "Easy" else 0.2
-            for f in getPlayerFetishes([fetish]):
-                f.increaseTemp(fetishGain * difficultyModTemp * max(1, spiritLost))
-                f.increasePerm(fetishGain * difficultyModPerm * max(1, spiritLost))
+        fetishConfig = ptceConfig.get("fetishGain")
+        handleFetishGain(lastAttack, attacker, ["onSpiritLossTemp", "onSpiritLossPerm"], fetishConfig, spiritLost)
 
     def increaseFetishOnLoss(lastAttack, attacker):
-        fetishGain = getEffectiveAllure(attacker.stats.Allure)
-        fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes())
-        difficultyMod = 1.25 if difficulty == "Hard" else 0.75 if difficulty == "Easy" else 1
-        for f in getPlayerFetishes(fetishTags):
-            f.increasePerm(max(10, attacker.stats.Allure * difficultyMod))
-    
-    def getEffectiveAllure(allure):
-        return int(math.sqrt(25 * allure) - 0.1 * allure);
+        fetishConfig = ptceConfig.get("fetishGain")
+        handleFetishGain(lastAttack, attacker, ["onSpiritLossTemp", "onSpiritLossPerm"], fetishConfig, spiritLost)
 
-    def getUnbannedFetishTagsOnly(fetishTags):
-        if len(ptceConfig["bannedFetishes"]) <= 0:
+    def handleFetishGain(lastAttack, attacker, applyMultipliers, fetishConfig, spiritLost = 1):
+        if not fetishConfig.get("useVanilla"):
+            fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes(), fetishConfig)
+            effectiveAllure = ptceCalculate(fetishConfig.get("calculation"), attacker.stats.Allure)
+            for f in getPlayerFetishes(fetishTags):
+                for multiplierName in applyMultipliers:
+                    difficultyMod = fetishConfig.get("multipliers").get(multiplierName).get(difficulty)
+                    finalGain = round(effectiveAllure * difficultyMod * max(1, spiritLost), 2)
+                    if "Perm" in multiplierName:
+                        f.increasePerm(finalGain)
+                    else:
+                        f.increaseTemp(finalGain)
+
+    def getUnbannedFetishTagsOnly(fetishTags, fetishConfig):
+        bannedFetishes = fetishConfig.get("bannedFetishes")
+        if len(bannedFetishes) <= 0:
             return fetishTags
 
-        return filter(lambda f: f not in ptceConfig["bannedFetishes"], fetishTags)
+        return filter(lambda f: f not in bannedFetishes, fetishTags)
 
-    ## utility functions
     def getPlayerFetishes(fetishes):
         return filter(lambda f: f.name in fetishes, player.FetishList)
 

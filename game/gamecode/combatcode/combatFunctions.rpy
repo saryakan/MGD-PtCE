@@ -2057,7 +2057,7 @@ label combatFunctions:
             playerLvl = player.stats.lvl
 
             ## Handle EXPERIENCE
-            expLvlMod = getExpModForLvlDiff(monsterLvl, playerLvl, difficulty);
+            expLvlMod = getExpModForLvlDiff(monsterLvl, playerLvl);
             monsExp = monsterEncounter[monLossCheck].stats.Exp
             ExpBoost = 1
             for perk in monsterEncounter[monLossCheck].perks:
@@ -2070,7 +2070,7 @@ label combatFunctions:
 
             ## Handle EROS
             monsEro = monsterEncounter[monLossCheck].moneyDropped
-            eroLvlMod = getErosModForLvlDiff(monsterLvl, playerLvl, difficulty)
+            eroLvlMod = getErosModForLvlDiff(monsterLvl, playerLvl)
 
             EroBoost = 1
             for perk in monsterEncounter[monLossCheck].perks:

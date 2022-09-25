@@ -276,7 +276,7 @@ screen quick_menu():
                 Function(cmenu_resetMenu),
                 SelectedIf(_game_menu_screen=="ON_CharacterDisplayScreen")
                 ] hovered [SetVariable ("quickMenuOn", 1)] at QuickMenuFade
-            if not ptceConfig["hardcoreMode"]:
+            if not ptceConfig.get("hardcoreMode"):
                 textbutton _("Save") action ShowMenu('save') hovered [SetVariable ("quickMenuOn", 1)] at QuickMenuFade
                 textbutton _("Q.Save") action QuickSave() hovered [SetVariable ("quickMenuOn", 1)] at QuickMenuFade
                 textbutton _("Q.Load") action QuickLoad() hovered [SetVariable ("quickMenuOn", 1)] at QuickMenuFade
@@ -384,7 +384,7 @@ screen navigationMain():
         if main_menu:
             textbutton _("Start New Game") action Start()
 
-        elif not ptceConfig["hardcoreMode"]:
+        elif not ptceConfig.get("hardcoreMode"):
             textbutton _("Save") action [SetVariable ("_game_menu_screen", "save"), ShowMenu("save")]
 
         textbutton _("Load Game") action ShowMenu("load")
@@ -455,10 +455,10 @@ screen navigation():
                     SelectedIf(_game_menu_screen=="ON_CharacterDisplayScreen")
                     ] text_xalign 0
 
-                if not ptceConfig["hardcoreMode"]:
+                if not ptceConfig.get("hardcoreMode"):
                     textbutton _("Save") action ShowMenu("save") text_xalign 0
 
-            if not ptceConfig["hardcoreMode"]:
+            if not ptceConfig.get("hardcoreMode"):
                 textbutton _("Load") action ShowMenu("load") text_xalign 0
 
             textbutton _("Options") action ShowMenu("Options") text_xalign 0

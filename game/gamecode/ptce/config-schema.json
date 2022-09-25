@@ -1,0 +1,308 @@
+{
+    "$schema": "http://json-schema.org/draft/2020-12/schema",
+    "title": "ptceConfig",
+    "$defs": {
+        "calculation": {
+            "type": "object",
+            "properties": {
+                "calculationType": {
+                    "description": "defines the type of calculation used fer determining purge costs. One of [\"quadratic\", \"squareRoot\", \"inverseQuadratic\", \"inverseSquareRoot\"]",
+                    "enum": ["quadratic", "squareRoot", "inverseQuadratic", "inverseSquareRoot"]
+                }
+            },
+            "required": ["calculationType"],
+            "allOf": [
+                {
+                    "if": { "properties": { "calculationType": { "const": "quadratic" } } },
+                    "then": {
+                        "description": "calculation: \"quadraticMultiplier\"*x² + \"flatMultiplier\"*x + \"flatBonus\"",
+                        "properties": {
+                            "quadraticMultiplier": { "type": "number" },
+                            "flatMultiplier": { "type": "number" },
+                            "flatBonus": { "type": "number" }
+                        },
+                        "required": ["quadraticMultiplier", "flatMultiplier", "flatBonus"]
+                    }
+                },
+                {
+                    "if": { "properties": { "calculationType": { "const": "squareRoot" } } },
+                    "then": {
+                        "description": "calculation: \"rootMultiplier\"*sqrt(x) + \"flatMultiplier\"*x + \"flatBonus\"",
+                        "properties": { 
+                            "rootMultiplier": { "type": "number" },
+                            "flatMultiplier": { "type": "number" },
+                            "flatBonus": { "type": "number" }
+                        },
+                        "required": ["rootMultiplier", "flatMultiplier", "flatBonus"]
+                    }
+                },
+                {
+                    "if": { "properties": { "calculationType": { "const": "inverseQuadratic" } } },
+                    "then": {
+                        "description": "calculation: (\"dividend\" / (\"rootMultiplier\"*x² + \"flatMultiplier\"*x + \"flatDivisorBonus\")) + \"flatBonus\" ",
+                        "properties": {
+                            "dividend": {"type": "number"},
+                            "quadraticMultiplier": { "type": "number" },
+                            "flatMultiplier": { "type": "number" },
+                            "flatOverallBonus": { "type": "number" },
+                            "flatBonus": { "type": "number" }
+                        },
+                        "required": ["dividend", "quadraticMultiplier", "flatMultiplier", "flatDivisorBonus", "flatBonus"]
+                    }
+                },
+                {
+                    "if": { "properties": { "calculationType": { "const": "inverseSquareRoot" } } },
+                    "then": {
+                        "description": "calculation: (\"dividend\" / (\"rootMultiplier\"*sqrt(x) + \"flatMultiplier\"*x + \"flatDivisorBonus\")) + \"flatBonus\" ",
+                        "properties": {
+                            "dividend": {"type": "number"},
+                            "rootMultiplier": { "type": "number" },
+                            "flatMultiplier": { "type": "number" },
+                            "flatOverallBonus": { "type": "number" },
+                            "flatBonus": { "type": "number" }
+                        },
+                        "required": ["dividend", "rootMultiplier", "flatMultiplier", "flatDivisorBonus", "flatBonus"]
+                    }
+                }
+            ]
+        },
+        "numberByDifficulty": {
+            "type": "object",
+            "properties": {
+                "Easy": {
+                    "description": "exp mod floor for Easy difficulty",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "Normal": {
+                    "description": "exp mod floor for Normal difficulty",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "Hard": {
+                    "description": "exp mod floor for Hard difficulty",
+                    "type": "number",
+                    "minimum": 0
+                }
+            },
+            "required": ["Easy", "Normal", "Hard"]
+        }
+    },
+    "description": "config object for ptce mod",
+    "type": "object",
+    "properties": {
+        "fetishGain": {
+            "description": "defines settings for fetish gain",
+            "type": "object",
+            "properties": {
+                "useVanilla": {
+                    "description": "if set to true, this disables all fetish gain from the mod",
+                    "type": "boolean",
+                    "default": "false"
+                }
+            },
+            "required": ["useVanilla"],
+            "if": { "properties": { "useVanilla": { "const": false } } },
+            "then": {
+                "properties": {
+                    "fetishMaxLevel": {
+                        "description": "maximum level for fetishes",
+                        "type": "integer",
+                        "minimum": 0,
+                        "default": 1000
+                    },
+                    "stancesByFetish": {
+                        "description": "A lookup table to help ptce determine fetishes for skills, which don't have fetish information set, but start or require specific stances.",
+                        "type": "object",
+                        "properties": {
+                            "Sex": { "type": "array", "items": { "type": "string" } },
+                            "Oral": { "type": "array", "items": { "type": "string" } },
+                            "Breasts": { "type": "array", "items": { "type": "string" } },
+                            "Ass": { "type": "array", "items": { "type": "string" } },
+                            "Kissing": { "type": "array", "items": { "type": "string" } },
+                            "Legs": { "type": "array", "items": { "type": "string" } },
+                            "Feet": { "type": "array", "items": { "type": "string" } },
+                            "Monstrous": { "type": "array", "items": { "type": "string" } }
+                        },
+                        "required": ["Sex", "Oral", "Breasts", "Ass", "Kissing", "Legs", "Feet", "Monstrous"],
+                        "default": {
+                            "Feet": ["Footjob", "Feet Pussy", "Behind Footjob", "Electric Massage"],
+                            "Legs": ["Thighjob", "Kneejob"],
+                            "Monstrous": ["Tail Fuck", "Slimed", "Slimed 50%", "Slimed 100%", "Tailjob"],
+                            "Ass": ["Anal", "Face Sit"],
+                            "Oral": ["Blowjob"],
+                            "Breasts": ["Titfuck", "Breast Smother", "Nursing"],
+                            "Sex": ["Sex"],
+                            "Kissing": ["Making Out"]
+                        }
+                    },
+                    "bannedFetishes": {
+                        "description": "disable any fetish gain from ptce for fetishes in this array. Vanilla gains still apply",
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "uniqueItems": true,
+                        "default": []
+                    },
+                    "calculation": {
+                        "description": "defines fetish gain calculation based on Allure",
+                        "$ref": "#/$defs/calculation",
+                        "default": {
+                            "calculationType": "squareRoot",
+                            "rootMultiplier": 5,
+                            "flatMultiplier": 0.1,
+                            "flatBonus": 0
+                        }
+                    },
+                    "multipliers": {
+                        "description": "define the final multipliers for the different portions of fetish gain",
+                        "properties": {
+                            "onHitTemp": {
+                                "description": "modifiers for gaining temp fetish levels when being hit",
+                                "#ref": "#/$defs/numberByDifficulty",
+                                "default": {"Easy": 0.05, "Normal": 0.1, "Hard": 0.2}
+                            },
+                            "onHitPerm": {
+                                "description": "modifiers for gaining perm fetish levels when being hit",
+                                "#ref": "#/$defs/numberByDifficulty",
+                                "default": {"Easy": 0, "Normal": 0, "Hard": 0}
+                            },
+                            "onSpiritLossTemp": {
+                                "description": "modifiers for gaining temp fetish levels when loosing spirit",
+                                "#ref": "#/$defs/numberByDifficulty",
+                                "default": {"Easy": 0.65, "Normal": 0.8, "Hard": 0.95}
+                            },
+                            "onSpiritLossPerm": {
+                                "description": "modifiers for gaining perm fetish levels when loosing spirit",
+                                "#ref": "#/$defs/numberByDifficulty",
+                                "default": {"Easy": 0.1, "Normal": 0.2, "Hard": 0.3}
+                            },
+                            "onCombatLossTemp": {
+                                "description": "modifiers for gaining temp fetish levels when loosing combat",
+                                "#ref": "#/$defs/numberByDifficulty",
+                                "default": {"Easy": 0, "Normal": 0, "Hard": 0}
+                            },
+                            "onCombatLossPerm": {
+                                "description": "modifiers for gaining perm fetish levels when loosing combat",
+                                "#ref": "#/$defs/numberByDifficulty",
+                                "default": {"Easy": 0.75, "Normal": 1, "Hard": 1.25}
+                            }
+                        }
+                    }
+                },
+                "required": ["fetishMaxLevel", "stancesByFetish", "bannedFetishes", "calculation", "multipliers"]
+            }
+        },
+        "expGain": {
+            "description": "settings regarding gain of exp from combat",
+            "type": "object",
+            "properties": {
+                "useVanilla": {
+                    "description": "disables ptce exp gain functions and use vanilla behavior",
+                    "type": "boolean"
+                }
+            },
+            "required": ["useVanilla"],
+            "if": { "properties": { "useVanilla": { "const": false } } },
+            "then": {
+                "description": "this modifies the base amount a monster gives by a percentage. This percentage is calculated by a calculation based on the difference in levels and then multiplied by a multiplier based on difficulty",
+                "properties": {
+                    "calculation": {
+                        "$ref": "#/$defs/calculation",
+                        "default": {
+                            "calculationType": "quadratic",
+                            "quadraticMultiplier": -1,
+                            "flatMultiplier": 0,
+                            "flatBonus": 0
+                        }
+                    },
+                    "multiplier": {
+                        "description": "multiplies the exp modifier from the calculation for the given difficulty",
+                        "$ref": "#/$defs/numberByDifficulty",
+                        "default": { "Easy": 0.01, "Normal": 0.021, "Hard": 0.03 }
+                    },
+                    "floor": {
+                        "description": "defines the minimum exp percentage by difficulty",
+                        "$ref": "#/$defs/numberByDifficulty",
+                        "default": { "Easy": 0, "Normal": 0, "Hard": 0 }
+                    }
+                },
+                "required": ["calculation", "multiplier", "floor"]
+            }
+        },
+        "erosGain": {
+            "description": "settings regarding gain of eros from combat",
+            "type": "object",
+            "properties": {
+                "useVanilla": {
+                    "description": "disables ptce eros gain functions and use vanilla behavior",
+                    "type": "boolean"
+                }
+            },
+            "required": ["useVanilla"],
+            "if": { "properties": { "useVanilla": { "const": false } } },
+            "then": {
+                "properties": {
+                    "calculation": {
+                        "$ref": "#/$defs/calculation",
+                        "default": {
+                            "calculationType": "quadratic",
+                            "quadraticMultiplier": 0,
+                            "flatMultiplier": -1,
+                            "flatBonus": 0
+                        }
+                    },
+                    "multiplier": {
+                        "description": "multiplies the eros percentage from the calculation from combat for the given difficulty",
+                        "$ref": "#/$defs/numberByDifficulty",
+                        "default": { "Easy": 0.025, "Normal": 0.05, "Hard": 0.1 }
+                    },
+                    "floor": {
+                        "description": "defines the minimum eros mod by difficulty",
+                        "$ref": "#/$defs/numberByDifficulty",
+                        "default": { "Easy": 0.75, "Normal": 0.5, "Hard": 0.25 }
+                    }
+                },
+                "required": ["calculation", "multiplier", "floor"]
+            }
+        },
+        "fetishPurge": {
+            "description": "settings which define behavior of purging fetishes in church",
+            "properties": { 
+                "useVanilla": {
+                    "description": "disables any fetish purging calculation from ptce and uses vanilla values",
+                    "type": "boolean"
+                }
+            },
+            "required": ["useVanilla"],
+            "if": { "properties": { "useVanilla": { "const": false } } },
+            "then": {
+                "properties": {
+                    "calculation": {
+                        "$ref": "#/$defs/calculation",
+                        "default": { "calculationType": "quadratic", "quadraticMultiplier": 0, "flatMultiplier": 5, "flatBonus": 0 }
+                    }
+                },
+                "required": ["calculation"]
+            }
+        },
+        "combatAI": {
+            "description": "settings which define behavior of smarter combat ai functionality",
+            "type": "object", 
+            "properties": {
+                "enemiesLearnWeaknesses": {
+                    "description": "enemies remember and prioritize moves which are very effective",
+                    "type": "boolean"
+                },
+                "enemiesLearnStrengths": {
+                    "description": "enemies remember and deemphasize moves which are not effective",
+                    "type": "boolean"
+                }
+            }
+        },
+        "hardcoreMode": {
+            "description": "removes the save, q.save and q.load options from quick menu. Also removes the save and load options from the menu. You can only load games from the title menu and only save via an ingame event at the church.",
+            "type": "boolean"
+        }
+    },
+    "required": ["fetishGain", "expGain", "erosGain", "fetishPurge", "combatAI", "hardcoreMode"]
+}

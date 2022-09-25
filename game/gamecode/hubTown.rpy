@@ -540,9 +540,8 @@ label PurgeFetishes:
 
     $ index = 0
 
-    $ costPerFetish = ptceConfig["ptceTempFetishCost"]
     $ playerFetishes = player.getAllFetishes()
-    $ purgeableFetishes = filter(lambda f: f.getPurgeableAmount > 0, playerFetishes)
+    $ purgeableFetishes = filter(lambda f: f.getPurgeableAmount() > 0, playerFetishes)
 
     label getFetPage:
         $ theTotalCost = 0
@@ -565,39 +564,36 @@ label PurgeFetishes:
         $ theCost = 0
         
         $ playerFetishes = player.getAllFetishes()
-        $ purgeableFetishes = filter(lambda f: f.getPurgeableAmount > 0, playerFetishes)
+        $ purgeableFetishes = filter(lambda f: f.getPurgeableAmount() > 0, playerFetishes)
 
         $ fetCount = len(purgeableFetishes)
 
-    $ c = 0
-    while c < len(purgeableFetishes):
-        if c < len(purgeableFetishes):
-            $ theTotalCost += purgeableFetishes[c].getPurgeableAmount()*costPerFetish
-        $ c += 1
+    $ theTotalCost = sum(map(getPurgeCost, purgeableFetishes))
 
 
     while i < len(purgeableFetishes):
         if i < len(purgeableFetishes):
-            $ theCost += purgeableFetishes[i].getPurgeableAmount()*costPerFetish
+            $ currentCost = getPurgeCost(purgeableFetishes[i])
+            $ theCost += currentCost
 
-            $ display = purgeableFetishes[i].name + ": " + str(purgeableFetishes[i].getPurgeableAmount()*costPerFetish) + " eros."
+            $ display = purgeableFetishes[i].name + ": " + str(currentCost) + " eros."
 
-            if display1 == "" and purgeableFetishes[i].getPurgeableAmount()*costPerFetish > 0:
+            if display1 == "" and currentCost > 0:
                 $ display1 = display
                 $ d1Name = purgeableFetishes[i].name
-                $ d1Cost = purgeableFetishes[i].getPurgeableAmount()*costPerFetish
-            elif display2 == "" and purgeableFetishes[i].getPurgeableAmount()*costPerFetish > 0:
+                $ d1Cost = currentCost
+            elif display2 == "" and currentCost > 0:
                 $ display2 = display
                 $ d2Name = purgeableFetishes[i].name
-                $ d2Cost = purgeableFetishes[i].getPurgeableAmount()*costPerFetish
-            elif display3 == "" and purgeableFetishes[i].getPurgeableAmount()*costPerFetish > 0:
+                $ d2Cost = currentCost
+            elif display3 == "" and currentCost > 0:
                 $ display3 = display
                 $ d3Name = purgeableFetishes[i].name
-                $ d3Cost = purgeableFetishes[i].getPurgeableAmount()*costPerFetish
-            elif display4 == "" and purgeableFetishes[i].getPurgeableAmount()*costPerFetish > 0:
+                $ d3Cost = currentCost
+            elif display4 == "" and currentCost > 0:
                 $ display4 = display
                 $ d4Name = purgeableFetishes[i].name
-                $ d4Cost = purgeableFetishes[i].getPurgeableAmount()*costPerFetish
+                $ d4Cost = currentCost
         $ i += 1
 
     if theCost > 0:

@@ -841,7 +841,7 @@ label enemySkillChoice(mSC):
 
             if showSkill == 1:
                 refinedSkillList.append(eachSkillOption)
-                if ptceConfig["enemiesLearnWeaknesses"] and currentEnemyChoosing.isKnownStrongMove(eachSkillOption):
+                if currentEnemyChoosing.isKnownStrongMove(eachSkillOption):
                     strongMoves.append(eachSkillOption)                              
 
 

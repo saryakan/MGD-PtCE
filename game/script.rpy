@@ -836,7 +836,7 @@ label start:
 
     call loadDatabase from _call_loadDatabase_2
     $ loadPtCEConfigs()
-    $ _game_menu_screen = "ON_CharacterDisplayScreen" if ptceConfig["hardcoreMode"] else "save"
+    $ _game_menu_screen = "ON_CharacterDisplayScreen" if ptceConfig.get("hardcoreMode") else "save"
 
     $ player.name = "Adventurer"
 
