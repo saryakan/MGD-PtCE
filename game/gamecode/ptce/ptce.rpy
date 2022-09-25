@@ -56,7 +56,7 @@ init 1 python:
 
         lvlDifference = math.fabs(targetLvl - playerLvl)
         difficultyMod = erosConfig.get("multiplier").get(difficulty)
-        lvlMod = ptceCalculate(erosConfig.get("calculation"), value)
+        lvlMod = ptceCalculate(erosConfig.get("calculation"), lvlDifference)
         floor = erosConfig.get("floor").get(difficulty)
 
         erosMod = 1 + difficultyMod * lvlDifference
@@ -85,12 +85,13 @@ init 1 python:
 
     def handleFetishGain(lastAttack, attacker, applyMultipliers, fetishConfig, spiritLost = 1):
         if not fetishConfig.get("useVanilla"):
-            fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes(), fetishConfig)
+            fetishTags = getUnbannedFetishTagsOnly(lastAttack.getActualFetishes(attacker), fetishConfig)
+            distributionDivisor = 1 if fetishConfig.get("fullFetishGainForMultiFetishSkills") else len(fetishTags)
             effectiveAllure = ptceCalculate(fetishConfig.get("calculation"), attacker.stats.Allure)
             for f in getPlayerFetishes(fetishTags):
                 for multiplierName in applyMultipliers:
                     difficultyMod = fetishConfig.get("multipliers").get(multiplierName).get(difficulty)
-                    finalGain = round(effectiveAllure * difficultyMod * max(1, spiritLost), 2)
+                    finalGain = round(effectiveAllure * difficultyMod * max(1, spiritLost) / distributionDivisor, 2)
                     if "Perm" in multiplierName:
                         f.increasePerm(finalGain)
                     else:

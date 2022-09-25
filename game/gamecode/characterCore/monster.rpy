@@ -126,7 +126,9 @@ label monsterClass:
                 self.currentSet = 0
 
                 self.skippingAttack = skippingAttack
-                self.learnedWeaknesses = []
+                self.learnedStrongFetishes = {}
+                self.learnedStrongSensitivity = {}
+                self.learnedWeakSensitivity = {}
 
             def giveStance(self, name, target, skill=Skill(),  holdoverDura=0):
                 if name != "":
@@ -310,6 +312,11 @@ label monsterClass:
                     total += each.Level
                 return total
             
+            def updateLearnedWeakFetish(self, skillOption): 
+
+            def getCurrentStanceNames(self):
+                map(lambda s: s.Stance, self.combatStance)
+
             def addLearnedWeakness(self, skillOption):
                 for fetishTag in skillOption.getActualFetishes:
                     if fetishTag not in self.learnedWeaknesses:

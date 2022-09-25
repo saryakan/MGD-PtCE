@@ -947,7 +947,7 @@ init python:
                     n += 1
             return 1
         
-        def getActualFetishes(self):
+        def getActualFetishes(self, attacker):
             stancesByFetish = ptceConfig.get("fetishGain").get("stancesByFetish")
             fetishes = filter(lambda f: f != "Penetration", self.fetishTags)
             for fetish, stances in stancesByFetish.items():
@@ -955,11 +955,12 @@ init python:
                     if fetish not in fetishes:
                         fetishes.append(fetish)
 
-            # TODO: actually fix penetration always being delegated to sex
             if "Penetration" in self.fetishTags:
-                if "Sex" in self.skillTags:
+                if "Sex" in attacker.getCurrentStanceNames():
                     if "Sex" not in fetishes:
                         fetishes.append("Sex")
+                if "Anal" in attacker.getCurrentStanceNames():
+                        fetish.append("Anal")
             return fetishes;
 
 

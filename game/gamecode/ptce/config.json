@@ -2,6 +2,7 @@
     "$schema": "./config-schema.json",
     "fetishGain": {
         "useVanilla": false,
+        "fullFetishGainForMultiFetishSkills": true,
         "fetishMaxLevel": 1000,
         "bannedFetishes": [],
         "stancesByFetish": {

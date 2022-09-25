@@ -187,9 +187,14 @@
                                 "default": {"Easy": 0.75, "Normal": 1, "Hard": 1.25}
                             }
                         }
+                    },
+                    "fullFetishGainForMultiFetishSkills": {
+                        "description": "true: skills with multiple fetish tags will give the full gain for each tag. false: fetish gain will be distributed evenly for attacks with multiple fetish tags",
+                        "type": "boolean",
+                        "default": true
                     }
                 },
-                "required": ["fetishMaxLevel", "stancesByFetish", "bannedFetishes", "calculation", "multipliers"]
+                "required": ["fetishMaxLevel", "stancesByFetish", "bannedFetishes", "calculation", "multipliers", "fullFetishGainForMultiFetishSkills"]
             }
         },
         "expGain": {
