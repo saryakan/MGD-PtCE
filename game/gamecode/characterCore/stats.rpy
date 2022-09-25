@@ -955,13 +955,15 @@ init python:
                     if fetish not in fetishes:
                         fetishes.append(fetish)
 
+            if attacker.getCurrentStanceNames() == None:
+                return fetishes
             if "Penetration" in self.fetishTags:
                 if "Sex" in attacker.getCurrentStanceNames():
                     if "Sex" not in fetishes:
                         fetishes.append("Sex")
                 if "Anal" in attacker.getCurrentStanceNames():
                         fetish.append("Anal")
-            return fetishes;
+            return fetishes
 
 
     ####Should proly be in the actual skill class?####

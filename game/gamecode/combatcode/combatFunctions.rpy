@@ -2259,6 +2259,7 @@ label combatFunctions:
                 stanceApply = "True"
                 if theTarget.species == "Player" and increaseFetishOnHit:
                     increaseFetishOnBeingHit(move, attacker)
+                    updateMonsterLearned(attacker, move)
 
                 if move.statusOutcome != "IgnoreAttack":
                     finalDamage = getDamageEstimate(attacker, move)
@@ -2347,11 +2348,6 @@ label combatFunctions:
 
                     if effectivenessTotal >= 1.25:
                         effectiveText = "{color=#ff587d}Weakspot!{/color} "
-                        if theTarget.species != "Player":
-                            try:
-                                attacker.addLearnedWeakness(move)
-                            except:
-                                pass
                     elif effectivenessTotal <= 0.75:
                         effectiveText = "{color=#535F98}Frigid!{/color} "
 

@@ -126,9 +126,8 @@ label monsterClass:
                 self.currentSet = 0
 
                 self.skippingAttack = skippingAttack
-                self.learnedStrongFetishes = {}
-                self.learnedStrongSensitivity = {}
-                self.learnedWeakSensitivity = {}
+                self.learnedFetishStrength = {}
+                self.learnedSensitivities = {}
 
             def giveStance(self, name, target, skill=Skill(),  holdoverDura=0):
                 if name != "":
@@ -312,23 +311,35 @@ label monsterClass:
                     total += each.Level
                 return total
             
-            def updateLearnedWeakFetish(self, skillOption): 
+            def updateLearned(self, skillOption, player):
+                fetishes = skillOption.getActualFetishes(self)
+                playerFetishes = getPlayerFetishes(fetishes)
+                for f in playerFetishes:
+                    value = round(f.Level * 0.01, 2)
+                    self.learnedFetishStrength.update({f.name: value})
+                
+                for sens in skillOption.skillTags:
+                    value = round((player.BodySensitivity.getRes(sens) - 100) * 0.01, 2)
+                    self.learnedSensitivities.update({sens: value})
 
+            def clearLearned(self):
+                self.learnedWeaknesses = {}
+            
             def getCurrentStanceNames(self):
                 map(lambda s: s.Stance, self.combatStance)
-
-            def addLearnedWeakness(self, skillOption):
-                for fetishTag in skillOption.getActualFetishes:
-                    if fetishTag not in self.learnedWeaknesses:
-                        self.learnedWeaknesses.append(fetishTag)
             
-            def clearLearnedWeakness(self):
-                self.learnedWeaknesses.clear()
-            
-            def isKnownStrongMove(self, skillOption):
-                for weakness in self.learnedWeaknesses:
-                    return weakness in skillOption.getActualFetishes()
+            def getKnownMovePriority(self, skillOption):
+                skillFetishTags = skillOption.getActualFetishes(self)
+                finalValue = 0
+                for f, v in self.learnedFetishStrength.items():
+                    if f in skillFetishTags:
+                        finalValue += v
 
+                for s, v in self.learnedSensitivities.items():
+                    if s in skillOption.skillTags:
+                        finalValue += v
+                
+                return finalValue
 
             def levelUp(self, lvlTarget):
                 lvlDifference  = lvlTarget - self.stats.lvl

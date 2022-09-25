@@ -106,4 +106,48 @@ init 1 python:
 
     def getPlayerFetishes(fetishes):
         return filter(lambda f: f.name in fetishes, player.FetishList)
+    
+    def updateMonsterLearned(monster, move):
+        monster.updateLearned(move, player)
 
+    def pickMoveWithPrio(knownMoves, moves):
+        normalizedMoves = getNormalizedMoveChoices(knownMoves)
+        rng = renpy.random.random()
+        for (name, prio) in normalizedMoves:
+            if rng <= prio:
+                for move in moves:
+                    if move.name == name:
+                        return move
+        
+        raise Exception("Could not find move. rng: " + str(rng) + " normalizedMoves: " + str(normalizedMoves) + " moves: " + str(map(lambda m: m.name, moves)))
+
+    def getNormalizedMoveChoices(knownMoves):
+        if len(knownMoves.keys()) <= 0:
+            return []
+
+        normalizedMoves = []
+        modifier = 1 / sum(knownMoves.values())
+        runningSum = 0
+        for name, prio in knownMoves.items():
+            runningSum += prio * modifier
+            normalizedMoves.append((name, runningSum))
+
+        return normalizedMoves
+
+    def getMonsterKnownMovesWithPrio(monster):
+        result = {}
+        for skill in monster.skillList:
+            prio = monster.getKnownMovePriority(skill)
+            if prio > 0:
+                result.update({skill.name: prio})
+        
+        return result
+
+    def getMonsterKnownBadMoveNames(monster):
+        result = []
+        for skill in monster.skillList:
+            prio = monster.getKnownMovePriority(skill)
+            if prio < 0:
+                result.append(skill.name)
+
+        return result

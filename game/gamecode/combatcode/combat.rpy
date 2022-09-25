@@ -593,7 +593,9 @@ label enemySkillChoice(mSC):
         jump combatEndTurn
 
     $ refinedSkillList = []
-    $ strongMoves = []
+    $ movesWithPrio = {}
+    $ knownMoves = []
+    $ knownBadMoves = []
 
     if monsterEncounter[mSC].statusEffects.restrained.duration > 0:
         if postTurnStartSelection == 0:
@@ -838,12 +840,16 @@ label enemySkillChoice(mSC):
                 showSkill = 0
 
 
-
             if showSkill == 1:
-                refinedSkillList.append(eachSkillOption)
-                if currentEnemyChoosing.isKnownStrongMove(eachSkillOption):
-                    strongMoves.append(eachSkillOption)                              
-
+                prio = currentEnemyChoosing.getKnownMovePriority(eachSkillOption)
+                if prio < 0:
+                    knownBadMoves.append(eachSkillOption) 
+                elif prio > 0:
+                    movesWithPrio.update({eachSkillOption.name: prio})
+                    knownMoves.append(eachSkillOption)
+                    refinedSkillList.append(eachSkillOption)               
+                else:
+                    refinedSkillList.append(eachSkillOption)
 
 
     python:
@@ -994,8 +1000,7 @@ label enemySkillChoiceLoop:
                     "[display]"
                 return
 
-    if AIStruggle >= 250 or len(refinedSkillList)-1 < 0:
-
+    if AIStruggle >= 250 or (len(refinedSkillList)-1 < 0) and len(knownBadMoves) <= 0 :
         if postTurnStartSelection == 0:
             $ monSkillChoice.append( getSkill(" ", SkillsDatabase))
         else:
@@ -1013,11 +1018,13 @@ label enemySkillChoiceLoop:
 
     #$ monSkillChoice = Skill()
 
-    # 2/3 Chance that the enemy will use a move, which it knows to be effective.
-    if len(strongMoves) > 0 and (renpy.random.randint(1, 3) > 1):
-        $ picked = strongMoves[renpy.random.randint(0, len(strongMoves)) - 1]
-    else:    
+    # 40% Chance that the enemy will use a move, which it does not know effectiveness for.
+    if len(movesWithPrio.keys()) > 0 and (renpy.random.randint(1, 10) > 4):
+        $ picked = pickMoveWithPrio(movesWithPrio, knownMoves)
+    elif len(refinedSkillList) > 0:
         $ picked = refinedSkillList[renpy.random.randint(0, len(refinedSkillList)) - 1]
+    else:
+        $ picked = knownBadMoves[renpy.random.randint(0, len(knownBadMoves)) - 1]
 
 
 
