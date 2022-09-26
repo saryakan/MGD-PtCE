@@ -319,8 +319,9 @@ label monsterClass:
                     self.learnedFetishStrength.update({f.name: value})
                 
                 for sens in skillOption.skillTags:
-                    value = round((player.BodySensitivity.getRes(sens) - 100) * 0.01, 2)
-                    self.learnedSensitivities.update({sens: value})
+                    if not (sens == "" or sens == " "):
+                        value = round((player.BodySensitivity.getRes(sens) - 100) * 0.01, 2)
+                        self.learnedSensitivities.update({sens: value})
 
             def clearLearned(self):
                 self.learnedWeaknesses = {}
