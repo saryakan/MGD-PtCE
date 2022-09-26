@@ -150,11 +150,7 @@ screen EnemyCard(mC, mon, xMonPos,yMonpos):
             #ypos bodyY
             #xpos bodyX + xMonPos
 
-        # TODO: remove debug sout
-        #$ monsterToolTip = mon.name
-        $ monsterMovesWithPrio = getMonsterKnownMovesWithPrio(mon)
-        $ monsterKnownBadMoves = getMonsterKnownBadMoveNames(mon)
-        $ monsterToolTip = mon.name + "\n{" + str(monsterMovesWithPrio) + "\nbad: [" + str(monsterKnownBadMoves)
+        $ monsterToolTip = mon.name
         if target == -1:
             imagebutton:
                 hovered SetVariable("cmenu_tooltip", monsterToolTip)
