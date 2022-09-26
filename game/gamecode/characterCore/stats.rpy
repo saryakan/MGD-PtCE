@@ -1351,17 +1351,24 @@ init python:
             self.LevelMin = 0
             self.LevelPerm = 0
         
-        def increaseMin(self, increase):
-            ptceConfig.get("fetishGain").get("fetishMaxLevel")
+        def increaseMin(self, increase, enqueue=True):
             self.LevelMin = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin + max(0, increase))
-            self.increasePerm(increase)
-        
-        def increasePerm(self, increase):
-            self.LevelPerm = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm + max(0, increase))
-            self.increaseTemp(increase)
+            if increase != 0 and enqueue:
+                enqueueFetishGain(self.name, increase, "m")
 
-        def increaseTemp(self, increase):
+            self.increasePerm(increase, False)
+        
+        def increasePerm(self, increase, enqueue=True):
+            self.LevelPerm = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm + max(0, increase))
+            if increase != 0 and enqueue:
+                enqueueFetishGain(self.name, increase, "p")
+
+            self.increaseTemp(increase, False)
+
+        def increaseTemp(self, increase, enqueue=True):
             self.Level = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.Level + max(0, increase))
+            if increase != 0 and enqueue:
+                enqueueFetishGain(self.name, increase, "t")
         
         def resetTemp(self):
             self.Level = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm)

@@ -1592,9 +1592,7 @@ label resumeSceneAfterCombat:
 
         elif displayingScene.theScene[lineOfScene] == "DEBUG_ME_DADDY":
             # This is supposed to be used for whatever I need to debug rn
-            python:
-                debugOutput = "nothing to debug atm"
-            "[debugOutput]"
+            show screen fetishGainDisplay("test", levelsGained=5)
 
         elif displayingScene.theScene[lineOfScene] == "GiveErosFromInput":
             python:
