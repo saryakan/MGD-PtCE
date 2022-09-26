@@ -842,9 +842,9 @@ label enemySkillChoice(mSC):
 
             if showSkill == 1:
                 prio = currentEnemyChoosing.getKnownMovePriority(eachSkillOption)
-                if prio < 0:
+                if prio < 0 and ptceConfig.get("combatAI").get("enemiesLearnStrengths"):
                     knownBadMoves.append(eachSkillOption) 
-                elif prio > 0:
+                elif prio > 0 and ptceConfig.get("combatAI").get("enemiesLearnWeaknesses"):
                     movesWithPrio.update({eachSkillOption.name: prio})
                     knownMoves.append(eachSkillOption)
                     refinedSkillList.append(eachSkillOption)               
@@ -1019,6 +1019,7 @@ label enemySkillChoiceLoop:
     #$ monSkillChoice = Skill()
 
     # 40% Chance that the enemy will use a move, which it does not know effectiveness for.
+
     if len(movesWithPrio.keys()) > 0 and (renpy.random.randint(1, 10) > 4):
         $ picked = pickMoveWithPrio(movesWithPrio, knownMoves)
     elif len(refinedSkillList) > 0:
