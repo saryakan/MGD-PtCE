@@ -1352,22 +1352,22 @@ init python:
             self.LevelPerm = 0
         
         def increaseMin(self, increase, enqueue=True):
-            self.LevelMin = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin + max(0, increase))
-            if increase != 0 and enqueue:
+            self.LevelMin = max(0, min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin + increase))
+            if self.Type == "Fetish" and increase != 0 and enqueue and ptceConfig.get("fetishGain").get("displayFetishGainPopup"):
                 enqueueFetishGain(self.name, increase, "m")
 
             self.increasePerm(increase, False)
         
         def increasePerm(self, increase, enqueue=True):
-            self.LevelPerm = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm + max(0, increase))
-            if increase != 0 and enqueue:
+            self.LevelPerm = max(0, min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm + increase))
+            if self.Type == "Fetish" and increase != 0 and enqueue and ptceConfig.get("fetishGain").get("displayFetishGainPopup"):
                 enqueueFetishGain(self.name, increase, "p")
 
             self.increaseTemp(increase, False)
 
         def increaseTemp(self, increase, enqueue=True):
-            self.Level = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.Level + max(0, increase))
-            if increase != 0 and enqueue:
+            self.Level = max(0, min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.Level + increase))
+            if self.Type == "Fetish" and increase != 0 and enqueue and ptceConfig.get("fetishGain").get("displayFetishGainPopup"):
                 enqueueFetishGain(self.name, increase, "t")
         
         def resetTemp(self):

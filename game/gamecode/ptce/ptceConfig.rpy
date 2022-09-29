@@ -23,11 +23,12 @@ init -1 python:
             "multipliers": {
                 "onHitTemp": { "Easy": 0.05, "Normal": 0.1, "Hard": 0.2 },
                 "onHitPerm": { "Easy": 0, "Normal": 0, "Hard": 0 },
-                "onSpiritLossTemp": { "Easy": 0.65, "Normal": 0.8, "Hard": 0.95 },
-                "onSpiritLossPerm": { "Easy": 0.1, "Normal": 0.2, "Hard": 0.3 },
+                "onSpiritLossTemp": { "Easy": 0.7, "Normal": 0.9, "Hard": 1.05 },
+                "onSpiritLossPerm": { "Easy": 0.05, "Normal": 0.1, "Hard": 0.2 },
                 "onCombatLossTemp": { "Easy": 0, "Normal": 0, "Hard": 0 },
-                "onCombatLossPerm": { "Easy": 0.75, "Normal": 1, "Hard": 1.25 }
-            }
+                "onCombatLossPerm": { "Easy": 0.25, "Normal": 0.5, "Hard": 0.75 }
+            },
+            "displayFetishGainPopup": True
         },
         "expGain": {
             "useVanilla": False,

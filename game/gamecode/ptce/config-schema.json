@@ -169,12 +169,12 @@
                             "onSpiritLossTemp": {
                                 "description": "modifiers for gaining temp fetish levels when loosing spirit",
                                 "#ref": "#/$defs/numberByDifficulty",
-                                "default": {"Easy": 0.65, "Normal": 0.8, "Hard": 0.95}
+                                "default": {"Easy": 0.7, "Normal": 0.9, "Hard": 1.05}
                             },
                             "onSpiritLossPerm": {
                                 "description": "modifiers for gaining perm fetish levels when loosing spirit",
                                 "#ref": "#/$defs/numberByDifficulty",
-                                "default": {"Easy": 0.1, "Normal": 0.2, "Hard": 0.3}
+                                "default": {"Easy": 0.05, "Normal": 0.1, "Hard": 0.2}
                             },
                             "onCombatLossTemp": {
                                 "description": "modifiers for gaining temp fetish levels when loosing combat",
@@ -184,7 +184,7 @@
                             "onCombatLossPerm": {
                                 "description": "modifiers for gaining perm fetish levels when loosing combat",
                                 "#ref": "#/$defs/numberByDifficulty",
-                                "default": {"Easy": 0.75, "Normal": 1, "Hard": 1.25}
+                                "default": {"Easy": 0.25, "Normal": 0.5, "Hard": 0.75}
                             }
                         }
                     },
@@ -192,9 +192,14 @@
                         "description": "true: skills with multiple fetish tags will give the full gain for each tag. false: fetish gain will be distributed evenly for attacks with multiple fetish tags",
                         "type": "boolean",
                         "default": true
+                    },
+                    "displayFetishGainPopup": {
+                        "description": "enables/disables the fetish gain popup",
+                        "type": "boolean",
+                        "default": true
                     }
                 },
-                "required": ["fetishMaxLevel", "stancesByFetish", "bannedFetishes", "calculation", "multipliers", "fullFetishGainForMultiFetishSkills"]
+                "required": ["fetishMaxLevel", "stancesByFetish", "bannedFetishes", "calculation", "multipliers", "fullFetishGainForMultiFetishSkills", "displayFetishGainPopup"]
             }
         },
         "expGain": {

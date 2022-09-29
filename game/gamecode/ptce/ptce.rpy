@@ -81,7 +81,7 @@ init 1 python:
 
     def increaseFetishOnLoss(lastAttack, attacker):
         fetishConfig = ptceConfig.get("fetishGain")
-        handleFetishGain(lastAttack, attacker, ["onSpiritLossTemp", "onSpiritLossPerm"], fetishConfig, spiritLost)
+        handleFetishGain(lastAttack, attacker, ["onCombatLossTemp", "onCombatLossPerm"], fetishConfig, spiritLost)
 
     def handleFetishGain(lastAttack, attacker, applyMultipliers, fetishConfig, spiritLost = 1):
         if not fetishConfig.get("useVanilla"):
