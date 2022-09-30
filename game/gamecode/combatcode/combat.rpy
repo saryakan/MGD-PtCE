@@ -270,6 +270,7 @@ init python:
 
 
 label combat:
+    $ superSurrendered = False
     $ InventoryAvailable = False
     $ noDoubleRewards = 0
     $ DefeatedEncounterMonsters = []
@@ -1486,7 +1487,12 @@ label combatLoss:
     $ lossExpPower = 0
     $ LossExp = 0
     python:
-        increaseFetishOnLoss(lastAttack, theLastAttacker)
+        if not superSurrendered:
+            if theLastAttacker.species == "Player":  
+                increaseFetishOnLoss(lastAttack, orgasmCauser)
+            else:
+                increaseFetishOnLoss(lastAttack, theLastAttacker)
+
         for perk in player.perks:
             p = 0
             while  p < len(perk.PerkType):
@@ -1582,6 +1588,7 @@ label lostExpCheck:
 
 
 label combatLossEnd:
+    $ superSurrendered = False
     $ hidingCombatEncounter = 0
     $ monsterEncounter = []
     $ combatItems = 0
@@ -2265,6 +2272,7 @@ label combatSurrender:
     $ player.statusEffects.surrender.duration = 1
     $ player.stats.sp = 0
     $ target = 0
+    $ superSurrendered = True
 
     hide screen ON_CombatMenu
 
