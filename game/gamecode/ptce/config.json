@@ -67,7 +67,7 @@
                 {"rngType": "integer", "minimum": 0, "maximum": 25}
             ]
         },
-        "runningInitiativeBonus": 200,
+        "runningInitiativeBonus": -50,
         "initiativeCalculations": {
             "useVanilla": false,
             "fixedCalculations": [
