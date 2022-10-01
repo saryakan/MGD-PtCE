@@ -923,6 +923,7 @@ label combatActionTurn:
                             $ stanceGo = "True"
                             $ display = skillChoice.outcome
                             call read from _call_read_42
+                            $ defender.hasBeenAnalyzed = True
                             $ display = "Name: " + defender.name + "        Species: " + defender.species + "       Level: " + str(defender.stats.lvl) + "\n\n"
                             $ display += "Arousal: " + str(defender.stats.hp) + "/" + str(defender.stats.max_true_hp) + "      Energy: " + str(defender.stats.ep) + "/" + str(defender.stats.max_true_ep) + "      Spirit: " + str(defender.stats.sp) + "/" + str(defender.stats.max_true_sp) + "\n\n"
                             $ display += "Power: " + str(defender.stats.Power) + "     "

@@ -203,3 +203,14 @@ init 1 python:
             return renpy.random.randint(0,100)
         
         return calculateAll(initiativeConfig.get("randomCalculations"), character)
+    
+    def getMonsterTooltip(monster):
+        tooltip = "{0} (Level {1}):\n\n".format(monster.name, monster.stats.lvl)
+        if monster.hasBeenAnalyzed:
+            tooltip += "Exp: {0}  Eros: {1}\n".format(monster.stats.Exp, monster.moneyDropped)
+            tooltip += "HP: {0}/{1}  SP: {4}/{5}  EP: {2}/{3}\n".format(monster.stats.hp, monster.stats.max_true_hp, monster.stats.ep, monster.stats.max_true_ep, monster.stats.sp, monster.stats.max_true_sp)
+            tooltip += "Pow | Tech |  Int  | Allu | Will | Luck\n"
+            tooltip += "   {0}   |   {1}   |   {2}   |   {3}   |   {4}   |    {5}\n".format(monster.stats.Power, monster.stats.Tech, monster.stats.Int, monster.stats.Allure, monster.stats.Willpower, monster.stats.Luck)
+        
+        return tooltip
+
