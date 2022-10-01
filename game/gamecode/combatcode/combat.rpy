@@ -1,7 +1,7 @@
 #this rpy handles all combat turn and action selection stuff, as well as any hard coded menu actions like running. It also has the spots used for winning and losing fights.
 init python:
     def getInit(target):
-        roll = getInitStats(target) + renpy.random.randint(0,100)
+        roll = getInitStats(target) + getInitiativeRandomizedBonus(target)
 
         if target.statusEffects.paralysis.duration >= 1:
             roll -= target.statusEffects.paralysis.potency*5
@@ -9,7 +9,7 @@ init python:
         return roll
 
     def getInitStats(target):
-        roll = (target.stats.Tech  + (target.stats.Int)*0.5  + (target.stats.Luck)*0.5)
+        roll = getBaseInitiative(target)
         for perk in target.perks:
             p = 0
             while  p < len(perk.PerkType):
@@ -1129,7 +1129,7 @@ label combatDisplay:
         $ playerInititive += 75
 
     if(combatChoice.name == "Run Away"):
-        $ playerInititive += 200
+        $ playerInititive += ptceConfig.get("combat").get("runningInitiativeBonus")
 
 
     $ holdStance = copy.deepcopy(player.combatStance)
@@ -2338,11 +2338,13 @@ label combatRunAttempt:
     "You try to run..."
     #roll opposed check to escape
     $ failed = 0
+    $ monsterRolls = []
+    $ playerRoll = 0
 
     python:
         for each in monsterEncounter:
-            monsterRoll = each.stats.Tech + (each.stats.Luck)*0.5  + renpy.random.randint(0,100)
-
+            monsterRoll = getRunningRoll(each)
+            monsterRolls.append(monsterRoll)
             runBonus = 0
             for perk in player.perks:
                 p = 0
@@ -2365,11 +2367,14 @@ label combatRunAttempt:
 
             if (monsterRoll >= playerRoll):
                 failed += 1
+
     if player.statusEffects.trance.potency >= 11:
         "But your mind is so completely enthralled, you stop yourself from running!"
         return
     elif failed >= 1: #add some effects for compounded failure
         "But you couldn't get away!"
+        if ptceDebug:
+            "PlayerRoll: [playerRoll]\nEnemyRolls: [monsterRolls]"
         return
 
     $ monsterEncounter = []
@@ -2378,6 +2383,8 @@ label combatRunAttempt:
     $ hidingCombatEncounter = 0
 
     "And get away!"
+    if ptceDebug:
+            "PlayerRoll: [playerRoll]\nEnemyRolls: [monsterRolls]"
 
     call TimeEvent(CardType="EndOfCombat", LoopedList=EndOfCombatList) from _call_TimeEvent_13
 

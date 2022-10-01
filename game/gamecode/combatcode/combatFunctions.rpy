@@ -630,7 +630,8 @@ label combatActionTurn:
                 $ x+=1
 
     if(skillChoice.name == "Run Away") and skipAttack == 0 and attacker.species == "Player":
-        call combatRunAttempt from _call_combatRunAttempt
+        if canUse:
+            call combatRunAttempt from _call_combatRunAttempt
 
     if canUse == False:
         if epOut == 1:

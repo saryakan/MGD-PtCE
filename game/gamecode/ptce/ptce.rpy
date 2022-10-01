@@ -1,7 +1,9 @@
 init 1 python:
 
     def ptceCalculate(calculation, value):
-        if calculation.get("calculationType") == "quadratic":
+        if calculation.get("calculationType") == "linear":
+            return calculateLinear(calculation, value)
+        elif calculation.get("calculationType") == "quadratic":
             return calculateQuadratic(calculation, value)
         elif calculation.get("calculationType") == "squareRoot":
             return calculateRoot(calculation, value)
@@ -11,7 +13,29 @@ init 1 python:
             return calculateInverseRoot(calculation, value)
         else:
             raise Exception("Can't determine calculation for value '{0}' and calculation '{1}'".format(value, calculation))
+    
+    def ptceCalculateAllForTarget(calculations, target):
+        results = []
+        for calculation in calculations:
+            if "rngType" in calculation.keys():
+                results.append(calculateRng(calculation))
+            else:
+                stat = target.stats.__dict__.get(calculation.get("stat"))
+                results.append(ptceCalculate(calculation, stat))
+        
+        return results
 
+    def calculateRng(rngCalculation):
+        minimum = rngCalculation.get("minimum")
+        maximum = rngCalculation.get("maximum")
+        if rngCalculation.get("rngType") == "integer":
+            return renpy.random.randint(minimum, maximum)
+        
+        return renpy.random.random() * (maximum - minimum) + minimum
+
+    def calculateLinear(calculation, value):
+        return calculation.get("flatMultiplier") * value + calculation.get("flatBonus")
+    
     def calculateQuadratic(calculation, value):
         return calculation.get("quadraticMultiplier") * math.pow(value, 2) + calculation.get("flatMultiplier") * value + calculation.get("flatBonus")
 
@@ -151,3 +175,31 @@ init 1 python:
                 result.append(skill.name)
 
         return result
+
+    def getRunningRoll(character):
+        runningConfig = ptceConfig.get("combat").get("runningCalculations")
+        if runningConfig.get("useVanilla"):
+            if character.species == "Player":
+                return character.stats.Tech*1.5 + (character.stats.Luck)*0.5  + renpy.random.randint(0,100)
+
+            return character.stats.Tech* + (character.stats.Luck)*0.5  + renpy.random.randint(0,100)
+
+        if character.species == "Player":
+            return calculateAll(runningConfig.get("playerRunningCalculation"), character)
+        
+        return calculateAll(runningConfig.get("enemyRunningCalculation"), character)
+    
+    def getBaseInitiative(character):
+        initiativeConfig = ptceConfig.get("combat").get("initiativeCalculations")
+        if initiativeConfig.get("useVanilla"):
+            return (target.stats.Tech  + (target.stats.Int)*0.5  + (target.stats.Luck)*0.5)
+        
+        return calculateAll(initiativeConfig.get("fixedCalculations"), character)
+    
+    def getInitiativeRandomizedBonus(character):
+        baseInitiative = getBaseInitiative(character)
+        initiativeConfig = ptceConfig.get("combat").get("initiativeCalculations")
+        if initiativeConfig.get("useVanilla"):
+            return renpy.random.randint(0,100)
+        
+        return calculateAll(initiativeConfig.get("randomCalculations"), character)

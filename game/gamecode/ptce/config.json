@@ -46,5 +46,38 @@
         "enemiesLearnWeaknesses": true,
         "enemiesLearnStrengths": true
     },
-    "hardcoreMode": false
+    "hardcoreMode": false,
+    "combat": {
+        "runningCalculations": {
+            "useVanilla": false,
+            "playerRunningCalculation": [
+                {"calculationType": "linear", "flatMultiplier": 1, "flatBonus": 0, "stat": "Tech"},
+                {"calculationType": "linear", "flatMultiplier": 0.5, "flatBonus": 0, "stat": "Luck"},
+                {"rngType": "integer", "minimum": 0, "maximum": 25},
+                {"rngType": "integer", "minimum": 0, "maximum": 25},
+                {"rngType": "integer", "minimum": 0, "maximum": 25},
+                {"rngType": "integer", "minimum": 0, "maximum": 25}
+            ],
+            "enemyRunningCalculation": [
+                {"calculationType": "linear", "flatMultiplier": 1.5, "flatBonus": 0, "stat": "Tech"},
+                {"calculationType": "linear", "flatMultiplier": 0.5, "flatBonus": 0, "stat": "Luck"},
+                {"rngType": "integer", "minimum": 0, "maximum": 25},
+                {"rngType": "integer", "minimum": 0, "maximum": 25},
+                {"rngType": "integer", "minimum": 0, "maximum": 25},
+                {"rngType": "integer", "minimum": 0, "maximum": 25}
+            ]
+        },
+        "runningInitiativeBonus": 200,
+        "initiativeCalculations": {
+            "useVanilla": false,
+            "fixedCalculations": [
+                {"calculationType": "linear", "flatMultiplier": 1, "flatBonus": 0, "stat": "Tech"},
+                {"calculationType": "linear", "flatMultiplier": 0.5, "flatBonus": 0, "stat": "Int"},
+                {"calculationType": "linear", "flatMultiplier": 0.5, "flatBonus": 0, "stat": "Luck"}
+            ],
+            "randomCalculations": [
+                {"rngType": "integer", "minimum": 0, "maximum": 100}
+            ]
+        }
+    }
 }

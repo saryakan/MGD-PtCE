@@ -7,11 +7,24 @@
             "properties": {
                 "calculationType": {
                     "description": "defines the type of calculation used fer determining purge costs. One of [\"quadratic\", \"squareRoot\", \"inverseQuadratic\", \"inverseSquareRoot\"]",
-                    "enum": ["quadratic", "squareRoot", "inverseQuadratic", "inverseSquareRoot"]
+                    "enum": ["linear", "quadratic", "squareRoot", "inverseQuadratic", "inverseSquareRoot"]
                 }
             },
             "required": ["calculationType"],
+            "not": {"required": ["rngType"]},
             "allOf": [
+                {
+                    "if": { "properties": { "calculationType": { "const": "linear" } } },
+                    "then": {
+                        "description": "calculation: \"flatMultiplier\"*x + \"flatBonus\"",
+                        "properties": {
+                            "flatMultiplier": { "type": "number" },
+                            "flatBonus": { "type": "number" }
+                        },
+                        "required": ["flatMultiplier", "flatBonus"],
+                        "not": {"required": ["quadraticMultiplier", "rootMultiplier", "dividend", "flatOverallBonus"] }
+                    }
+                },
                 {
                     "if": { "properties": { "calculationType": { "const": "quadratic" } } },
                     "then": {
@@ -21,7 +34,8 @@
                             "flatMultiplier": { "type": "number" },
                             "flatBonus": { "type": "number" }
                         },
-                        "required": ["quadraticMultiplier", "flatMultiplier", "flatBonus"]
+                        "required": ["quadraticMultiplier", "flatMultiplier", "flatBonus"],
+                        "not": {"required": ["rootMultiplier", "dividend", "flatOverallBonus"] }
                     }
                 },
                 {
@@ -33,7 +47,8 @@
                             "flatMultiplier": { "type": "number" },
                             "flatBonus": { "type": "number" }
                         },
-                        "required": ["rootMultiplier", "flatMultiplier", "flatBonus"]
+                        "required": ["rootMultiplier", "flatMultiplier", "flatBonus"],
+                        "not": {"required": ["quadraticMultiplier", "dividend", "flatOverallBonus"] }
                     }
                 },
                 {
@@ -47,7 +62,8 @@
                             "flatOverallBonus": { "type": "number" },
                             "flatBonus": { "type": "number" }
                         },
-                        "required": ["dividend", "quadraticMultiplier", "flatMultiplier", "flatDivisorBonus", "flatBonus"]
+                        "required": ["dividend", "quadraticMultiplier", "flatMultiplier", "flatDivisorBonus", "flatBonus"],
+                        "not": {"required": ["rootMultiplier"] }
                     }
                 },
                 {
@@ -61,10 +77,21 @@
                             "flatOverallBonus": { "type": "number" },
                             "flatBonus": { "type": "number" }
                         },
-                        "required": ["dividend", "rootMultiplier", "flatMultiplier", "flatDivisorBonus", "flatBonus"]
+                        "required": ["dividend", "rootMultiplier", "flatMultiplier", "flatDivisorBonus", "flatBonus"],
+                        "not": {"required": ["quadraticMultiplier"] }
                     }
                 }
             ]
+        },
+        "statCalculation": {
+            "allOf": [ { "$ref": "#/$defs/calculation" } ],
+            "properties": {
+                "stat": {
+                    "description": "defines which stat to target",
+                    "$ref": "#/$defs/stat"
+                }
+            },
+            "required": ["stat"]
         },
         "numberByDifficulty": {
             "type": "object",
@@ -86,6 +113,42 @@
                 }
             },
             "required": ["Easy", "Normal", "Hard"]
+        },
+        "randomFunction": {
+            "type": "object",
+            "properties": {
+                "rngType": {
+                    "description": "determines the type of rng function to call",
+                    "enum": ["integer", "decimal"]
+                }
+            },
+            "required": ["rngType"],
+            "not": {"required": ["calculationType"]},
+            "if": { "properties": { "rngType": { "const": "integer" } } },
+            "then": {
+                "properties": {
+                    "minimum": { "type": "integer", "default": 1 },
+                    "maximum": { "type": "integer", "default": 100 }
+                },
+                "required": ["minimum", "maximum"]
+            },
+            "else": {
+                "properties": {
+                    "minimum": { "type": "number", "default": 0 },
+                    "maximum": { "type": "integer", "default": 1 }
+                },
+                "required": ["minimum", "maximum"]
+            }
+        },
+        "stat": {
+            "enum": ["Power", "Tech", "Int", "Allure", "Willpower", "Luck", "max_hp", "max_ep", "hp", "ep", "max_sp", "sp"]
+        },
+        "statCalculationArray": {
+            "type": "array",
+            "items": {
+                "anyOf": [{"$ref": "#/$defs/statCalculation"}, {"$ref": "#/$defs/randomFunction"}]
+            },
+            "minItems": 1
         }
     },
     "description": "config object for ptce mod",
@@ -309,10 +372,68 @@
                 }
             }
         },
+        "combat": {
+            "description": "settings which define various aspects of combat",
+            "type": "object",
+            "properties": {
+                "runningCalculations": {
+                    "description": "Defines the calculations used to determine run rolls for players and monsters",
+                    "properties": {
+                        "useVanilla": {"type": "boolean", "default": false}
+                    },
+                    "required": ["useVanilla"],
+                    "if": { "properties": { "useVanilla": { "const": false } } },
+                    "then": {
+                        "properties": {
+                            "playerRunningCalculation": {
+                                "description": "Determines the calculation being done when the player attempts to run. If the result is higher than any of the monster's rolls, the run attempt is successful.",
+                                "$ref": "#/$defs/statCalculationArray"
+                            },
+                            "enemyRunningCalculation": {
+                                "description": "Determines the calculation being done when the player attempts to run. If the result of any monsters calculation is higher than that of the players, the player fails to run.",
+                                "$ref": "#/$defs/statCalculationArray"
+                            }
+                        },
+                        "required": ["playerRunningCalculation", "enemyRunningCalculation"]
+                    }
+                },
+                "runningInitiativeBonus": {
+                    "description": "The bonus to initiative, that the running action has. (Vanilla is +200)",
+                    "type": "integer",
+                    "default": 0
+                },
+                "initiativeCalculations": {
+                    "description": "Determines the calculation used for initiative",
+                    "properties": {
+                        "useVanilla": {
+                            "description": "Set to ture in order to disable changes to initiative calculation",
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    "required": ["useVanilla"],
+                    "if": {"properties": {"useVanilla": {"const": false}}},
+                    "then": {
+                        "properties": {
+                            "fixedCalculations": { 
+                                "type": "array",
+                                "items": {"$ref": "#/$defs/statCalculation"}
+                            },
+                            "randomCalculations": { 
+                                "type": "array",
+                                "items": {"$ref": "#/$defs/randomFunction"}
+                            }
+                        },
+                        "required": ["fixedCalculations", "randomCalculations"]
+                    }
+                }
+            },
+            "required": ["runningInitiativeBonus", "runningCalculations"]
+        },
         "hardcoreMode": {
             "description": "removes the save, q.save and q.load options from quick menu. Also removes the save and load options from the menu. You can only load games from the title menu and only save via an ingame event at the church.",
             "type": "boolean"
         }
     },
-    "required": ["fetishGain", "expGain", "erosGain", "fetishPurge", "combatAI", "hardcoreMode"]
+    "required": ["fetishGain", "expGain", "erosGain", "fetishPurge", "combatAI", "hardcoreMode", "combatCalculations", "combat"]
 }
