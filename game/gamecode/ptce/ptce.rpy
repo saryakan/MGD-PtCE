@@ -213,4 +213,14 @@ init 1 python:
             tooltip += "   {0}   |   {1}   |   {2}   |   {3}   |   {4}   |    {5}\n".format(monster.stats.Power, monster.stats.Tech, monster.stats.Int, monster.stats.Allure, monster.stats.Willpower, monster.stats.Luck)
         
         return tooltip
-
+    
+    def getSumOfPerkPower(perks, perkType):
+        sum = 0
+        for perk in perks:
+            i = 0
+            while i < len(perk.PerkType):
+                if perk.PerkType[i] == perkType:
+                    sum += perk.EffectPower[i]
+                
+                i += 1
+        return sum
