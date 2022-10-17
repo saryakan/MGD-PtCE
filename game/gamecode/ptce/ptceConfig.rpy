@@ -74,7 +74,11 @@ init -1 python:
             },
             "runningInitiativeBonus": 0
         },
-        "hardcoreMode": False
+        "hardcoreMode": False,
+        "adventuring": {
+            "useVanilla": False,
+            "maxEventsToChoose": 2
+        }
     }
 
     ptceConfig = DEFAULT_CONFIG

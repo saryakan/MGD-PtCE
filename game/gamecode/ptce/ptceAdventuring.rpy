@@ -1,15 +1,20 @@
 init python:
+    def isMaxEventsChosen():
+        global guaranteedEvents, ptceConfig
+        return len(guaranteedEvents) >= ptceConfig.get("adventuring").get("maxEventsToChoose")
+
     def toggleQuest(card):
         global QuestSlot
         QuestSlot = Event() if QuestSlot.name == card.name else card        
         renpy.jump("AdventureSetUp")
 
     def toggleEvent(card):
-        global guaranteedEvents
+        global guaranteedEvents, ptceConfig
         if card.name in guaranteedEvents.keys():
             guaranteedEvents.pop(card.name)
         else:
-            guaranteedEvents[card.name] = card
+            if(not isMaxEventsChosen()):
+                guaranteedEvents[card.name] = card
 
         renpy.jump("AdventureSetUp")
     
@@ -73,8 +78,9 @@ init python:
         monsterDeck = []
         explorationDeck = []
 
-        maximumDeckSize = location.MinimumDeckSize + location.MaximumEventDeck + location.MaximumMonsterDeck
+        maximumDeckSize = location.MaximumEventDeck + location.MaximumMonsterDeck
         targetDeckSize = renpy.random.randint(location.MinimumDeckSize, maximumDeckSize)
+        print("Min: {0}, Max: {1}, Target: {2}".format(location.MinimumDeckSize, maximumDeckSize, targetDeckSize))
         eventCards = map(lambda eventName: EventDatabase[getFromName(eventName, EventDatabase)], filter(lambda eventName: eventName not in guaranteedEvents.keys(), location.Events))
         availableEventCards = filter(hasEventAllReqsMet, eventCards)
         monsterCards = map(lambda monsterName: MonsterDatabase[getFromName(monsterName, MonsterDatabase)], location.Monsters)
@@ -92,7 +98,7 @@ init python:
         while len(monsterDeck) < location.MaximumMonsterDeck:
             monsterDeck.append(renpy.random.choice(availableMonsterCards))
 
-        explorationDeck.extend(guaranteedEvents.items())
+        explorationDeck.extend(guaranteedEvents.values())
 
         while len(explorationDeck) < targetDeckSize:
             addMonster = renpy.random.randint(1, 100) > 50
@@ -119,6 +125,7 @@ init python:
 
 screen PtceAdventureSetupMenu:
     $ location = LocationDatabase[targetLocation]
+    $ maxEventsChosen = isMaxEventsChosen()
     hbox:
         vbox:
             xsize 270
@@ -195,9 +202,11 @@ screen PtceAdventureSetupMenu:
 
                                     xalign 0.5
                                     yalign 0.5
-                                    action Function(toggleEvent, eventCard)
-
-                            text eventCard.name xpos -10 yalign 0.5 size 26
+                                    action [SensitiveIf(isSelected or not maxEventsChosen), Function(toggleEvent, eventCard)]
+                            if maxEventsChosen:
+                                text eventCard.name xpos -10 yalign 0.5 size 26 color "#b4b4b4"
+                            else:
+                                text eventCard.name xpos -10 yalign 0.5 size 26
         
         if hoveredCard is not None:
             fixed:

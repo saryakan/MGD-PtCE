@@ -433,7 +433,30 @@
         "hardcoreMode": {
             "description": "removes the save, q.save and q.load options from quick menu. Also removes the save and load options from the menu. You can only load games from the title menu and only save via an ingame event at the church.",
             "type": "boolean"
+        },
+        "adventuring": {
+            "description": "defines behaviour of adventuring",
+            "type": "object",
+            "properties": {
+                "useVanilla": {
+                    "description": "disables always randomizing explorations and allows you to create your own adventure deck",
+                    "type": "boolean",
+                    "default": false
+                },
+                "required": ["useVanilla"]
+            },
+            "if": {"properties": {"useVanilla": {"const": false}}},
+            "then": {
+                "properties": {
+                    "maxEventsToChoose": {
+                        "description": "set the limit of how many events can be chosen to be guaranteed during exploration",
+                        "type": "integer",
+                        "default": 2
+                    }
+                },
+                "required": ["maxEventsToChoose"]
+            }
         }
     },
-    "required": ["fetishGain", "expGain", "erosGain", "fetishPurge", "combatAI", "hardcoreMode", "combatCalculations", "combat"]
+    "required": ["fetishGain", "expGain", "erosGain", "fetishPurge", "combatAI", "hardcoreMode", "combatCalculations", "combat", "adventuring"]
 }

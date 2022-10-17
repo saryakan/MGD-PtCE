@@ -162,8 +162,10 @@ label AdventureSetUp:
         renpy.hide_screen("ON_MapMenu", 'master')
     #hide screen ON_MapMenu
 
-    #show screen ON_AdventureSetupMenu
-    show screen PtceAdventureSetupMenu
+    if ptceConfig.get("adventuring").get("useVanilla"):
+        show screen ON_AdventureSetupMenu
+    else:
+        show screen PtceAdventureSetupMenu
 
     $ bg = changeBG(LocationDatabase[targetLocation].picture)
     if bg != "":
