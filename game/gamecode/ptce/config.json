@@ -44,7 +44,7 @@
     },
     "combatAI": {
         "enemiesLearnWeaknesses": true,
-        "enemiesLearnStrengths": true
+        "enemiesLearnStrengths": false
     },
     "hardcoreMode": false,
     "combat": {

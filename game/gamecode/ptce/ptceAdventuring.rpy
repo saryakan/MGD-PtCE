@@ -80,7 +80,6 @@ init python:
 
         maximumDeckSize = location.MaximumEventDeck + location.MaximumMonsterDeck
         targetDeckSize = renpy.random.randint(location.MinimumDeckSize, maximumDeckSize)
-        print("Min: {0}, Max: {1}, Target: {2}".format(location.MinimumDeckSize, maximumDeckSize, targetDeckSize))
         eventCards = map(lambda eventName: EventDatabase[getFromName(eventName, EventDatabase)], filter(lambda eventName: eventName not in guaranteedEvents.keys(), location.Events))
         availableEventCards = filter(hasEventAllReqsMet, eventCards)
         monsterCards = map(lambda monsterName: MonsterDatabase[getFromName(monsterName, MonsterDatabase)], location.Monsters)
