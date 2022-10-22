@@ -1,0 +1,19 @@
+{
+    "name": "Run Away",
+    "Addition": "Yes",
+
+    "skillTags": [ ""],
+    "fetishTags": [ ""],
+
+    "requiresStance": "None",
+    "startsStance": [ ""],
+    "unusableIfStance": [ "Any"],
+    "requiresTargetStance": [ ""],
+    "unusableIfTarget": [ ""],
+    "removesStance": ["None"],
+
+    "restraintStruggle": [ ""],
+    "restraintStruggleCharmed": [ ""],
+    "restraintEscaped": [ ""],
+    "restraintEscapedFail": [ ""]
+}

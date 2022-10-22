@@ -1348,8 +1348,8 @@ init python:
             self.Type = Type
             self.CreationOn = CreationOn
             self.CreationOff = CreationOff
-            self.LevelMin = 0
-            self.LevelPerm = 0
+            self.LevelMin = 0   # don't change name, because the existance of these fields is used to convert vanilla fetishes into ptce fetishes
+            self.LevelPerm = 0  # don't change name, because the existance of these fields is used to convert vanilla fetishes into ptce fetishes
         
         def increaseMin(self, increase, enqueue=True):
             self.LevelMin = max(0, min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin + increase))
@@ -1372,7 +1372,6 @@ init python:
         
         def resetTemp(self):
             self.Level = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelPerm)
-        
 
         def resetPerm(self):
             self.LevelPerm = min(ptceConfig.get("fetishGain").get("fetishMaxLevel"), self.LevelMin)

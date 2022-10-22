@@ -2,6 +2,8 @@ init -1 python:
     import json
 
     PTCE_CONFIG_PATH = renpy.loader.transfn("gamecode/ptce/config.json")
+    global ptceDebug
+    ptceDebug = False
 
     global ptceConfig
 
@@ -50,7 +52,33 @@ init -1 python:
             "enemiesLearnWeaknesses": True,
             "enemiesLearnStrengths": True
         },
-        "hardcoreMode": False
+        "combat": {
+            "runningCalculations": {
+                "useVanilla": False,
+                "playerRunningCalculation": [
+                    {"calculationType": "linear", "flatMultiplier": 1, "flatBonus": 0, "stat": "Tech"},
+                    {"calculationType": "linear", "flatMultiplier": 0.5, "flatBonus": 0, "stat": "Luck"},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25}
+                ],
+                "enemyRunningCalculation": [
+                    {"calculationType": "linear", "flatMultiplier": 1, "flatBonus": 0, "stat": "Tech"},
+                    {"calculationType": "linear", "flatMultiplier": 0.5, "flatBonus": 0, "stat": "Luck"},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25},
+                    {"rngType": "integer", "minimum": 0, "maximum": 25}
+                ]
+            },
+            "runningInitiativeBonus": 0
+        },
+        "hardcoreMode": False,
+        "adventuring": {
+            "useVanilla": False,
+            "maxEventsToChoose": 2
+        }
     }
 
     ptceConfig = DEFAULT_CONFIG

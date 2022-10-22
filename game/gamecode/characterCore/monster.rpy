@@ -128,6 +128,7 @@ label monsterClass:
                 self.skippingAttack = skippingAttack
                 self.learnedFetishStrength = {}
                 self.learnedSensitivities = {}
+                self.hasBeenAnalyzed = False
 
             def giveStance(self, name, target, skill=Skill(),  holdoverDura=0):
                 if name != "":

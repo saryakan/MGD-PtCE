@@ -54,6 +54,7 @@ label Adventure:
     $ questTaken = 0
     $ mapInteractable = True # Make sure the map works when it's added to the screen
 
+    $ guaranteedEvents = {}
 
     show screen ON_MapMenu (_layer="master")
     hide screen ON_AdventureSetupMenu
@@ -160,7 +161,11 @@ label AdventureSetUp:
     python:
         renpy.hide_screen("ON_MapMenu", 'master')
     #hide screen ON_MapMenu
-    show screen ON_AdventureSetupMenu
+
+    if ptceConfig.get("adventuring").get("useVanilla"):
+        show screen ON_AdventureSetupMenu
+    else:
+        show screen PtceAdventureSetupMenu
 
     $ bg = changeBG(LocationDatabase[targetLocation].picture)
     if bg != "":

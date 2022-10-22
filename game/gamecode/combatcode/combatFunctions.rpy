@@ -630,7 +630,8 @@ label combatActionTurn:
                 $ x+=1
 
     if(skillChoice.name == "Run Away") and skipAttack == 0 and attacker.species == "Player":
-        call combatRunAttempt from _call_combatRunAttempt
+        if canUse:
+            call combatRunAttempt from _call_combatRunAttempt
 
     if canUse == False:
         if epOut == 1:
@@ -922,6 +923,7 @@ label combatActionTurn:
                             $ stanceGo = "True"
                             $ display = skillChoice.outcome
                             call read from _call_read_42
+                            $ defender.hasBeenAnalyzed = True
                             $ display = "Name: " + defender.name + "        Species: " + defender.species + "       Level: " + str(defender.stats.lvl) + "\n\n"
                             $ display += "Arousal: " + str(defender.stats.hp) + "/" + str(defender.stats.max_true_hp) + "      Energy: " + str(defender.stats.ep) + "/" + str(defender.stats.max_true_ep) + "      Spirit: " + str(defender.stats.sp) + "/" + str(defender.stats.max_true_sp) + "\n\n"
                             $ display += "Power: " + str(defender.stats.Power) + "     "
