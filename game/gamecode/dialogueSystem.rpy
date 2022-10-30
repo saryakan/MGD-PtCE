@@ -1,4 +1,26 @@
 init python:
+    ##########################################################################################################
+    global additionalDialogueFunctions
+    additionalDialogueFunctions = {}
+
+    class DialogueFunction:
+        def __init__(self, prefix, name, functionRef):
+            self.prefix = prefix
+            self.name = name
+            self.functionRef = functionRef
+    
+        def execute(self):
+            self.functionRef()
+    
+
+    def registerDialogueFunction(prefix, name, functionRef):
+        existingFunction = additionalDialogueFunctions.get(name);
+        if existingFunction is not None:
+            raise Exception("Naming conflict while registering DialogueFunctions. Both the modules '{0}' and ’{1}’ define a DialogueFunction named '{2}'".format(existingFunction.prefix, prefix, name))
+
+        additionalDialogueFunctions[name] = DialogueFunction(prefix, name, functionRef)
+    ##########################################################################################################
+
     def getSpeaker(speakerNumber, EventDatabase, MonsterDatabase):
         while len(actorNames) <= speakerNumber:
             actorNames.append("")
@@ -408,13 +430,17 @@ label resumeSceneAfterCombat:
         else:
             hide screen ON_CharacterDialogueScreen
 
+        $ dialogueFunction = additionalDialogueFunctions.get(displayingScene.theScene[lineOfScene])
+        if dialogueFunction != None:
+            $ dialogueFunction.execute()
 
-        if displayingScene.theScene[lineOfScene] == "PlayerSpeaks":
+        elif displayingScene.theScene[lineOfScene] == "PlayerSpeaks":
             $ Speaker = Character(_(player.name+attackTitle),
                                     what_prefix='"',
                                     what_suffix='"')
             $ lineOfScene += 1
             $ readLine = 1
+            $ print("This did NOT work as I thought!")
         elif displayingScene.theScene[lineOfScene] == "PlayerSpeaksSkill":
             if len(monsterEncounter) >= 1:
                 $ Speaker = Character(_(player.name+attackTitle) )
@@ -1587,56 +1613,6 @@ label resumeSceneAfterCombat:
                 $ player.stats.sp = 0
             if player.stats.sp > player.stats.max_true_sp:
                 $ player.stats.sp = player.stats.max_true_sp
-        
-        #################### PTCE additions ####################
-
-        elif displayingScene.theScene[lineOfScene] == "DEBUG_ME_DADDY":
-            # This is supposed to be used for whatever I need to debug rn
-            show screen fetishGainDisplay("test", levelsGained=5)
-
-        elif displayingScene.theScene[lineOfScene] == "GiveErosFromInput":
-            python:
-                debugInput = renpy.input(_("How many Eros do you want?"), length=20) or _("0")
-                player.inventory.money += int(debugInput)
-
-        elif displayingScene.theScene[lineOfScene] == "GiveExpFromInput":
-            python:
-                debugInput = renpy.input("How many Eros do you want?", length=20) or ("0")
-                player.stats.Exp += int(debugInput)
-                
-                if int(debugInput) > 0:
-                    display = "Gained " + debugInput + " exp!"
-                else:
-                    amountLost = moneyEarned*-1
-                    display = "Lost " + debugInput + " exp!"
-
-                "[display]"
-
-            $ expGiven = 1
-            call refreshLevelVar from _call_refreshLevelVar_2
-            call levelUpSpot from _call_levelUpSpot_1
-            $ expGiven = 0
-        
-        elif displayingScene.theScene[lineOfScene] == "GivePerkFromInput":
-            $ debugInput = renpy.input("Which Perk do you want?", length=30) or ("None")
-            if debugInput != "None":
-                $ check = 1
-                python:
-                    for each in player.perks:
-                        if each.name == displayingScene.theScene[lineOfScene]:
-                            check = 0
-                if check == 1 and getFromName(debugInput, PerkDatabase) != -1:
-                    $ player.giveOrTakePerk(debugInput, 1)
-                    $ display = "Got the " + debugInput + " perk!"
-                    "[display]"
-
-        elif displayingScene.theScene[lineOfScene] == "SaveMenu":
-            python:
-                _game_menu_screen = "save"
-                renpy.call_in_new_context('_game_menu')
-                _game_menu_screen = "ON_CharacterDisplayScreen" if ptceConfig.get("hardcoreMode") else "save"
-        
-        #################### PTCE additions ####################
 
         elif displayingScene.theScene[lineOfScene] == "EmptySpiritCounter":
             $ spiritLost0 = 0
