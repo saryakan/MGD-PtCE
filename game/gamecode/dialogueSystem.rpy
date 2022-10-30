@@ -440,6 +440,7 @@ label resumeSceneAfterCombat:
                                     what_suffix='"')
             $ lineOfScene += 1
             $ readLine = 1
+            $ print("This did NOT work as I thought!")
         elif displayingScene.theScene[lineOfScene] == "PlayerSpeaksSkill":
             if len(monsterEncounter) >= 1:
                 $ Speaker = Character(_(player.name+attackTitle) )
