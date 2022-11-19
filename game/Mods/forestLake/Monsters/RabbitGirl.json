@@ -1,0 +1,158 @@
+{
+    "name": "",
+    "IDname": "",
+    "species": "",
+    "gender": "female",
+    "description": "",
+    "encyclopedia": "",
+    "tags": "none",
+    "generic": "True",
+    "requires": [ ""],
+    "requiresEvent": [
+        {
+            "NameOfEvent": "",
+            "Progress": "99",
+            "Choice": "",
+            "ChoiceNumber": "-1"
+        }
+    ],
+    "skillList": [
+        "Thighjob", "Leg Grind", "Rabbit's Invitation", "Hypnotizing Thighjob", "Lunatic Eyes"
+    ],
+    "perks": [],
+    "stats": {
+        "lvl": "3",
+        "Exp": "20",
+        "max_hp": "150",
+        "max_ep": "10",
+        "max_sp": "1",
+        "Power": "3",
+        "Technique": "10",
+        "Intelligence": "2",
+        "Allure": "4",
+        "Willpower": "3",
+        "Luck": "20"
+    },
+    "Fetishes": [ ""],
+    "BodySensitivity": {
+        "Sex": "200",
+        "Ass": "125",
+        "Breasts": "100",
+        "Mouth": "100",
+        "Seduction": "75",
+        "Magic": "100",
+        "Pain": "100",
+        "Holy": "100",
+        "Unholy": "100"
+    },
+    "resistancesStatusEffects": {
+        "Stun": "0",
+        "Charm": "0",
+        "Aphrodisiac": "0",
+        "Restraints": "0",
+        "Sleep": "0",
+        "Trance": "0",
+        "Paralysis": "0",
+        "Debuff": "0"
+    },
+    "moneyDropped": "0",
+    "ItemDropList": [
+        {
+            "name": "Carrot",
+            "dropChance": "60"
+        }
+    ],
+    "lossScenes": [
+        {
+            "NameOfScene": "",
+            "move": "",
+            "stance": "",
+            "includes": [ ""],
+            "theScene": [
+            ""
+            ],
+            "picture": ""
+        }
+    ],
+    "combatDialogue": [
+        {
+            "lineTrigger": "HitWith",
+            "move": "",
+            "theText": [
+            ""
+            ]
+        },
+        {
+            "lineTrigger": "UsesMove",
+            "move": "",
+            "theText": [
+            "''"
+            ]
+        },
+        {
+            "lineTrigger": "LowHealth",
+            "move": "",
+            "theText": [
+            "''"
+            ]
+        },
+        {
+            "lineTrigger": "PlayerLowHealth",
+            "move": "",
+            "theText": [
+            "''"
+            ]
+        },
+        {
+            "lineTrigger": "OnPlayerOrgasm",
+            "move": "",
+            "theText": [
+            ""
+            ]
+        },
+        {
+            "lineTrigger": "onOrgasm",
+            "move": "",
+            "theText": [
+            ""
+            ]
+        },
+        {
+            "lineTrigger": "OnSurrender",
+            "move": "",
+            "theText": [ ""]
+        }
+    ],
+    "victoryScenes": [
+        {
+            "NameOfScene": "",
+            "move": "",
+            "stance": "",
+            "includes": [ ""],
+            "theScene": [
+            ""
+            ],
+            "picture": ""
+        }
+    ],
+    "pictures": [
+        {
+            "Name": "None",
+            "StartOn": "1",
+            "AlwaysOn": "1",
+            "IsScene": "0",
+            "TheBody": "1",
+            "Overlay": "No",
+            "setXalign": "0.0",
+            "setYalign": "0.0",
+            "Images": [
+                {
+                    "Name": "None",
+                    "File": "",
+                    "setXalign": "0.0",
+                    "setYalign": "0.0"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,478 @@
+{
+    "name": "RabbitGirlCombatEvent",
+    "CardType": "",
+    "CardLimit": "0",
+    "Description": "",
+    "requires": [ ""],
+    "Speakers": [
+                  {
+                    "name": "Rabbit Girl",
+                    "postName": "",
+                    "SpeakerType": "Monster"
+                  }
+                ],
+    "EventText": [
+        
+        //#############################################################################################################################################
+        {
+            "NameOfScene": "Rabbit's Invitation",
+            "theScene": [
+                "SetPostName", " - Rabbit's Invitation",
+                "FocusedSpeaksSkill",
+                "The eyes of the Rabbit Girl begin to glow faintly as she slowly lift's her skirt, revealing her beautiful legs.",
+                "IfPlayerHasStatusEffectWithPotencyEqualOrGreater", "Trance", "11", "InvitationHypnotized",
+                "IfFetishLevelEqualOrGreater", "Legs", "75", "invitation75",
+                "IfFetishLevelEqualOrGreater", "Legs", "50", "invitation50",
+                "IfFetishLevelEqualOrGreater", "Legs", "25", "invitation25",
+                "JumpToScene", "invitationPart2"
+            ]
+        },
+        {
+            "NameOfScene": "InvitationHypnotized",
+            "theScene": [
+                "FocusedSpeaks",
+                "SwapLineIf", "Random",
+                    "Come here and put that huge dick right in between my thighs!",
+                    "Your dick. inbetween here. NOW!",
+                "EndLoop",
+                "PlayerSpeaks",
+                    "Y-yes...",
+
+                "ApplyStance", "Thighjob",
+                "HitPlayerWith", "Leg Grind",
+                "Obediently you walk forward and put your manhood right between her legs. With a squeeze of her thighs she sends pleasure through your body.",
+            ]
+        },
+        {
+            "NameOfScene": "invitation25",
+            "theScene": [
+                "HitPlayerWith", "Seduce",
+                "You notice her supple upper thighs glistening with sweat.{DamageToPlayer}",
+                "JumpToScene", "invitationPart2"
+            ]
+        },
+        {
+            "NameOfScene": "invitation50",
+            "theScene": [
+                "HitPlayerWith", "EarTease",
+                "You can't help but notice the smooth curve of her supple upper thighs glistening slightly with sweat.{DamageToPlayer}",
+                "JumpToScene", "invitationPart2"
+            ]
+        },
+        {
+            "NameOfScene": "invitation75",
+            "theScene": [
+                "HitPlayerWith", "Enamor",
+                "You can't stop staring at the Rabbit Girls upper thighs. They look so soft and you can't help but imagine how it would feel like if your manhood would get squished between them.{DamageToPlayer}",
+                "JumpToScene", "invitationPart2"
+            ]
+        },
+        {
+            "NameOfScene": "invitationPart2",
+            "theScene": [
+                "A smug grin flashes on the Rabbit Girl's face and the glow in her eyes begins to pulse slightly. She slowly starts approaching you with her skirt lifted, keeping her thighs in full view.",
+                "FocusedSpeaks",
+                "SwapLineIf", "Random",
+                    "My thighs are really {i}soft{/i} and {i}squishy{/i}~ {Pink}♥{ColorEnd}. If you hold still, I'll put your Penis between them and it will feel {i}a~ ma~ zing{/i}. {Pink}♥{ColorEnd} ",
+                    "Eeeeveryone always loves when I do this... You'll come in {i}seconds{/i} between my legs.",
+                    "Go on... You know you want to put your thing between them. {Pink}♥{ColorEnd} No one can resist my legs...",
+                    "Just put your meat rod between my thighs and forget about everything. It will feel so good your brain will melt away... ♥",
+                "EndLoop",
+                "IfFetishLevelEqualOrGreater", "Legs", "50", "menuLegOver50",
+                "IfFetishLevelEqualOrGreater", "HypnosisAddict", "50", "menuHypnoOver50",
+                "Menu",
+                    "Refuse",
+                    "Put it between her legs",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "menuLegOver50",
+            "theScene": [
+                "Menu",
+                    "RequiresFetishLevelEqualOrLess", "HypnosisAddict", "49", "Refuse",
+                    "Put it between her legs",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "menuHypnoOver50",
+            "theScene": [
+                "Menu",
+                    "RequiresFetishLevelEqualOrLess", "Legs", "49", "Refuse",
+                    "Put it between her legs",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "Put it between her legs",
+            "theScene": [
+                "ApplyStance", "Thighjob",
+                "HitPlayerWith", "Leg Grind",
+                "You decide to put your throbbing erection inbetween the Rabbit Girl's thighs. A smug grin flashes on her face as she hugs you tightly and closes her legs, providing blissful stimulus to your manhood.{DamageToPlayer}"
+            ]
+        },
+        {
+            "NameOfScene": "Refuse",
+            "theScene": [
+                "You try to ignore the petite girls invitation...",
+                "StatCheck",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "10", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "20", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "30", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "40", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "50", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "60", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "70", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "80", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "90", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "Legs", "100", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "10", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "20", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "30", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "40", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "50", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "60", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "70", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "80", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "90", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "100", "1",
+                    "ChangeStatCheckDifficulty", "IfPlayerHasStatusEffect", "Charm", "6",
+                    "Temptation", "5", "Ignored",
+                    "Fail", "noResist"
+            ]
+        },
+        {
+            "NameOfScene": "noResist",
+            "theScene": [
+                "You suddenly lunge forward to push the Rabbit Girl away from you, but to your surprise your body betrays you.",
+                "Intead of pushing her away you directly thrust your aching cock inbetween her smooth thighs.",
+                "ApplyStance", "Thighjob",
+                "A smug grin crawls over the Rabbit Girls face and you can tell that she feels completely assured of the victory.",
+                "HitPlayerWith", "Hypnotizing Thighjob",
+                "She starts to slowly rock her hips back and forth, grinding her inner thighs all over your drooling cock, while gazing up at your eyes. Her pink glowing eyes fill your mind and start to push away any other thoughts aside from her thighs. {DamageToPlayer}"
+                
+                ]
+        },
+        //#############################################################################################################################################
+        {
+            "NameOfScene": "LunaticEyes",
+            "theScene": [
+                "IfPlayerHasStance", "Thighjob", "LunaticEyesThighs",
+                "IfPlayerHasStance", "Sex", "LunaticEyesSex",
+                "IfPlayerHasStance", "Anal", "LunaticEyesAnal",
+                "IfPlayerHasStance", "MakingOut", "LunaticEyesKissing",
+                "IfPlayerHasStance", "Footjob", "LunaticEyesFeet",
+                "JumpToScene", "LunaticEyesNoStance"
+            ]
+        },
+        { 
+            "NameOfScene": "LunaticEyesThighs",
+            "theScene": [
+                "IfPlayerHasStatusEffectWithPotencyEqualOrGreater", "Trance", "11", "LunaticEyesNoStanceFullyHypnotized",
+                "FocusedSpeaks",
+                    "Doesn't it feel absolutely a m a z i n g? Don't you just want to give in? Just... lower your guard a bit and I'll make it feel even better...",
+                
+                "StatCheck",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "10", "1",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "20", "2",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "30", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "40", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "50", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "60", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "70", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "80", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "90", "3",
+                    "ChangeStatCheckDifficulty", "IfHasFetishEqualOrGreater", "HypnosisAddict", "100", "3",
+                    "Temptation", "7", "LunaticEyesTemptSuccess",
+                    "Fail", "LunaticEyesTemptSuccess"
+                
+            ]
+        },
+        {
+            "NameOfScene": "LunaticEyesTemptFail",
+            "theScene": [
+                "You can't help but gaze into the Rabbit Girl's beautiful swirling red eyes and you feel your mind drifting away.",
+                "ApplyStatusEffect", "Charmed",
+                "Status"
+
+            ]
+        },
+        //#############################################################################################################################################
+        {
+            "NameOfScene": "Rabbit Leap",
+            "theScene": [
+                "FocusedSpeaks",
+                    "I'll make you fall down and then use my foot to play with you! EI~",
+                
+                "The rabbit girl leaps into the air and tries to use her momentum to crash down unto you.",
+                "Menu",
+                    "Brace yourself (Power)",
+                    "Try to dodge (Technique)",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "Try to dodge (Technique)",
+            "theScene": [
+                "StatCheck",
+                    "Technique", "12", "RabbitLeapTechSuccess",
+                    "Fail", "RabbitLeapTechFail"
+            ]
+        },
+        {
+            "NameOfScene": "RabbitLeapTechSuccess",
+            "theScene": [
+                "You swiftly dodge the attack"
+            ]
+        },
+        {
+            "NameOfScene": "Brace yourself (Power)",
+            "theScene": [
+                "You dig your heels into the ground and brace yourself for impact.",
+                "StatCheck",
+                    "Power", "5", "RabbitLeapPowerSuccess",
+                    "Fail", "RabbitLeapFail"
+            ]
+        },
+        {
+            "NameOfScene": "RabbitLeapPowerSuccess",
+            "theScene": [
+                "The Rabbit Girl crashes into you feet first, but you catch her and hold your position",
+                "CallSceneThenReturn", "RabbitLeapFeetFetishLines",
+                "The Rabbit Girl struggles and escapes your hold swiftly, readying her next action.",
+                "IfFetishLevelEqualOrGreater", "Feet", "25", "RabbitLeapPowerSuccessFeetCheck"
+            ]
+        },
+        {
+            "NameOfScene": "RabbitLeapFeetFetishLines",
+            "theScene": [
+                "SwapLineIf", "HasFetishLevelEqualOrGreater", "Feet",
+                    "10", "Having catched her by the feet, you can't help but notice how soft they feel...",
+                    "25", "Touching her feet, thoughts about how good it would feel if she stepped on you race through your mind...",
+                    "50", "You can feel the soft skin of her feet and there is some part of you, that is feeling dissapointed you didn't fall to the ground...",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "RabbitLeapPowerSuccessFeetCheck",
+            "theScene": [
+                "The thought of pretending to loose your balance and let her still have her way with you flashes trough your mind...",
+                "Menu",
+                    "Eagerly throw yourself down",
+                    "Pretend to loose your balance",
+                    "HideOptionOnRequirementFail", "RequiresFetishLevelEqualOrLess", "Feet", "74", "Shake off that thought",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "Eagerly throw yourself down",
+            "theScene": [
+                "Consumed with thoughts about feet, you let go of the Rabbit Girl, sit down and lean back.",
+                "FocusedSpeaks",
+                    "Oh? Not even pretending, are we? You really are a disgusting {i}pervert{/i}, aren't you...",
+                
+                "HitPlayerWith", "ToeCurl",
+                "With an evil grin the Rabbit Girl approaches you, while her eyes begin to glow faintly. In the moment she presses down her foot on your manhood it's as if an explosion of pleasure goes off inside your body.",
+                "ApplyStance", "Footjob",
+                "FocusedSpeaks",
+                    "But at least you are honest with your desires. I think that deserves a reward... {Pink}♥{ColorEnd}",
+                
+                "HitPlayerWith", "ToeCurl",
+                "Holding your penis between her toes she begins to rythmically stroke up and down your length. Each stroke is as if an electric shock flashes through your body."
+            ]
+        },
+        {
+            "NameOfScene": "Pretend to loose your balance",
+            "theScene": [
+                "You let go if the Rabbit Girl and pretend to tumble backwards on your behind.",
+                "StatCheck",
+                    "Allure", "10", "LooseBalanceSuccess",
+                    "Fail", "LooseBalanceFail",
+                "FocusedSpeaks",
+                    "SwapLineIf", "Stat",
+                        "Allure", "15", "Yaaay~ now I am going to use my feet to play with your penis.",
+                        "Allure", "1", "Oh? ou really",
+                    "EndLoop",
+                    "Oh? Not even pretending, are we? You really are a disgusting {i}pervert{/i}, aren't you...",
+                
+                "HitPlayerWith", "ToeCurl",
+                "With an evil grin the Rabbit Girl approaches you, while her eyes begin to glow faintly. In the moment she presses down her foot on your manhood it's as if an explosion of pleasure goes off inside your body.",
+                "ApplyStance", "Footjob",
+                "ChangeFetish", "Feet", "5",
+                "FocusedSpeaks",
+                    "I'll make it so you won't be able to think of anything but worshipping my feet~ {Pink}♥{ColorEnd}"
+            ]
+        },
+        {
+            "NameOfScene": "LooseBalanceSuccess",
+            "theScene": [
+                "FocusedSpeaks",
+                    "Yaay~ attack successful!",
+                    "With a sly grin, the eyes of the Rabbit girl begin to glow slightly as she stamps her delicate foot down on your erect penis.",
+                    "FocusedSpeaks",
+                        "SwapLineIf", "Random",
+                            "My foot will be more than enough to defeat a weakling like you... {Pink}♥{ColorEnd}",
+                            "Come on, you'll soon spray you thick cum all over my skillful foot.",
+                        "EndLoop",
+                    "ApplyStance", "Footjob"
+            ]
+        },
+        {
+            "NameOfScene": "LooseBalanceFail",
+            "theScene": [
+                "A hint of surprise washes over the girls face, but quickly returns to her usual smug, mocking smile.",
+                "She begins to strut {i}very{/i} slowly, almost delicately towards you, giving you ample time to realize the shame of the act you just committed.",
+                "She walks right beside you, squats down and brings her face directly in front of yours. Her mocking smile and narrow eyes tell you that she didn't bought the act.",
+                "FocusedSpeaks",
+                    "Oh? Did I {i}actually{i} make you fall and loose your balance? Hmmmmm?",
+                "FocusedSpeaks",
+                    "It couldn't {i}possibly{/i} be that you {b}wanted{/b} for me to step on you and you just pretended to fall...",
+                "FocusedSpeaks",
+                    "No, surely not. That would make you a giant {b}P E R V E R T{/b} now, wouldn't it? {Pink}♥{ColorEnd}",
+                "FocusedSpeaks",
+                    "And a dishonest pervert to boot.",
+                "She leans in closer to your ears and begins to whisper",
+                    "Perverts like that need to be educated and made honest with their own desires... perverts like that...  need   to   be   {b}PUNISHED!{/b}",
+                
+                "With the last word she raises one foot into the air and stomps down unto your crotch, sending a shockwave of pain through your body.",
+                "ChangeArousalByPercent", "-200",
+                "SetArousalToXUnlessHigherThanX", "0",
+                "PlayerSpeaks",
+                    "Ahhh. Ugh.",
+                "Slight pain fades into blissfull pleasure, as the Rabbit Girl begins curling her toes and stroking your shaft with her foot",
+                "Shifting her position, she now stands over you and her eyes begin to glow faintly",
+                "FocusedSpeaks",
+                    "I am going to make it sou you will NOT be able to deny your love for feet anymore... {Pink}♥{ColorEnd}",
+                
+                "Her tiny feet rub all over your cock, whcih is now lubricated by precum.",
+                "ChangeArousalByPercent", "10",
+                "She briefly stops, sits down on the ground in front of you and proceeds to take your penis between both of her feet.",
+                "ChangeArousalByPercent", "10",
+                "Hey glowing eyes begin to pulsate in the same rythm that she is using both of her feet to stroke up and down the whole lenght of your shaft. Up... and down... Up...",
+                "ChangeArousalByPercent", "20",
+                "FocusedSpeaks",
+                    "Go on, and admit that you wanted this. {Pink}♥{ColorEnd}",
+                "Between her hypnotic eyes and the rythmic stroke, you find it hard to answer.",
+                "PlayerSpeaks",
+                    "I... uuu... no I- OOOhhh- that is nottttt~ AAAAH -not-tt true... ",
+                
+                "FocusedSpeaks",
+                    "Oh, is that so? Still in denial I see...",
+                "Suddenly her steady rythm begins to increase and she isn't giving you little breathing rooom between the strokes",
+                "ChangeArousalByPercent", "25",
+                "She presses her feet harder together making you squirm with every single stroke of her perfect feet",
+                "ChangeArousalByPercent", "30",
+                "You can feel the orgasm rising in your body, your dick being ready to explode a huge load all over the Rabbit Girls delicate feet.",
+                "But then she suddenly stops her movement and leaves you hanging right before the edge",
+                "FocusedSpeaks",
+                    "I ask you {i}once{/i} more. Are you a huge feet loving pervert who can't think of anything else, than worshipping my feet?",
+                "Menu",
+                    "yes...",
+                    "...",
+                "EndLoop"
+            ]
+        },
+        {
+            "NameOfScene": "...",
+            "theScene": [
+                "PlayerSpeaks",
+                    "...",
+                
+                "FocusedSpeaks",
+                    "Fine then, be stubborn. And face the consequences...",
+                "With these words, the eyes of the Rabbit Girl erupt in a sudden red light for a brief moment and you can't help but feel a sense of doom come over you.",
+                "DenyPlayerOrgasm",
+                "You are confused when the girl starts to resume her stroking with a cold expression and you can feel the powerful orgasm you were so close to a few seconds ago well up inside you again.",
+                "PlayerSpeaks",
+                    "Ahhhh c-commiiinng-- Ugh...",
+                "ChangeArousalByPercent", "35",
+                "But as soon as you think you are coming, the feeling stops building.",
+                "ChangeArousalByPercent", "40",
+                "A hair's thickness is separating you from the release that you are craving like nothing else in the world right now. It's as if an invisible barrier is preventing you from getting over the edge.",
+                "ChangeArousalByPercent", "50",
+                "PlayerSpeaks",
+                    "What-- Ohhh god- Ugh.. AAAAAAAHHHHHHH!!! MMMMMM.....",
+                "You stammer as your eyes roll back and you hear the evil mocking laughter of the Rabbit Girl, as she increases the speed of her stroking even further to almost super human levels.",
+                "ChangeArousalByPercent", "100",
+                "FocusedSpeaks",
+                    "I told you you must face the consequences of your actions... {Pink}♥{ColorEnd} If you would have been honest, I'd have left most of your mind intact.",
+                "FocusedSpeaks",
+                    "Now I am going to break you and turn you into a foot slave {b}forever{/b}",
+                
+                "ChangeArousalByPercent", "100",
+                "PlayerSpeaks",
+                "NOoooO..- pleaass... UuuuH- feeet... AAaaaaAH YES! I LOVE!",
+                "ChangeArousalByPercent", "100",
+                
+                "FocusedSpeaks",
+                    "That is not enough anymore. Now you have to say it {i}a thousand{/i} times...",
+                "ChangeArousalByPercent", "100",
+                "PlayerSpeaks",
+                    "AAAAAH! FEET! I LOVE FEET! I LOVEFEET!! ILOVELOVELOVE FEET!!! PLEASSSEE FEET!",
+                "FocusedSpeaks",
+                    "Good... That's 1. That's 2... 3... 4...",
+                "ChangeArousalByPercent", "100",
+                "...",
+                "...",
+                "...",
+                "PlayerSpeaks",
+                    "...ILOVEFEET!ILOVEFEET!ILOVEFEET!ILOVEFEET!",
+                "FocusedSpeaks",
+                    "997... 998... 999... 1000!",
+                "FocusedSpeaks",
+                    "YAAAAY~ You did it! Now you will never forget this feeling, I am sure of it! {Pink}♥{ColorEnd}",
+                "FocusedSpeaks",
+                    "Ready for a life changing orgasm? {Pink}♥{ColorEnd}",
+                "PlayerSpeaks",
+                    "AAAAAAAAAAAAAAHHHHHHHHH FEEEEEEEEET, YES FEEEEEEEEEET!!!!",
+                "FocusedSpeaks",
+                    "CUM FOR MY FEET! NOW!",
+                    "PlayerOrgasm", "5",
+                "What is left of your mind shatters when the Rabbit Girl's eyes flash once more and the wall keeping you from what you have been craving for is shattered.",
+                "A pleasure so intense that it feels like it will stay with you for eternity and permanently rewire your brain washes over you, as you keep punping load after load after load onto the Rabbit Girl's feet.",
+                "ChangeFetish", "Feet", "5",
+                "PermanentlyChangeFetish", "Feet", "20",
+                "ChangeFetish", "HypnosisAddict", "25"
+
+            ]
+        },
+        {
+            "NameOfScene": "yes...",
+            "theScene": [
+                "PlayerSpeaks",
+                    "Y-yes...",
+                
+                "FocusedSpeaks",
+                    "...then say it. Say \"I am a huge feet loving pervert, who get's off of small girls feet and who's only joy in life is being stepped on!\"",
+                
+                "PlayerSpeaks",
+                    "YES, I AM A HUGE FEET LOVING PERVERT, WHO GET'S OFF OF SMALL GIRLS FEET AND WHO'S ONLY JOY IN LIFE IS BEING STEPPED ON. PLEASE! STEP ON ME MORE MISTRESS!!!",
+                
+                "FocusedSpeaks",
+                    "well said~ {Pink}♥{ColorEnd}. Here is your reward~",
+                "FocusedSpeaks",
+                    "{b}{Pink}CUM FOR ME! CUM FOR MY PERFECT FEET!{ColorEnd}{/b}",
+
+                "PlayerOrgasm", "3",
+                "With one last stroke she brings you over the edge and you shoot white strings all over her petite feet. With the last spurt it feels as if part of your sanity has been wrung out of your body alongside your semen.",
+                "For a good minute you are laying on the ground stunned, visions of the rabbit girls feet floating around your broken mind and filling the gaps that the orgasm has left there.",
+                "ChangeFetish", "Feet", "25",
+                "ChangeFetish", "HypnosisAddict", "10"
+            ]
+        },
+        {
+            "NameOfScene": "RabbitLeapFail",
+            "theScene": [
+                "The Rabbit Girl crashes into you feet first, and you fall to the ground",
+                "With a sly grin, the eyes of the Rabbit girl begin to glow slightly as she stamps her delicate foot down on your erect penis.",
+                "FocusedSpeaks",
+                    "SwapLineIf", "Random",
+                        "My foot will be more than enough to defeat a weakling like you... {Pink}♥{ColorEnd}",
+                        "Come on, you'll soon spray you thick cum all over my skillful foot.",
+                    "EndLoop",
+                "ApplyStance", "Footjob"
+            ]
+        }
+    ]
+}

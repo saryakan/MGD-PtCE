@@ -1,26 +1,4 @@
 init python:
-    ##########################################################################################################
-    global additionalDialogueFunctions
-    additionalDialogueFunctions = {}
-
-    class DialogueFunction:
-        def __init__(self, prefix, name, functionRef):
-            self.prefix = prefix
-            self.name = name
-            self.functionRef = functionRef
-    
-        def execute(self):
-            self.functionRef()
-    
-
-    def registerDialogueFunction(prefix, name, functionRef):
-        existingFunction = additionalDialogueFunctions.get(name);
-        if existingFunction is not None:
-            raise Exception("Naming conflict while registering DialogueFunctions. Both the modules '{0}' and ’{1}’ define a DialogueFunction named '{2}'".format(existingFunction.prefix, prefix, name))
-
-        additionalDialogueFunctions[name] = DialogueFunction(prefix, name, functionRef)
-    ##########################################################################################################
-
     def getSpeaker(speakerNumber, EventDatabase, MonsterDatabase):
         while len(actorNames) <= speakerNumber:
             actorNames.append("")
@@ -440,7 +418,6 @@ label resumeSceneAfterCombat:
                                     what_suffix='"')
             $ lineOfScene += 1
             $ readLine = 1
-            $ print("This did NOT work as I thought!")
         elif displayingScene.theScene[lineOfScene] == "PlayerSpeaksSkill":
             if len(monsterEncounter) >= 1:
                 $ Speaker = Character(_(player.name+attackTitle) )
@@ -1499,33 +1476,57 @@ label resumeSceneAfterCombat:
                 "[display]"
 
         elif displayingScene.theScene[lineOfScene] == "ChangeFetish":
-            $ FETISH_MAX_LEVEL = ptceConfig.get("fetishGain").get("fetishMaxLevel")
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
             $ lineOfScene += 1
             $ resAmount = int(displayingScene.theScene[lineOfScene])
 
-            $ playersFetish = player.getFetishObject(resTarget)
-            $ playersFetish.increaseTemp(resAmount)
 
-            if playersFetish.Type == "Fetish":
+            $ baseFetish = player.getFetish(resTarget)
 
-                if playersFetish.Level < FETISH_MAX_LEVEL:
+            $ fetchFetish = getFromName(resTarget, player.FetishList)
+            if player.FetishList[fetchFetish].Type == "Fetish":
+                while resAmount + baseFetish > 100 and resAmount > 0:
+                    $ resAmount-=1
+
+                    if resAmount < 0:
+                        $ resAmount = 0
+
+
+            $ baseFetish += resAmount
+
+            $ player.setFetish(resTarget, baseFetish)
+
+            if (resAmount > 0):
+                $ L = 0
+                python:
+                    for fet in TempFetishes:
+                        if fet.name == resTarget and player.FetishList[L].Type == "Fetish":
+
+                            TempFetishes[L].Level += resAmount
+
+                            if TempFetishes[L].Level > 100 - baseFetish + TempFetishes[L].Level and baseFetish <100:
+                                TempFetishes[L].Level = 100 - baseFetish + TempFetishes[L].Level
+                        L += 1
+
+            if player.FetishList[fetchFetish].Type == "Fetish":
+
+                if baseFetish < 100:
                     if (resAmount > 0):
-                        if playersFetish.Level - resAmount == 0:
+                        if baseFetish - resAmount == 0:
                             $ display = "You have started getting a fetish for " + resTarget +  "..."
-                        elif playersFetish.Level - resAmount < 25 and playersFetish.Level >= 25:
+                        elif baseFetish - resAmount < 25 and baseFetish >= 25:
                             $ display = "You have acquired a fetish for " + resTarget +  "."
                         else:
                             $ display = "Your fetish for " + resTarget +  " has intensified!"
 
                     elif (resAmount < 0):
-                        if playersFetish.Level <= 0:
+                        if baseFetish <= 0:
                             $ display = "You have lost your fetish for " + resTarget +  "."
                         else:
                             $ display = "Your fetish for " + resTarget +  " has receded."
-                if playersFetish.Level >= FETISH_MAX_LEVEL:
-                    if playersFetish.Level >= FETISH_MAX_LEVEL:
+                if baseFetish >= 100:
+                    if baseFetish >= 100:
                         $ display = "Your fetish for " + resTarget +  " has become a complete and total obsession, but it can't get any worse than it is now...."
                     #elif baseFetish > 10:
                         #$ display = "Fantasies of " + resTarget +  " swirl through your mind as your heart pounds in your chest... You have {i}permanently{/i} gained a fetish level for " + resTarget + ", temporarily bringing your obsessive fetish of " + resTarget +  " to level " + str(fetchFetish) + "..."
@@ -1535,20 +1536,20 @@ label resumeSceneAfterCombat:
 
 
         elif displayingScene.theScene[lineOfScene] == "PermanentlyChangeFetish":
-            $ FETISH_MAX_LEVEL = ptceConfig.get("fetishGain").get("fetishMaxLevel")
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
             $ lineOfScene += 1
             $ resAmount = int(displayingScene.theScene[lineOfScene])
 
-            $ playersFetish = player.getFetishObject(resTarget)
-            $ playersFetish.increasePerm(resAmount)
+            $ baseFetish = player.getFetish(resTarget)
+            $ baseFetish += resAmount
 
-            $ baseFetish = playersFetish.Level
+            $ player.setFetish(resTarget, baseFetish)
 
-            if playersFetish.Type == "Fetish":
+            $ fetchFetish = getFromName(resTarget, player.FetishList)
+            if player.FetishList[fetchFetish].Type == "Fetish":
 
-                if baseFetish < FETISH_MAX_LEVEL:
+                if baseFetish < 100:
                     if (int(displayingScene.theScene[lineOfScene]) >= 1):
                         if resAmount > 1:
                             $ display = "You {i}permanently{/i} gained " + str(resAmount) + " fetish levels for " + resTarget +  "..."
@@ -1561,13 +1562,11 @@ label resumeSceneAfterCombat:
                             $ display = "You have {i}permanently{/i} lost " + str(resAmount) +" fetish levels for " + resTarget +  "."
                         else:
                             $ display = "You have {i}permanently{/i} lost a fetish level for " + resTarget +  "."
-                if baseFetish > FETISH_MAX_LEVEL and resAmount >= 1:
+                if baseFetish > 100 and resAmount >= 1:
                     $ display = "Fantasies of " + resTarget +  " swirl through your mind, and your heart beats faster, you have {i}permanently{/i} gained a fetish level for " + resTarget + ", exceeding your normal obsession..."
 
                 if (resAmount != 0):
                     "[display]"
-
-
         elif displayingScene.theScene[lineOfScene] == "SetFetish":
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
@@ -1600,7 +1599,6 @@ label resumeSceneAfterCombat:
 
         elif displayingScene.theScene[lineOfScene] == "PlayerOrgasm":
             $ lineOfScene += 1
-                    
             $ player.stats.hp = 0
             $ spiritLostO = SpiritCalulation(player, int(displayingScene.theScene[lineOfScene]))
             $ player.stats.sp -= spiritLostO
@@ -3915,7 +3913,7 @@ label resumeSceneAfterCombat:
         elif displayingScene.theScene[lineOfScene] == "HitMonsterWith":
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(player, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1, False)
+            $ holder = AttackCalc(player, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1)
             $ finalDamage = holder[0]
             $ critText = holder[2]
             $ effectiveText = holder[5]
@@ -3927,7 +3925,7 @@ label resumeSceneAfterCombat:
             $ recoil = 0
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(monsterEncounter[CombatFunctionEnemytarget], player,  SkillsDatabase[skillAt], 1, True)
+            $ holder = AttackCalc(monsterEncounter[CombatFunctionEnemytarget], player,  SkillsDatabase[skillAt], 1)
             $ finalDamage = holder[0]
             $ critText = holder[2]
             $ effectiveText = holder[5]
@@ -3942,7 +3940,7 @@ label resumeSceneAfterCombat:
             $ holder = MonsterDatabase[MonAt]
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(holder, player,  SkillsDatabase[skillAt], 1, False)
+            $ holder = AttackCalc(holder, player,  SkillsDatabase[skillAt], 1)
             $ finalDamage = holder[0]
             if len(monsterEncounter) >= 1:
                 $ critText = holder[2]
@@ -3960,7 +3958,7 @@ label resumeSceneAfterCombat:
             $ holder = MonsterDatabase[MonAt]
             $ lineOfScene += 1
             $ skillAt = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
-            $ holder = AttackCalc(holder, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1, False)
+            $ holder = AttackCalc(holder, monsterEncounter[CombatFunctionEnemytarget],  SkillsDatabase[skillAt], 1)
             $ finalDamage = holder[0]
             if len(monsterEncounter) >= 1:
                 $ critText = holder[2]

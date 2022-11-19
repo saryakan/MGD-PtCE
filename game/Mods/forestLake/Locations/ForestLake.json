@@ -1,0 +1,49 @@
+{
+    "name": "Forest Lake",
+    "exploreTitle": "Forest Lake",
+    "MusicList": [ "music/Forest/hitoriame.mp3", "music/Forest/bgm_maoudamashii_healing05.mp3"],
+    "picture": "",
+    "mapIcon": "",
+    "mapIconXpos": "0",
+    "mapIconYpos": "0",
+    "mapIconZorder": "50",
+    "mapClouds": "",
+    "mapCloudsXpos": "0",
+    "mapCloudsYpos": "0",
+    "requires": [ "Vandal Note"],
+    "FullyUnlockedBy": [ ""],
+    "MinimumDeckSize": "7",
+    "MaximumMonsterDeck": "6",
+    "MaximumEventDeck": "5",
+    "Events": [ ""],
+    "Quests": [ ""],
+    "Adventures": [ ""],
+    "Monsters": [ "Rabbit Girl"],
+    "MonsterGroups": [
+                  {
+                      "Group": [ ""]
+                  }
+    ],
+    "Treasure": [
+                  {
+                      "Common": [ ""]
+                  },
+                  {
+                      "Uncommon": [ ""]
+                  },
+                  {
+                      "Rare": [ ""]
+                  }
+    ],
+    "Eros": [
+                  {
+                      "Common": "75"
+                  },
+                  {
+                      "Uncommon": "125"
+                  },
+                  {
+                      "Rare": "200"
+                  }
+    ]
+}
