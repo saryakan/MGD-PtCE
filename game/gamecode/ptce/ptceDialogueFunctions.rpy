@@ -48,7 +48,7 @@ init 1 python:
         if fetish.Type == "Fetish":
             if level >= FETISH_MAX_LEVEL:
                 display = "Your fetish for " + fetishName +  " has become a complete and total obsession, but it can't get any worse than it is now...."
-            else level < FETISH_MAX_LEVEL:
+            elif level < FETISH_MAX_LEVEL:
                 if amount > 0:
                     if level - amount == 0:
                         display = "You have started getting a fetish for " + fetishName +  "..."

@@ -1519,7 +1519,7 @@ label resumeSceneAfterCombat:
 
             $ player.setFetish(resTarget, baseFetish)
 
-                    if (resAmount > 0):
+            if (resAmount > 0):
                 $ L = 0
                 python:
                     for fet in TempFetishes:
