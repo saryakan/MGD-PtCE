@@ -1046,9 +1046,9 @@ screen ON_MenuItem(i, depth, inMainMenu=False):
             disabled = False
 
     # Evaluate the showIf condition
-    $ twolayered = 0
+    $ twolayeredskill = 0
     if spaceNext == 1:
-        $ twolayered += 27
+        $ twolayeredskill += 27
 
     if len(i.name) > 28:
         $ spaceNext = 1
@@ -1057,7 +1057,7 @@ screen ON_MenuItem(i, depth, inMainMenu=False):
     if cmenu_eval(i.showIf):
         hbox:
             xsize width
-            ysize on_cmenu_listEntryHeight + twolayered
+            ysize on_cmenu_listEntryHeight + twolayeredskill
             button:
                 hovered SetVariable("cmenu_tooltip", i.tooltip)
                 if renpy.variant("touch"):
@@ -1110,11 +1110,12 @@ screen ON_MenuItem(i, depth, inMainMenu=False):
 
                 # Else, show tooltips, use healing skills from menu
                 else:
-                    hovered SetScreenVariable("characterMenuTooltip", i.tooltip)
                     if renpy.variant("touch"):
-                        unhovered SetVariable("characterMenuTooltip", i.tooltip)
+                        hovered SetScreenVariable("characterMenuTooltip", i.tooltip)
+                        unhovered SetScreenVariable("characterMenuTooltip", i.tooltip)
                     else:
-                        unhovered SetVariable("characterMenuTooltip", "")
+                        hovered If(characterMenuCanHover, true=[SetScreenVariable("characterMenuTooltip", i.tooltip)], false=[SetScreenVariable("characterMenuCanHover", True)])
+                        unhovered If(characterMenuCanHover, true=[SetScreenVariable("characterMenuTooltip", "")], false=NullAction())
                     if i.openSubMenu:
                         action [If(i.setVar, true=SetVariable(i.setVar, i.setValue)),
                             Function(cmenu_setColumn, depth=(depth+1), name=i.openSubMenu, bcrumb_name=i.name)]
@@ -1218,7 +1219,7 @@ screen DisplayLossImage:
 # Copy of the combat menu for use in the "Skills" section of the character screen.
 # The columns and breadcrumb arrays are shared with the real combat menu,
 # so they should be reset whenever either menu is shown
-screen ON_MenuSkillsList(height=230):
+screen ON_MenuSkillsList(height=230, xoff=0):
     # First entry is skills rather than main
     python:
         if len(cmenu_columns) == 0:
@@ -1230,6 +1231,7 @@ screen ON_MenuSkillsList(height=230):
         $ x = i*cmenu_col_width
 
         fixed:
+            xoffset xoff
             xpos x
             ysize height
             use ON_Scrollbox(leftBar=True, hideBar=False):

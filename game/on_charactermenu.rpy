@@ -1,5 +1,5 @@
-
-screen ON_UseItemConfirm:
+screen ON_UseItemConfirm():
+    modal True
     if equippingItem == 1:
         if player.inventory.items[inventoryETarget].itemType == "Rune" or player.inventory.items[inventoryETarget].itemType == "Accessory":
             $ display = "Equip " + player.inventory.items[inventoryETarget].name + "?"
@@ -21,15 +21,15 @@ screen ON_UseItemConfirm:
                     textbutton "Slot 1":
                         xalign 0.125
                         yalign 0.95
-                        action [SelectedIf(False), SetVariable ("equippingItem", 0), SetVariable ("TargetingEquipSlot", 1), Jump("EquipItem")]
+                        action [SelectedIf(False), SetVariable ("equippingItem", 0), SetVariable ("TargetingEquipSlot", 1), Function(EquipItem)]
                     textbutton "Slot 2":
                         xalign 0.375
                         yalign 0.95
-                        action [SelectedIf(False), SetVariable ("equippingItem", 0), SetVariable ("TargetingEquipSlot", 2), Jump("EquipItem")]
+                        action [SelectedIf(False), SetVariable ("equippingItem", 0), SetVariable ("TargetingEquipSlot", 2), Function(EquipItem)]
                     textbutton "Slot 3":
                         xalign 0.625
                         yalign 0.95
-                        action [SelectedIf(False), SetVariable ("equippingItem", 0), SetVariable ("TargetingEquipSlot", 3), Jump("EquipItem")]
+                        action [SelectedIf(False), SetVariable ("equippingItem", 0), SetVariable ("TargetingEquipSlot", 3), Function(EquipItem)]
                     textbutton "Back":
                         xalign 0.875
                         yalign 0.95
@@ -39,7 +39,7 @@ screen ON_UseItemConfirm:
                     textbutton "Yes":
                         xalign 0.25
                         yalign 0.95
-                        action [SelectedIf(False), SetVariable ("equippingItem", 0),  SetVariable ("TargetingEquipSlot", 4), Jump("EquipItem")]
+                        action [SelectedIf(False), SetVariable ("equippingItem", 0),  SetVariable ("TargetingEquipSlot", 4), Function(EquipItem)]
                     textbutton "No":
                         xalign 0.75
                         yalign 0.95
@@ -73,7 +73,7 @@ screen ON_UseItemConfirm:
             textbutton "Yes":
                 xalign 0.25
                 yalign 0.95
-                action [SelectedIf(False), SetVariable ("RemovingEquipment", unequippingItem),  SetVariable ("TargetingEquipSlot", 0), SetVariable ("unequippingItem", 0), Jump("EquipItem")]
+                action [SelectedIf(False), SetVariable ("RemovingEquipment", unequippingItem),  SetVariable ("TargetingEquipSlot", 0), SetVariable ("unequippingItem", 0), Function(EquipItem)]
             textbutton "No":
                 xalign 0.75
                 yalign 0.95
@@ -97,7 +97,7 @@ screen ON_UseItemConfirm:
                 textbutton "Yes":
                     xalign 0.25
                     yalign 0.95
-                    action [SelectedIf(False), SetVariable ("useItem", 0), Jump("useInventoryItem")]
+                    action [SelectedIf(False), SetVariable ("useItem", 0), Function(useInventoryItem)]
                 textbutton "No":
                     xalign 0.75
                     yalign 0.95
@@ -122,15 +122,11 @@ screen ON_UseItemConfirm:
                     textbutton "Yes":
                         xalign 0.25
                         yalign 0.95
-                        action [SelectedIf(False), SetVariable ("useSkill", 0), Jump("useSkillFromMenu")]
+                        action [SelectedIf(False), SetVariable ("useSkill", 0), Function(useSkillFromMenu)]
                     textbutton "No":
                         xalign 0.75
                         yalign 0.95
                         action [SelectedIf(False), SetVariable ("useSkill", 0)]
-
-
-
-
 
 screen ON_EquipSlot(itemSlot, slotName, slotID):
     hbox:
@@ -159,9 +155,6 @@ screen ON_EquipSlot(itemSlot, slotName, slotID):
                 text_insensitive_color "#fff"
                 text_size on_listTextSize
                 ysize on_listEntryHeight
-
-
-
 
 screen ON_SingleFetishDisplay(name, fetish, tooltipDisplay="", color="#fff", duration=0, timeType=""):
     fixed:
@@ -206,7 +199,7 @@ screen ON_SingleFetishDisplay(name, fetish, tooltipDisplay="", color="#fff", dur
         elif name == "Ass:":
             $ tooltipDisplay = "How much you love butts!\n\nVerdict: "
             if value >= 100:
-                $ tooltipDisplay += "You are completely obsessed with curvy asses. You're can't help but fantasize on occasion about woman shaking her ass for you, and you definitely can't stop yourself from watching a woman walk while her hips sway with her step, your thoughts and resistance draining down into your cock..."
+                $ tooltipDisplay += "You are completely obsessed with curvy asses. You can't help but fantasize on occasion about women shaking their ass for you, and you definitely can't stop yourself from watching a woman walk while her hips sway with her step, your thoughts and resistance draining down into your cock..."
             elif value >= 75:
                 $ tooltipDisplay += "You have a very strong fetish for curvy asses. You have a hard time stopping yourself from thinking about a nice ass, and pulling your eyes away from a woman's swaying hips as she walks, each swing making your cock twitch..."
             elif value >= 50:
@@ -218,7 +211,7 @@ screen ON_SingleFetishDisplay(name, fetish, tooltipDisplay="", color="#fff", dur
         elif name == "Kissing:":
             $ tooltipDisplay = "How much you love to make out! Probably lipstick too...\n\nVerdict: "
             if value >= 100:
-                $ tooltipDisplay += "You are completely obsessed with kissing and plump lips. You're can't help but fantasize about getting covered in lipstick marks, thoughtlessly making out, letting a woman kiss you into pleasure drunk stupor. Even just getting a kiss blown your way could make you fall to temptation..."
+                $ tooltipDisplay += "You are completely obsessed with kissing and plump lips. You can't help but fantasize about getting covered in lipstick marks, thoughtlessly making out, letting a woman kiss you into pleasure drunk stupor. Even just getting a kiss blown your way could make you fall to temptation..."
             elif value >= 75:
                 $ tooltipDisplay += "You have a very strong fetish for kissing and plump lips. Fantasies of making out and getting coated in lipstick marks flit through your thoughts, and a single smooch could probably get you wrapped around a womans finger, even just looking at her soft lips would make your cock ache..."
             elif value >= 50:
@@ -230,7 +223,7 @@ screen ON_SingleFetishDisplay(name, fetish, tooltipDisplay="", color="#fff", dur
         elif name == "Legs:":
             $ tooltipDisplay = "How much you love legs and thighs!\n\nVerdict: "
             if value >= 100:
-                $ tooltipDisplay += "You are completely obsessed with legs and thighs. You're can't help but fantasize on occasion about humping women's soft legs, thinking about teasing thigh highs and sexy stockings, leaving you staring at their tempting thighs unconsciously, making you space out and wonderfully vulnerable..."
+                $ tooltipDisplay += "You are completely obsessed with legs and thighs. You can't help but fantasize on occasion about humping women's soft legs, thinking about teasing thigh highs and sexy stockings, leaving you staring at their tempting thighs unconsciously, making you space out and wonderfully vulnerable..."
             elif value >= 75:
                 $ tooltipDisplay += "You have a very strong fetish for legs and thighs. Your thoughts drift to fantasizing about women's long, seductive legs, leaving you aching to rub your cock against them, tempting you to let your eyes linger on their smooth skin..."
             elif value >= 50:
@@ -242,7 +235,7 @@ screen ON_SingleFetishDisplay(name, fetish, tooltipDisplay="", color="#fff", dur
         elif name == "Feet:":
             $ tooltipDisplay = "How much you love feet!\n\nVerdict: "
             if value >= 100:
-                $ tooltipDisplay += "You are completely obsessed with feet. You're can't help but fantasize on occasion about getting stepped on by a woman, worshipping her foot, just hearing a woman walk in heels makes your cock twitch, and you staring at women's feet unconsciously, leaving you spacing out and vulnerable..."
+                $ tooltipDisplay += "You are completely obsessed with feet. You can't help but fantasize on occasion about getting stepped on by a woman, worshipping her foot, just hearing a woman walk in heels makes your cock twitch, and you staring at women's feet unconsciously, leaving you spacing out and vulnerable..."
             elif value >= 75:
                 $ tooltipDisplay += "You have a very strong fetish for feet. Your thoughts drift to worshipping women feet on occasion, aching for them to tease your cock, and your eyes linger on women's feet unconsciously..."
             elif value >= 50:
@@ -254,7 +247,7 @@ screen ON_SingleFetishDisplay(name, fetish, tooltipDisplay="", color="#fff", dur
         elif name == "Monstrous:":
             $ tooltipDisplay = "How much you love tails, wings, fangs, tentacles, slimy bodies, tail pussies, and more!\n\nVerdict: "
             if value >= 100:
-                $ tooltipDisplay += "You are completely obsessed with the monstrous aspects of monster girls. You're can't help but fantasize about any and every kind of monster girl and the things they could do to you, and it's very noticeable when you stare at a girl's tail pussy or fluffy wings, leaving you wonderfully vulnerable..."
+                $ tooltipDisplay += "You are completely obsessed with the monstrous aspects of monster girls. You can't help but fantasize about any and every kind of monster girl and the things they could do to you, and it's very noticeable when you stare at a girl's tail pussy or fluffy wings, leaving you wonderfully vulnerable..."
             elif value >= 75:
                 $ tooltipDisplay += "You have a very strong fetish the monstrous aspects of monster girls. Your thoughts often drifting to fantasies of monster girls teasing you with their tails, wings, and unique orifices. You often stare at monster girls spacing out with naughty thoughts, leaving your atttration rather apparent..."
             elif value >= 50:
@@ -295,11 +288,13 @@ screen ON_SingleDisplay(name, value, tooltipDisplay="", color="#fff", duration=0
             ysize on_listEntryHeight
             if tooltipDisplay != "":
                 action [ SetVariable("characterMenuTooltip", tooltipDisplay)] #make hoverable
-                hovered SetScreenVariable("characterMenuTooltip", tooltipDisplay)
                 if renpy.variant("touch"):
+                    hovered SetScreenVariable("characterMenuTooltip", tooltipDisplay)
                     unhovered SetScreenVariable("characterMenuTooltip", tooltipDisplay)
                 else:
-                    unhovered SetScreenVariable("characterMenuTooltip", "")
+                    hovered If(characterMenuCanHover, true=[SetScreenVariable("characterMenuTooltip", tooltipDisplay)], false=[SetScreenVariable("characterMenuCanHover", True)])
+                    unhovered If(characterMenuCanHover, true=[SetScreenVariable("characterMenuTooltip", "")], false=NullAction())
+
             else:
                 text_color color
 
@@ -395,6 +390,13 @@ screen ON_SingleStatDisplayNoVar(name, value, tooltipDisplay="", color="#fff", d
 
         textbutton value text_size on_listTextSize text_color color ysize on_listEntryHeight xalign 1.0
 
+screen ON_SinglePerkDisplay(perk, spaceNextOne=0):
+    $ theTimeType = ""
+    for y in perk.PerkType:
+        if y == "TimeDuration" or y == "TurnDuration":
+            $ theTimeType = y
+    use ON_SingleDisplay(perk.name, "", tooltipDisplay=perk.description, duration=perk.duration, timeType=theTimeType)
+
 screen ON_SingleItemDisplay(item, spaceNextOne=0):
     $ invIndex =  getFromName(item.name, player.inventory.items)
     $ display = item.name
@@ -421,11 +423,12 @@ screen ON_SingleItemDisplay(item, spaceNextOne=0):
 
     button:
         ysize on_listEntryHeight + twolayered
-        hovered SetScreenVariable("characterMenuTooltip", itemsToolTip)
         if renpy.variant("touch"):
+            hovered SetScreenVariable("characterMenuTooltip", itemsToolTip)
             unhovered SetScreenVariable("characterMenuTooltip", itemsToolTip)
         else:
-            unhovered SetScreenVariable("characterMenuTooltip", "")
+            hovered If(characterMenuCanHover, true=[SetScreenVariable("characterMenuTooltip", itemsToolTip)], false=[SetScreenVariable("characterMenuCanHover", True)])
+            unhovered If(characterMenuCanHover, true=[SetScreenVariable("characterMenuTooltip", "")], false=NullAction())
 
         text display:
             size on_listTextSize
@@ -445,7 +448,7 @@ screen ON_SingleItemDisplay(item, spaceNextOne=0):
         else:
             action [SelectedIf(False), NullAction()] # make hoverable
 
-screen ON_EquipmentListDisplay:
+screen ON_EquipmentListDisplay():
     use ON_Scrollbox(""):
         use ON_EquipSlot(player.inventory.RuneSlotOne, "Rune Slot 1 -", 1)
         use ON_EquipSlot(player.inventory.RuneSlotTwo, "Rune Slot 2 -", 2)
@@ -472,8 +475,7 @@ screen ON_StatsListDisplay(showMainStats=False):
 
         use ON_MoreStatsListDisplay
 
-
-screen ON_MoreStatsListDisplay:
+screen ON_MoreStatsListDisplay():
         textbutton "---More Stats---" text_size on_listTextSize text_color "#fff" ysize on_listTextSize xalign 0.5
 
         use ON_SingleStatDisplay("Core Skills Bonus", "", tooltipDisplay="Your core skills deal [flatCore] bonus arousal and a bonus of [percentCore]% to the base power of core skills!\nCore skills are based on 50% of your highest stat out of Power, Tech, Int, and Allure, plus the average of the four stats added together. Then the (square root of that times 3)-5 is your flat bonus.")
@@ -494,12 +496,7 @@ screen ON_MoreStatsListDisplay:
         use ON_SingleStatDisplay("Allure Bonus: ", "[flatAllureBonus]", tooltipDisplay="The flat boost to arousal dealt gained from your allure. Calculated by 10% of (Your total allure - 5), the 10% scaling can be increased by perks.")
         use ON_SingleStatDisplay("Allure Bonus%: ", "[percentAllureBonus]%", tooltipDisplay="The percentage here is the bonus arousal that will be added to your skill's base power from your allure. (Your Allure-5)*0.002*(multiplied by 100 to show the percent increase. Normally base skill power.) + Perk Bonus.")
 
-
-
-
-
-
-screen ON_SensitivityListDisplay:
+screen ON_SensitivityListDisplay():
     use ON_Scrollbox("Sensitivity"):
         use ON_SingleDisplay("Cock: ", "[player.BodySensitivity.Sex]%", tooltipDisplay="How sensitive your penis is.")
         use ON_SingleDisplay("Ass: ", "[player.BodySensitivity.Ass]%", tooltipDisplay="How sensitive your ass is. But I'm sure no monsters will actually go for your ass... R-Right?")
@@ -509,13 +506,13 @@ screen ON_SensitivityListDisplay:
         use ON_SingleDisplay("Magic: ", "[player.BodySensitivity.Magic]%", tooltipDisplay="Your body's innate ability to resist magical attacks!")
         use ON_SingleDisplay("Pain: ", "[player.BodySensitivity.Pain]%", tooltipDisplay="Do you like getting punished?")
 
-screen ON_FetishListDisplay:
+screen ON_FetishListDisplay():
     use ON_Scrollbox("Fetishes"):
         for fetish in player.FetishList:
             if fetish.Type == "Fetish":
-                use ON_SingleFetishDisplay(str(fetish.name + ":"), fetish)
+                use ON_SingleFetishDisplay(str(fetish.name + ":"), fetish.Level)
 
-screen ON_PerkListDisplay:
+screen ON_PerkListDisplay():
     use ON_Scrollbox("Perks"):
         for perk in player.perks:
             if perk.PlayerCanPurchase != "HiddenCompletelyFromPlayer":
@@ -528,7 +525,31 @@ screen ON_PerkListDisplay:
         if len(player.perks) == 0:
             use ON_SingleDisplay("None... yet!", "")
 
-screen ON_ResistanceListDisplay:
+screen ON_PerkDisplay(perkTab, columns=1):
+    $ perkDisplayItems = []
+    $ spaceNext = 0
+    for perk in player.perks:
+        if (perkTab == 1 and perk.PlayerCanPurchase == "Yes" or
+            perkTab == 2 and perk.PlayerCanPurchase == "No"):
+            $ perkDisplayItems.append(perk)
+
+    use ON_Scrollbox(""):
+        fixed ysize 4 # spacing
+        grid columns 1:
+            xfill True
+            for c in range(0, columns):
+                vbox:
+                    xfill True
+                    for i in range(c, len(perkDisplayItems), columns):
+                        use ON_SinglePerkDisplay(perkDisplayItems[i], spaceNext)
+                    if len(player.perks) == 0:
+                        use ON_SingleDisplay("None... yet!", "")
+
+    for c in range(0, columns-1):
+        $ pct = (1.0+c)/columns
+        add "gui/framedivider211partial.png" xalign pct
+
+screen ON_ResistanceListDisplay():
     use ON_Scrollbox("Resistances"):
         use ON_SingleStatDisplay("Stun:", "[player.resistancesStatusEffects.Stun]%")
         use ON_SingleStatDisplay("Charm:", "[player.resistancesStatusEffects.Charm]%")
@@ -562,17 +583,20 @@ screen ON_InventoryDisplay(inventoryType, columns=1):
         $ pct = (1.0+c)/columns
         add "gui/framedivider211partial.png" xalign pct
 
-
-
-
 init python:
-    characterMenuTab = "Stats"
     inventoryTab = 1
+    perkTab = 1
     characterMenuTooltip = ""
+init:
+    default characterMenuCanHover = True
 
-screen ON_CharacterDisplayScreen:
+screen ON_CharacterDisplayScreen(TabToUse="Stats"):
     $ _game_menu_screen = "ON_CharacterDisplayScreen"
 
+    default characterMenuTooltip = ""
+    default characterMenuTab = TabToUse
+
+    timer 0.2 action SetVariable("characterMenuCanHover", True) modal True repeat True
     tag menu
 
     use game_menu(_("Character")):
@@ -621,76 +645,60 @@ screen ON_CharacterDisplayScreen:
                 ypos 285
                 fixed xsize 10 ysize 30 # spacing
 
-                if InventoryAvailable:
-                    fixed:
-                        xsize 240
-                        ysize 45
-                        imagebutton:
-                            idle "gui/tab_idle.png"
-                            hover "gui/tab_hover.png"
-                            insensitive "gui/tab_selected.png"
-                            action [SensitiveIf(characterMenuTab != "Stats"), SetVariable ("characterMenuTab", "Stats")]
-                        text "Stats" xalign 0.5 yalign 0.5
-                    fixed:
-                        xsize 240
-                        ysize 45
-                        imagebutton:
-                            idle "gui/tab_idle.png"
-                            hover "gui/tab_hover.png"
-                            insensitive "gui/tab_selected.png"
-                            action [SensitiveIf(characterMenuTab != "Skills"), SetVariable ("characterMenuTab", "Skills")]
-                        text "Skills" xalign 0.5 yalign 0.5
-                    fixed:
-                        xsize 240
-                        ysize 45
-                        imagebutton:
-                            idle "gui/tab_idle.png"
-                            hover "gui/tab_hover.png"
-                            insensitive "gui/tab_selected.png"
-                            action [SensitiveIf(characterMenuTab != "Inventory"), SetVariable ("characterMenuTab", "Inventory")]
-                        text "Inventory" xalign 0.5 yalign 0.5
-                    fixed:
-                        frame:
-                            xalign 1.0
-                            xoffset -260
-                            ysize 51
-                            xsize 275
-                            text "  Eros: ξ [player.inventory.money]" size on_listTitleSize yalign 0.5 xalign 0.25
-                else:
-                    $ characterMenuTab = "Stats"
-                    fixed:
-                        xsize 240
-                        ysize 45
-                        imagebutton:
-                            idle "gui/tab_idle.png"
-                            hover "gui/tab_hover.png"
-                            insensitive "gui/tab_selected.png"
-                            action [SensitiveIf(characterMenuTab != "Stats"), SetVariable ("characterMenuTab", "Stats")]
-                        text "Stats" xalign 0.5 yalign 0.5
-                    fixed:
-                        xsize 240
-                        ysize 45
-                        imagebutton:
-                            idle "gui/tab_idle.png"
-                            hover "gui/tab_hover.png"
-                            insensitive "gui/tab_insensitive.png"
-                        text "Skills" xalign 0.5 yalign 0.5
-                    fixed:
-                        xsize 240
-                        ysize 45
-                        imagebutton:
-                            idle "gui/tab_idle.png"
-                            hover "gui/tab_hover.png"
-                            insensitive "gui/tab_insensitive.png"
-                        text "Inventory" xalign 0.5 yalign 0.5
-                    fixed:
-                        frame:
-                            xalign 1.0
-                            xoffset -300
-                            ysize 51
-                            xsize 240
-                            text "Eros:  ξ [player.inventory.money]" size on_listTitleSize yalign 0.5 xalign 0.3
+                fixed:
+                    xsize 240
+                    ysize 45
+                    imagebutton:
+                        idle "gui/tab_idle.png"
+                        hover "gui/tab_hover.png"
+                        insensitive "gui/tab_selected.png"
+                        action [SensitiveIf(characterMenuTab != "Stats"), SetScreenVariable("characterMenuTab", "Stats")]
+                        tooltip "Testing!"
+                    text "Stats" xalign 0.5 yalign 0.5
+                fixed:
+                    xsize 240
+                    ysize 45
+                    imagebutton:
+                        idle "gui/tab_idle.png"
+                        hover "gui/tab_hover.png"
+                        insensitive "gui/tab_selected.png"
+                        action [SensitiveIf(characterMenuTab != "Perks"), SetScreenVariable("characterMenuTab", "Perks")]
+                    text "Perks" xalign 0.5 yalign 0.5
 
+                fixed:
+                    xsize 240
+                    ysize 45
+                    imagebutton:
+                        if InventoryAvailable:
+                            idle "gui/tab_idle.png"
+                            hover "gui/tab_hover.png"
+                            insensitive "gui/tab_selected.png"
+                            action [SensitiveIf(characterMenuTab != "Skills"), SetScreenVariable("characterMenuTab", "Skills")]
+                        else:
+                            idle "gui/tab_insensitive.png"
+                            action NullAction()
+                    text "Skills" xalign 0.5 yalign 0.5
+                fixed:
+                    xsize 240
+                    ysize 45
+                    imagebutton:
+                        if InventoryAvailable:
+                            idle "gui/tab_idle.png"
+                            hover "gui/tab_hover.png"
+                            insensitive "gui/tab_selected.png"
+                            action [SensitiveIf(characterMenuTab != "Inventory"), SetScreenVariable("characterMenuTab", "Inventory")]
+                        else:
+                            idle "gui/tab_insensitive.png"
+                            action NullAction()
+                    text "Inventory" xalign 0.5 yalign 0.5
+
+                fixed:
+                    frame:
+                        xalign 1.0
+                        xoffset -230
+                        ysize 51
+                        xsize 275
+                        text "  Eros: ξ [player.inventory.money]" size on_listTitleSize yalign 0.5 xalign 0.25
 
             frame:
                 ypos 330
@@ -698,181 +706,14 @@ screen ON_CharacterDisplayScreen:
                 xsize 1289
 
                 if characterMenuTab == "Stats":
-                    hbox:
-                        #if name == "Allure:" or name == "Technique:" or name == "Power:" or name == "Luck:" or name == "Willpower:":
-                        $ relatedStat = player.stats.getStat("Power")
-                        $ powerBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
-                        $ powerPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
-                        $ relatedStat = player.stats.getStat("Intelligence")
-                        $ intBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
-                        $ intPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
-                        $ relatedStat = player.stats.getStat("Technique")
-                        $ techBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
-                        $ techPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
-                        $ relatedStat = player.stats.getStat("Allure")
-                        $ allureBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
-                        $ allurePerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
-                        $ relatedStat = player.stats.getStat("Willpower")
-                        $ willBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
-                        $ willPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
-                        $ relatedStat = player.stats.getStat("Luck")
-                        $ luckBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
-                        $ luckPerBoost =  float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
-
-                        $ powerDisplay = player.stats.Power-player.getStatBonusReduction("Power")
-                        $ techDisplay = player.stats.Tech-player.getStatBonusReduction("Technique")
-                        $ intDisplay = player.stats.Int-player.getStatBonusReduction("Intelligence")
-                        $ allureDisplay = player.stats.Allure-player.getStatBonusReduction("Allure")
-                        $ willDisplay = player.stats.Willpower-player.getStatBonusReduction("Willpower")
-                        $ luckDisplay = player.stats.Luck-player.getStatBonusReduction("Luck")
-
-                        $ coreStatsList = []
-                        $ coreStatsList.append(player.stats.Power)
-                        $ coreStatsList.append(player.stats.Tech)
-                        $ coreStatsList.append(player.stats.Allure)
-                        $ coreStatsList.append(player.stats.Int)
-                        $ biggestStat = max(coreStatsList)*0.5
-                        $ statDamMod = biggestStat + (player.stats.Allure + player.stats.Tech + player.stats.Int +  player.stats.Power)/4
-
-                        $ flatCore = float("{0:.2f}".format(getCoreStatFlatBonus(statDamMod)))
-                        $ percentCore = float("{0:.2f}".format(getCoreStatPercentBonus(statDamMod, 100)))
-
-
-                        fixed:
-                            xsize 300
-                            ysize 352
-                            use ON_StatsListDisplay(True)
-
-                        if renpy.variant("touch"):
-                            fixed xsize 16 #spacing
-                        else:
-                            fixed xsize 4 #spacing
-                            add "gui/framedivider235.png"
-
-                        fixed:
-                            xsize 298
-                            ysize 352
-                            use ON_SensitivityListDisplay
-
-                        if renpy.variant("touch"):
-                            fixed xsize 5 #spacing
-                            add "gui/framedivider235.png"
-                        else:
-                            fixed xsize 4 #spacing
-                            add "gui/framedivider235.png"
-
-
-
-                        fixed:
-                            xsize 298
-                            ysize 352
-                            use ON_FetishListDisplay
-
-                        if renpy.variant("touch"):
-                            fixed xsize 5 #spacing
-                            add "gui/framedivider235.png"
-                        else:
-                            fixed xsize 4 #spacing
-                            add "gui/framedivider235.png"
-
-
-
-                        fixed:
-                            xsize 348
-                            ysize 352
-                            use ON_PerkListDisplay
-
+                    use stats_tab
+                elif characterMenuTab == "Perks":
+                    use perks_tab
+                elif characterMenuTab == "Skills":
+                    use skills_tab
                 elif characterMenuTab == "Inventory":
-                    hbox:
-                        vbox:
-                            hbox:
-                                fixed xsize 6 ysize 24 # spacing
-                                fixed:
-                                    xsize 192
-                                    ysize 36
-                                    imagebutton:
-                                        idle "gui/smalltab_idle.png"
-                                        hover "gui/smalltab_hover.png"
-                                        insensitive "gui/smalltab_selected.png"
-                                        action [SensitiveIf(inventoryTab != 1), SetVariable ("inventoryTab", 1)]
-                                    text "Consumables" xalign 0.5 yalign 0.5 size 22
-                                fixed:
-                                    xsize 192
-                                    ysize 36
-                                    imagebutton:
-                                        idle "gui/smalltab_idle.png"
-                                        hover "gui/smalltab_hover.png"
-                                        insensitive "gui/smalltab_selected.png"
-                                        action [SensitiveIf(inventoryTab != 2), SetVariable ("inventoryTab", 2), SetVariable ("RuneOrAccessory", 0)]
-                                    text "Equipment" xalign 0.5 yalign 0.5 size 22
-                                fixed:
-                                    xsize 192
-                                    ysize 36
-                                    imagebutton:
-                                        idle "gui/smalltab_idle.png"
-                                        hover "gui/smalltab_hover.png"
-                                        insensitive "gui/smalltab_selected.png"
-                                        action [SensitiveIf(inventoryTab != 3), SetVariable ("inventoryTab", 3)]
-                                    text "Key Items" xalign 0.5 yalign 0.5 size 22
-                                if inventoryTab == 2:
-                                    fixed:
-                                        xsize 162
-                                        ysize 36
-                                        imagebutton:
-                                            idle "gui/smallertab_idle_outline.png"
-                                            hover "gui/smallertab_hover_outline.png"
-                                            insensitive "gui/smallertab_selected.png"
-                                            action [SensitiveIf(RuneOrAccessory != 0), SetVariable ("RuneOrAccessory", 0)]
-                                        text "Runes" xalign 0.5 yalign 0.5 size 22
+                    use inventory_tab
 
-                                    fixed:
-                                        xsize 162
-                                        ysize 36
-                                        imagebutton:
-                                            idle "gui/smallertab_idle_outline.png"
-                                            hover "gui/smallertab_hover_outline.png"
-                                            insensitive "gui/smallertab_selected.png"
-                                            action [SensitiveIf(RuneOrAccessory == 0), SetVariable ("RuneOrAccessory", 1)]
-                                        text "Accessories" xalign 0.5 yalign 0.5 size 22
-
-                            add "gui/framedividerhoriz619.png"
-
-                            fixed:
-                                xsize 915
-                                ysize 306
-                                use ON_InventoryDisplay(inventoryTab, 2)
-
-                        add "gui/framedivider235.png"
-
-                        fixed:
-                            xsize 301
-                            ysize 352
-                            use ON_ResistanceListDisplay
-
-                else:
-                    use ON_MenuSkillsList(height=357)
-                    fixed:
-                        xpos 870
-                        xsize 915
-                        ysize 306
-                        add "gui/framedivider235.png"
-                    vbox:
-                        xpos 920
-                        text "Re-Organize!" xalign 0.5
-                        textbutton "---" text_size on_listTextSize text_color "#fff" ysize on_listTextSize xalign 0.5
-                        textbutton "Alphebetical" text_size on_listTextSize action [Jump("SortSkillsByAlphebet")] xalign 0.5
-                        textbutton "Reverse Alphebetical" text_size on_listTextSize action [Jump("SortSkillsByReverseAlphebet")] xalign 0.5
-                        textbutton "Lowest Energy Cost" text_size on_listTextSize action [Jump("SortSkillsByEnergyCost")] xalign 0.5
-                        textbutton "Highest Energy Cost" text_size on_listTextSize action [Jump("SortSkillsByReverseEnergyCost")] xalign 0.5
-                        textbutton "Lowest Damage" text_size on_listTextSize action [Jump("SortSkillsByDamage")] xalign 0.5
-                        textbutton "Highest Damage" text_size on_listTextSize action [Jump("SortSkillsByReverseDamage")] xalign 0.5
-                        if manualSort == 0:
-                            textbutton "Manual Sorting" text_size on_listTextSize action [Jump("ActivateManualSorting")] xalign 0.5
-                        else:
-                            textbutton "End Manual Sorting" text_size on_listTextSize action [Jump("DeactivateManualSorting")] xalign 0.5
-                            if swappingSkill != -1:
-                                $ showText = player.skillList[swappingSkill].name
-                                textbutton "[showText]" text_size on_listTextSize text_color "#fff" ysize on_listTextSize xalign 0.5
 
             frame:
                 ypos 705
@@ -880,356 +721,588 @@ screen ON_CharacterDisplayScreen:
                 ypadding 10
                 ysize 262
                 xsize 1289
-                text characterMenuTooltip size 30
+                text "[characterMenuTooltip]" size 30
 
 
             use ON_UseItemConfirm
 
+## CharacterMenuTab Screens ######################################################################
+screen stats_tab():
+    hbox:
+        #if name == "Allure:" or name == "Technique:" or name == "Power:" or name == "Luck:" or name == "Willpower:":
+        $ relatedStat = player.stats.getStat("Power")
+        $ powerBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
+        $ powerPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
+        $ relatedStat = player.stats.getStat("Intelligence")
+        $ intBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
+        $ intPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
+        $ relatedStat = player.stats.getStat("Technique")
+        $ techBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
+        $ techPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
+        $ relatedStat = player.stats.getStat("Allure")
+        $ allureBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
+        $ allurePerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
+        $ relatedStat = player.stats.getStat("Willpower")
+        $ willBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
+        $ willPerBoost = float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
+        $ relatedStat = player.stats.getStat("Luck")
+        $ luckBoost = float("{0:.2f}".format(getStatFlatBonus(relatedStat)))
+        $ luckPerBoost =  float("{0:.2f}".format(getStatPercentBonus(relatedStat, 100)))
+
+        $ powerDisplay = player.stats.Power-player.getStatBonusReduction("Power")
+        $ techDisplay = player.stats.Tech-player.getStatBonusReduction("Technique")
+        $ intDisplay = player.stats.Int-player.getStatBonusReduction("Intelligence")
+        $ allureDisplay = player.stats.Allure-player.getStatBonusReduction("Allure")
+        $ willDisplay = player.stats.Willpower-player.getStatBonusReduction("Willpower")
+        $ luckDisplay = player.stats.Luck-player.getStatBonusReduction("Luck")
+
+        $ coreStatsList = []
+        $ coreStatsList.append(player.stats.Power)
+        $ coreStatsList.append(player.stats.Tech)
+        $ coreStatsList.append(player.stats.Allure)
+        $ coreStatsList.append(player.stats.Int)
+        $ biggestStat = max(coreStatsList)*0.5
+        $ statDamMod = biggestStat + (player.stats.Allure + player.stats.Tech + player.stats.Int +  player.stats.Power)/4
+
+        $ flatCore = float("{0:.2f}".format(getCoreStatFlatBonus(statDamMod)))
+        $ percentCore = float("{0:.2f}".format(getCoreStatPercentBonus(statDamMod, 100)))
+
+        if renpy.variant("touch"):
+            fixed:
+                xsize 310
+                ysize 352
+                use ON_StatsListDisplay(True)
+        else:
+            fixed:
+                xsize 315
+                ysize 352
+                use ON_StatsListDisplay(True)
+
+        if renpy.variant("touch"):
+            fixed xsize 18 #spacing
+        else:
+            fixed xsize 4 #spacing
+            add "gui/framedivider235.png"
 
 
-label SortSkillsByAlphebet:
-    $ renpy.retain_after_load()
-    $ player.skillList = sorted(player.skillList, key = lambda x: x.name)
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
+        if renpy.variant("touch"):
+            fixed:
+                xsize 310
+                ysize 352
+                use ON_SensitivityListDisplay
+        else:
+            fixed:
+                xsize 315
+                ysize 352
+                use ON_SensitivityListDisplay
 
-    jump exitCombatFunction
-
-label SortSkillsByReverseAlphebet:
-    $ renpy.retain_after_load()
-    $ player.skillList = sorted(player.skillList, key = lambda x: x.name, reverse=True)
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
-
-label SortSkillsByEnergyCost:
-    $ renpy.retain_after_load()
-    $ player.skillList = sorted(player.skillList, key = lambda x: x.cost )
-    $ characterMenuTooltip = ""
-    $ cmenu_refreshSwapMenu()
-
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
-
-label SortSkillsByReverseEnergyCost:
-    $ renpy.retain_after_load()
-    $ player.skillList = sorted(player.skillList, key = lambda x: x.cost , reverse=True)
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
-
-label SortSkillsByDamage:
-    $ renpy.retain_after_load()
-    $ player.skillList = sorted(player.skillList, key = lambda x: x.power + (player.stats.getStat(x.statType)-5)*0.3)
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
-
-label SortSkillsByReverseDamage:
-    $ renpy.retain_after_load()
-    $ player.skillList = sorted(player.skillList, key = lambda x: x.power + (player.stats.getStat(x.statType)-5)*0.3, reverse=True)
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
+        if renpy.variant("touch"):
+            fixed xsize 5 #spacing
+            add "gui/framedivider235.png"
+        else:
+            fixed xsize 4 #spacing
+            add "gui/framedivider235.png"
 
 
-label ActivateManualSorting:
-    $ manualSort = 1
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
+        if renpy.variant("touch"):
+            fixed:
+                xsize 310
+                ysize 352
+                use ON_FetishListDisplay
+        else:
+            fixed:
+                xsize 315
+                ysize 352
+                use ON_FetishListDisplay
 
-    jump exitCombatFunction
-label DeactivateManualSorting:
-    $ manualSort = 0
-    $ cmenu_refreshSwapMenu()
-    $ characterMenuTooltip = ""
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
+        if renpy.variant("touch"):
+            fixed xsize 5 #spacing
+            add "gui/framedivider235.png"
+        else:
+            fixed xsize 4 #spacing
+            add "gui/framedivider235.png"
 
 
-label EquipItem:
-    $ renpy.retain_after_load()
+        if renpy.variant("touch"):
+            fixed:
+                xsize 310
+                ysize 352
+                use ON_ResistanceListDisplay
+        else:
+            fixed:
+                xsize 315
+                ysize 352
+                use ON_ResistanceListDisplay
 
-    $ itemChoice = Item("Empty", "", "0")
-    $ removingItem = Item("Empty", "", "0")
-    if RemovingEquipment == 0:
-        $ itemChoice = player.inventory.items[inventoryETarget]
+screen perks_tab():
+    hbox:
+        vbox:
+            hbox:
+                fixed xsize 6 ysize 24 # spacing
+                fixed:
+                    xsize 192
+                    ysize 36
+                    imagebutton:
+                        idle "gui/smalltab_idle.png"
+                        hover "gui/smalltab_hover.png"
+                        insensitive "gui/smalltab_selected.png"
+                        action [SensitiveIf(perkTab != 1), SetVariable ("perkTab", 1)]
+                    text "Level Up" xalign 0.5 yalign 0.5 size 22
+                fixed:
+                    xsize 192
+                    ysize 36
+                    imagebutton:
+                        idle "gui/smalltab_idle.png"
+                        hover "gui/smalltab_hover.png"
+                        insensitive "gui/smalltab_selected.png"
+                        action [SensitiveIf(perkTab != 2), SetVariable ("perkTab", 2)]
+                    text "Other" xalign 0.5 yalign 0.5 size 22
 
-    #if RemovingEquipment != 0: #Unequip line implementation for Equipment, doesn't really work given it has the same pitfalls as item use events, except stopping equipping during events would be a big hassle, so im shelfing this for now
-    #    if RemovingEquipment == 1:
-    #        $ removingItem = copy.deepcopy(player.inventory.RuneSlotOne)
-    #    if RemovingEquipment == 2:
-    #        $ removingItem = copy.deepcopy(player.inventory.RuneSlotTwo)
-    #    if RemovingEquipment == 3:
-    #        $ removingItem = copy.deepcopy(player.inventory.RuneSlotThree)
-    #    if RemovingEquipment == 4:
-    #        $ removingItem = copy.deepcopy(player.inventory.AccessorySlot)
-    #    if removingItem.onUnequip != "":
-    #        $ display = removingItem.onUnequip
-    #        $ config.keymap['game_menu'].remove('mouseup_3')
-    #        $ config.keymap['game_menu'].remove('K_ESCAPE')
-    #        $ config.keymap['game_menu'].remove('K_MENU')
-    #        $ renpy.clear_keymap_cache()
-    #        call read
-    #        $ config.keymap['game_menu'].append('mouseup_3')
-    #        $ config.keymap['game_menu'].append('K_ESCAPE')
-    #        $ config.keymap['game_menu'].append('K_MENU')
-    #        $ renpy.clear_keymap_cache()
+            add "gui/framedividerhoriz619.png"
 
-    if itemChoice.itemType == "Rune" or RemovingEquipment <=3:
-        if TargetingEquipSlot == 1 or RemovingEquipment == 1:
-            if player.inventory.RuneSlotOne.name != "Empty":
-                $ player.inventory.give(player.inventory.RuneSlotOne.name, 1)
-            $ player.inventory.equip(1, player, -1)
-            if RemovingEquipment == 0:
-                $ player.inventory.RuneSlotOne = itemChoice
-                $ player.inventory.equip(1, player, 1)
+            if renpy.variant("touch"):
+                fixed:
+                    xsize 895
+                    ysize 306
+                    if len(player.perks) == 0:
+                        use ON_PerkDisplay(perkTab, 1)
+                    else:
+                        use ON_PerkDisplay(perkTab, 2)
             else:
-                $ player.inventory.RuneSlotOne = Item("Empty", "Rune", "0")
-        if TargetingEquipSlot == 2 or RemovingEquipment == 2:
-            if player.inventory.RuneSlotTwo.name != "Empty":
-                $ player.inventory.give(player.inventory.RuneSlotTwo.name, 1)
-            $ player.inventory.equip(2, player, -1)
-            if RemovingEquipment == 0:
-                $ player.inventory.RuneSlotTwo = itemChoice
-                $ player.inventory.equip(2, player, 1)
-            else:
-                $ player.inventory.RuneSlotTwo = Item("Empty", "Rune", "0")
-        if TargetingEquipSlot == 3 or RemovingEquipment == 3:
-            if player.inventory.RuneSlotThree.name != "Empty":
-                $ player.inventory.give(player.inventory.RuneSlotThree.name, 1)
-            $ player.inventory.equip(3, player, -1)
-            if RemovingEquipment == 0:
-                $ player.inventory.RuneSlotThree = itemChoice
-                $ player.inventory.equip(3, player, 1)
-            else:
-                $ player.inventory.RuneSlotThree = Item("Empty", "Rune", "0")
+                fixed:
+                    xsize 915
+                    ysize 306
+                    if len(player.perks) == 0:
+                        use ON_PerkDisplay(perkTab, 1)
+                    else:
+                        use ON_PerkDisplay(perkTab, 2)
 
-    if itemChoice.itemType == "Accessory" or RemovingEquipment == 4:
-        if player.inventory.AccessorySlot.name != "Empty":
-            $ player.inventory.give(player.inventory.AccessorySlot.name, 1)
-        $ player.inventory.equip(4, player, -1)
+        add "gui/framedivider235.png"
+
+        vbox:
+            xoffset 37
+            text "Sort Options" xalign 0.5
+            textbutton "---" text_size on_listTextSize text_color "#fff" ysize on_listTextSize xalign 0.5
+            textbutton "Alphebetical" text_size on_listTextSize action [Function(SortPerksByAlphabet)] xalign 0.5
+            textbutton "Reverse Alphebetical" text_size on_listTextSize action [Function(SortPerksByReverseAlphabet)] xalign 0.5
+            if perkTab == 1:
+                textbutton "Highest Level Req" text_size on_listTextSize action [Function(SortPerksByHighestLevel)] xalign 0.5
+            if perkTab == 1:
+                textbutton "Lowest Level Req" text_size on_listTextSize action [Function(SortPerksByLowestLevel)] xalign 0.5
+
+screen skills_tab():
+    if renpy.variant("touch"):
+        use ON_MenuSkillsList(height=357, xoff=5)
+    else:
+        use ON_MenuSkillsList(height=357)
+    fixed:
+        xpos 920
+        xsize 915
+        ysize 306
+        add "gui/framedivider235.png"
+    vbox:
+        xpos 960
+        text "Sort Options" xalign 0.5
+        textbutton "---" text_size on_listTextSize text_color "#fff" ysize on_listTextSize xalign 0.5
+        textbutton "Alphebetical" text_size on_listTextSize action [Function(SortSkillsByAlphebet)] xalign 0.5
+        textbutton "Reverse Alphebetical" text_size on_listTextSize action [Function(SortSkillsByReverseAlphebet)] xalign 0.5
+        textbutton "Lowest Energy Cost" text_size on_listTextSize action [Function(SortSkillsByEnergyCost)] xalign 0.5
+        textbutton "Highest Energy Cost" text_size on_listTextSize action [Function(SortSkillsByReverseEnergyCost)] xalign 0.5
+        textbutton "Lowest Damage" text_size on_listTextSize action [Function(SortSkillsByDamage)] xalign 0.5
+        textbutton "Highest Damage" text_size on_listTextSize action [Function(SortSkillsByReverseDamage)] xalign 0.5
+        if manualSort == 0:
+            textbutton "Manual Sorting" text_size on_listTextSize action [Function(ActivateManualSorting)] xalign 0.5
+        else:
+            textbutton "End Manual Sorting" text_size on_listTextSize action [Function(DeactivateManualSorting)] xalign 0.5
+            if swappingSkill != -1:
+                $ showText = player.skillList[swappingSkill].name
+                textbutton "[showText]" text_size on_listTextSize text_color "#fff" ysize on_listTextSize xalign 0.5
+
+screen inventory_tab():
+    hbox:
+        vbox:
+            hbox:
+                fixed xsize 6 ysize 24 # spacing
+                fixed:
+                    xsize 192
+                    ysize 36
+                    imagebutton:
+                        idle "gui/smalltab_idle.png"
+                        hover "gui/smalltab_hover.png"
+                        insensitive "gui/smalltab_selected.png"
+                        action [SensitiveIf(inventoryTab != 1), SetVariable ("inventoryTab", 1)]
+                    text "Consumables" xalign 0.5 yalign 0.5 size 22
+                fixed:
+                    xsize 192
+                    ysize 36
+                    imagebutton:
+                        idle "gui/smalltab_idle.png"
+                        hover "gui/smalltab_hover.png"
+                        insensitive "gui/smalltab_selected.png"
+                        action [SensitiveIf(inventoryTab != 2), SetVariable ("inventoryTab", 2), SetVariable ("RuneOrAccessory", 0)]
+                    text "Equipment" xalign 0.5 yalign 0.5 size 22
+                fixed:
+                    xsize 192
+                    ysize 36
+                    imagebutton:
+                        idle "gui/smalltab_idle.png"
+                        hover "gui/smalltab_hover.png"
+                        insensitive "gui/smalltab_selected.png"
+                        action [SensitiveIf(inventoryTab != 3), SetVariable ("inventoryTab", 3)]
+                    text "Key Items" xalign 0.5 yalign 0.5 size 22
+                if inventoryTab == 2:
+                    fixed:
+                        xsize 162
+                        ysize 36
+                        imagebutton:
+                            idle "gui/smallertab_idle_outline.png"
+                            hover "gui/smallertab_hover_outline.png"
+                            insensitive "gui/smallertab_selected.png"
+                            action [SensitiveIf(RuneOrAccessory != 0), SetVariable ("RuneOrAccessory", 0)]
+                        text "Runes" xalign 0.5 yalign 0.5 size 22
+
+                    fixed:
+                        xsize 162
+                        ysize 36
+                        imagebutton:
+                            idle "gui/smallertab_idle_outline.png"
+                            hover "gui/smallertab_hover_outline.png"
+                            insensitive "gui/smallertab_selected.png"
+                            action [SensitiveIf(RuneOrAccessory == 0), SetVariable ("RuneOrAccessory", 1)]
+                        text "Accessories" xalign 0.5 yalign 0.5 size 22
+
+            add "gui/framedividerhoriz619.png"
+
+            if renpy.variant("touch"):
+                fixed:
+                    xsize 895
+                    ysize 306
+                    use ON_InventoryDisplay(inventoryTab, 2)
+            else:
+                fixed:
+                    xsize 915
+                    ysize 306
+                    use ON_InventoryDisplay(inventoryTab, 2)
+
+        add "gui/framedivider235.png"
+        fixed xsize 25 #spacing
+        fixed:
+            xsize 305
+            ysize 352
+            use ON_ResistanceListDisplay
+
+## Perk Sorting ######################################################################
+init python:
+
+    def SortPerksByAlphabet():
+        renpy.retain_after_load()
+        player.perks = sorted(player.perks, key = lambda x: x.name)
+
+        cmenu_refreshSwapMenu()
+
+    def SortPerksByReverseAlphabet():
+        renpy.retain_after_load()
+        player.perks = sorted(player.perks, key = lambda x: x.name, reverse=True)
+
+        cmenu_refreshSwapMenu()
+
+    def SortPerksByHighestLevel():
+        renpy.retain_after_load()
+        player.perks = sorted(player.perks, key = lambda x: (x.StatReqAmount, x.LevelReq), reverse=True)
+        player.perks = sorted(player.perks, key = lambda x: (x.StatReqAmount, x.LevelReq), reverse=True)
+
+        cmenu_refreshSwapMenu()
+
+    def SortPerksByLowestLevel():
+        renpy.retain_after_load()
+        player.perks = sorted(player.perks, key = lambda x: (x.StatReqAmount, x.LevelReq))
+        player.perks = sorted(player.perks, key = lambda x: (x.StatReqAmount, x.LevelReq))
+
+        cmenu_refreshSwapMenu()
+
+## Skill Sorting ######################################################################
+    def SortSkillsByAlphebet():
+        renpy.retain_after_load()
+        player.skillList = sorted(player.skillList, key = lambda x: x.name)
+
+        cmenu_refreshSwapMenu()
+
+    def SortSkillsByReverseAlphebet():
+        renpy.retain_after_load()
+        player.skillList = sorted(player.skillList, key = lambda x: x.name, reverse=True)
+
+        cmenu_refreshSwapMenu()
+
+    def SortSkillsByEnergyCost():
+        renpy.retain_after_load()
+        player.skillList = sorted(player.skillList, key = lambda x: x.cost )
+
+        cmenu_refreshSwapMenu()
+
+    def SortSkillsByReverseEnergyCost():
+        renpy.retain_after_load()
+        player.skillList = sorted(player.skillList, key = lambda x: x.cost , reverse=True)
+
+        cmenu_refreshSwapMenu()
+
+    def SortSkillsByDamage():
+        renpy.retain_after_load()
+        player.skillList = sorted(player.skillList, key = lambda x: x.power + (player.stats.getStat(x.statType)-5)*0.3)
+
+        cmenu_refreshSwapMenu()
+
+    def SortSkillsByReverseDamage():
+        renpy.retain_after_load()
+        player.skillList = sorted(player.skillList, key = lambda x: x.power + (player.stats.getStat(x.statType)-5)*0.3, reverse=True)
+
+        cmenu_refreshSwapMenu()
+
+    def ActivateManualSorting():
+        global manualSort
+        manualSort = 1
+
+        cmenu_refreshSwapMenu()
+
+    def DeactivateManualSorting():
+        global manualSort
+        manualSort = 0
+
+        cmenu_refreshSwapMenu()
+
+    def SetSkillOrder():
+        renpy.retain_after_load()
+        if swappingSkill == -1:
+            swappingSkill = skillTarget
+        else:
+            xS = copy.deepcopy(player.skillList[swappingSkill])
+            yS = copy.deepcopy(player.skillList[skillTarget])
+
+            player.skillList[swappingSkill] = yS
+            player.skillList[skillTarget] = xS
+            cmenu_refreshSwapMenu()
+            swappingSkill = -1
+
+## Use ######################################################################
+    def EquipItem():
+        renpy.retain_after_load()
+
+        itemChoice = Item("Empty", "", "0")
+        removingItem = Item("Empty", "", "0")
+
+        global inventoryETarget
+        global itemChoice
+        global RemovingEquipment
         if RemovingEquipment == 0:
-            $ player.inventory.AccessorySlot = itemChoice
-            $ player.inventory.equip(4, player, 1)
-        else:
-            $ player.inventory.AccessorySlot = Item("Empty", "Accessory", "0")
+            itemChoice = player.inventory.items[inventoryETarget]
 
-    if RemovingEquipment == 0:
-        if itemChoice.itemType == "Rune":
-            if TargetingEquipSlot == 1:
-                $ player.inventory.useItem( player.inventory.RuneSlotOne.name)
-            if TargetingEquipSlot == 2:
-                $ player.inventory.useItem( player.inventory.RuneSlotTwo.name)
-            if TargetingEquipSlot == 3:
-                $ player.inventory.useItem( player.inventory.RuneSlotThree.name)
-        else:
-            $ player.inventory.useItem( player.inventory.AccessorySlot.name)
-    $ player.CalculateStatBoost()
+        #if RemovingEquipment != 0: #Unequip line implementation for Equipment, doesn't really work given it has the same pitfalls as item use events, except stopping equipping during events would be a big hassle, so im shelfing this for now
+        #    if RemovingEquipment == 1:
+        #        removingItem = copy.deepcopy(player.inventory.RuneSlotOne)
+        #    if RemovingEquipment == 2:
+        #        removingItem = copy.deepcopy(player.inventory.RuneSlotTwo)
+        #    if RemovingEquipment == 3:
+        #        removingItem = copy.deepcopy(player.inventory.RuneSlotThree)
+        #    if RemovingEquipment == 4:
+        #        removingItem = copy.deepcopy(player.inventory.AccessorySlot)
+        #    if removingItem.onUnequip != "":
+        #        display = removingItem.onUnequip
+        #        config.keymap['game_menu'].remove('mouseup_3')
+        #        config.keymap['game_menu'].remove('K_ESCAPE')
+        #        config.keymap['game_menu'].remove('K_MENU')
+        #        renpy.clear_keymap_cache()
+        #        call read
+        #        config.keymap['game_menu'].append('mouseup_3')
+        #        config.keymap['game_menu'].append('K_ESCAPE')
+        #        config.keymap['game_menu'].append('K_MENU')
+        #        renpy.clear_keymap_cache()
+
+        global TargetingEquipSlot
+        if itemChoice.itemType == "Rune" or RemovingEquipment <=3:
+            if TargetingEquipSlot == 1 or RemovingEquipment == 1:
+                if player.inventory.RuneSlotOne.name != "Empty":
+                    player.inventory.give(player.inventory.RuneSlotOne.name, 1)
+                player.inventory.equip(1, player, -1)
+                if RemovingEquipment == 0:
+                    player.inventory.RuneSlotOne = itemChoice
+                    player.inventory.equip(1, player, 1)
+                else:
+                    player.inventory.RuneSlotOne = Item("Empty", "Rune", "0")
+            if TargetingEquipSlot == 2 or RemovingEquipment == 2:
+                if player.inventory.RuneSlotTwo.name != "Empty":
+                    player.inventory.give(player.inventory.RuneSlotTwo.name, 1)
+                player.inventory.equip(2, player, -1)
+                if RemovingEquipment == 0:
+                    player.inventory.RuneSlotTwo = itemChoice
+                    player.inventory.equip(2, player, 1)
+                else:
+                    player.inventory.RuneSlotTwo = Item("Empty", "Rune", "0")
+            if TargetingEquipSlot == 3 or RemovingEquipment == 3:
+                if player.inventory.RuneSlotThree.name != "Empty":
+                    player.inventory.give(player.inventory.RuneSlotThree.name, 1)
+                player.inventory.equip(3, player, -1)
+                if RemovingEquipment == 0:
+                    player.inventory.RuneSlotThree = itemChoice
+                    player.inventory.equip(3, player, 1)
+                else:
+                    player.inventory.RuneSlotThree = Item("Empty", "Rune", "0")
+
+        if itemChoice.itemType == "Accessory" or RemovingEquipment == 4:
+            if player.inventory.AccessorySlot.name != "Empty":
+                player.inventory.give(player.inventory.AccessorySlot.name, 1)
+            player.inventory.equip(4, player, -1)
+            if RemovingEquipment == 0:
+                player.inventory.AccessorySlot = itemChoice
+                player.inventory.equip(4, player, 1)
+            else:
+                player.inventory.AccessorySlot = Item("Empty", "Accessory", "0")
+
+        if RemovingEquipment == 0:
+            if itemChoice.itemType == "Rune":
+                if TargetingEquipSlot == 1:
+                    player.inventory.useItem( player.inventory.RuneSlotOne.name)
+                if TargetingEquipSlot == 2:
+                    player.inventory.useItem( player.inventory.RuneSlotTwo.name)
+                if TargetingEquipSlot == 3:
+                    player.inventory.useItem( player.inventory.RuneSlotThree.name)
+            else:
+                player.inventory.useItem( player.inventory.AccessorySlot.name)
+        player.CalculateStatBoost()
 
 
-    if player.stats.hp <= 0:
-        $ player.stats.hp = 0
-    if player.stats.ep >= player.stats.max_true_ep:
-        $ player.stats.ep = player.stats.max_true_ep
-    if player.stats.ep <= 0:
-        $ player.stats.ep = 0
-    if player.stats.sp >= player.stats.max_true_sp:
-        $ player.stats.sp = player.stats.max_true_sp
-    if player.stats.sp <= 0:
-        $ player.stats.sp = 0
+        if player.stats.hp <= 0:
+            player.stats.hp = 0
+        if player.stats.ep >= player.stats.max_true_ep:
+            player.stats.ep = player.stats.max_true_ep
+        if player.stats.ep <= 0:
+            player.stats.ep = 0
+        if player.stats.sp >= player.stats.max_true_sp:
+            player.stats.sp = player.stats.max_true_sp
+        if player.stats.sp <= 0:
+            player.stats.sp = 0
 
 
-    #if RemovingEquipment == 0: #Equip line implementation for Equipment, doesn't really work given it has the same pitfalls as item use events, except stopping equipping during events would be a big hassle, so im shelfing this for now
-    #    if itemChoice.onEquip != "":
-    #        $ display = itemChoice.onEquip
-    #        $ config.keymap['game_menu'].remove('mouseup_3')
-    #        $ config.keymap['game_menu'].remove('K_ESCAPE')
-    #        $ config.keymap['game_menu'].remove('K_MENU')
-    #        $renpy.clear_keymap_cache()
-    #        call read
-    #        $ config.keymap['game_menu'].append('mouseup_3')
-    #        $ config.keymap['game_menu'].append('K_ESCAPE')
-    #        $ config.keymap['game_menu'].append('K_MENU')
-    #        $renpy.clear_keymap_cache()
+        #if RemovingEquipment == 0: #Equip line implementation for Equipment, doesn't really work given it has the same pitfalls as item use events, except stopping equipping during events would be a big hassle, so im shelfing this for now
+        #    if itemChoice.onEquip != "":
+        #        display = itemChoice.onEquip
+        #        config.keymap['game_menu'].remove('mouseup_3')
+        #        config.keymap['game_menu'].remove('K_ESCAPE')
+        #        config.keymap['game_menu'].remove('K_MENU')
+        #        $renpy.clear_keymap_cache()
+        #        call read
+        #        config.keymap['game_menu'].append('mouseup_3')
+        #        config.keymap['game_menu'].append('K_ESCAPE')
+        #        config.keymap['game_menu'].append('K_MENU')
+        #        $renpy.clear_keymap_cache()
 
 
 
-    $ RemovingEquipment = 0
-    $ unequippingItem = 0
+        RemovingEquipment = 0
+        global unequippingItem ; unequippingItem = 0
 
+    def useInventoryItem():
+        renpy.retain_after_load()
 
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
+        global itemChoice
+        itemChoice = player.inventory.items[inventoryTarget]
 
+        global attackerName ; attackerName = player.name
+        global attackerHeOrShe ; attackerHeOrShe = getHeOrShe(player)
+        global attackerHisOrHer ; attackerHisOrHer = getHisOrHer(player)
+        global attackerHimOrHer ; attackerHimOrHer = getHimOrHer(player)
+        global attackerYouOrMonsterName ; attackerYouOrMonsterName = getYouOrMonsterName(player)
 
-    jump exitCombatFunction
-
-
-label useInventoryItem:
-    $ renpy.retain_after_load()
-    $ itemChoice = player.inventory.items[inventoryTarget]
-
-    $ _game_menu_screen = None
-
-    $ attackerName = player.name
-    $ attackerHeOrShe = getHeOrShe(player)
-    $ attackerHisOrHer = getHisOrHer(player)
-    $ attackerHimOrHer = getHimOrHer(player)
-    $ attackerYouOrMonsterName = getYouOrMonsterName(player)
-    python:
+        global displayingScene
         try:
             displayingScene.theScene
         except:
             displayingScene = Dialogue()
 
 
-    $ display = ""
-    if len(itemChoice.skills) > 0 and itemChoice.itemType != "DissonantConsumable":
-        $ player.inventory.useItem(itemChoice.name)
-        $ fetchSkill = getFromName(itemChoice.skills[0], SkillsDatabase)
-        $ menuItemChoice = copy.deepcopy(SkillsDatabase[fetchSkill])
-        $ menuItemChoice.isSkill = itemChoice.itemType
+        global display ; display = ""
+        global fetchSkill
+        global menuItemChoice
+        global holder
+        global player
+        global itemEvent
+        global characterMenuTooltip
+        if len(itemChoice.skills) > 0 and itemChoice.itemType != "DissonantConsumable":
+            player.inventory.useItem(itemChoice.name)
+            fetchSkill = getFromName(itemChoice.skills[0], SkillsDatabase)
+            menuItemChoice = copy.deepcopy(SkillsDatabase[fetchSkill])
+            menuItemChoice.isSkill = itemChoice.itemType
 
-        $ holder = HealCalc(player, menuItemChoice)
-        $ player = holder[0]
-        $ display += holder[1]
+            holder = HealCalc(player, menuItemChoice)
+            player = holder[0]
+            display += holder[1]
 
+            global characterMenuCanHover ; characterMenuCanHover = False
+            display = returnReaderDiction(display)
+            characterMenuTooltip = display
+            renpy.run(SetScreenVariable("characterMenuTooltip", characterMenuTooltip))
 
+            if player.stats.Exp >= player.stats.ExpNeeded:
 
-        $ display = returnReaderDiction(display)
-        $ characterMenuTooltip = display
-        $ tt = Tooltip(display)
+                global culmitiveLeveling ; culmitiveLeveling = 0
+                global hpIncreases ; hpIncreases = 0
+                global statPointIncreases ; statPointIncreases = 0
+                global sensitivityIncreases ; sensitivityIncreases = 0
+                global perkIncreases ; perkIncreases = 0
+                renpy.jump("levelUpSpot")
 
-        if player.stats.Exp >= player.stats.ExpNeeded:
-
-            $ culmitiveLeveling = 0
-            $ hpIncreases = 0
-            $ statPointIncreases = 0
-            $ sensitivityIncreases = 0
-            $ perkIncreases = 0
-            call levelUpSpot from _call_levelUpSpot_3
-
-    elif lineOfScene < len(displayingScene.theScene):
-        $ display = "You can't use that right now."
-        $ characterMenuTooltip = display
-        $ tt = Tooltip(display)
-    else:
-        #$ renpy.curry(renpy.end_interaction)(True) # thought this might be able to close the menu before instigating an event to make shit work better. But it either crashes, or does nothing, seems to only work with a button, even if it did, im pretty sure it'd end the event before it started.
-        $ player.inventory.useItem(itemChoice.name)
-        $ display = itemChoice.useOutcome
-        $ config.keymap['game_menu'].remove('mouseup_3')
-        $ config.keymap['game_menu'].remove('K_ESCAPE')
-        $ config.keymap['game_menu'].remove('K_MENU')
-        $renpy.clear_keymap_cache()
-        $ itemEvent = 1
-        call read from _call_read_1
-        $ itemEvent = 0
-        $ config.keymap['game_menu'].append('mouseup_3')
-        $ config.keymap['game_menu'].append('K_ESCAPE')
-        $ config.keymap['game_menu'].append('K_MENU')
-        $renpy.clear_keymap_cache()
-
-    $ _game_menu_screen="ON_CharacterDisplayScreen"
-    #call _game_menu from _call__game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
+        elif lineOfScene < len(displayingScene.theScene):
+            display = "You can't use that right now."
+            characterMenuTooltip = display
+            characterMenuCanHover = False
+            renpy.run(SetScreenVariable("characterMenuTooltip", characterMenuTooltip))
+        else:
+            #renpy.curry(renpy.end_interaction)(True) # thought this might be able to close the menu before instigating an event to make shit work better. But it either crashes, or does nothing, seems to only work with a button, even if it did, im pretty sure it'd end the event before it started.
+            player.inventory.useItem(itemChoice.name)
+            display = itemChoice.useOutcome
+            config.keymap['game_menu'].remove('mouseup_3')
+            config.keymap['game_menu'].remove('K_ESCAPE')
+            config.keymap['game_menu'].remove('K_MENU')
+            renpy.clear_keymap_cache()
+            itemEvent = 1
+            renpy.jump("itemEventHandler")
 
 
-    jump exitCombatFunction
+    def useSkillFromMenu():
+        renpy.retain_after_load()
+        itemChoice = Item("Blank", "Null", 0)
+        global display ; display = ""
+        global finalDamage ; finalDamage = 0
+        global skillChoice ; skillChoice = player.skillList[skillTarget]
 
-label SetSkillOrder:
-    $ renpy.retain_after_load()
-    if swappingSkill == -1:
-        $ swappingSkill = skillTarget
-    else:
-        $ xS = copy.deepcopy(player.skillList[swappingSkill])
-        $ yS = copy.deepcopy(player.skillList[skillTarget])
+        global attackerName ; attackerName = player.name
+        global attackerHeOrShe ; attackerHeOrShe = getHeOrShe(player)
+        global attackerHisOrHer ; attackerHisOrHer = getHisOrHer(player)
+        global attackerHimOrHer ; attackerHimOrHer = getHimOrHer(player)
+        global attackerYouOrMonsterName ; attackerYouOrMonsterName = getYouOrMonsterName(player)
 
-        $ player.skillList[swappingSkill] = yS
-        $ player.skillList[skillTarget] = xS
-        $ cmenu_refreshSwapMenu()
-        $ swappingSkill = -1
+        global holder ; holder = HealCalc(player, skillChoice)
+        global player ; player = holder[0]
 
-    $ _game_menu_screen="ON_CharacterDisplayScreen" # replaces SkillsDisplayScreen
-    #call _game_menu from _call__game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
+        display += holder[1]
 
-    jump exitCombatFunction
+        if skillChoice.costType == "ep":
+            player.stats.ep -= skillChoice.cost
+        elif skillChoice.costType == "hp":
+            actualCost = skillChoice.cost + (player.stats.max_true_hp-100)*0.15
+            actualCost = math.floor(actualCost)
+            actualCost = int(actualCost)
+            player.stats.hp += actualCost
+        elif skillChoice.costType == "sp":
+            player.stats.sp -= skillChoice.cost
 
-label useSkillFromMenu:
-    $ renpy.retain_after_load()
-    $ itemChoice = Item("Blank", "Null", 0)
-    $ finalDamage = 0
-    $ skillChoice = player.skillList[skillTarget]
+        global characterMenuCanHover ; characterMenuCanHover = False
+        display = returnReaderDiction(display)
+        characterMenuTooltip = display
+        renpy.run(SetScreenVariable("characterMenuTooltip", characterMenuTooltip))
 
-    $ attackerName = player.name
-    $ attackerHeOrShe = getHeOrShe(player)
-    $ attackerHisOrHer = getHisOrHer(player)
-    $ attackerHimOrHer = getHimOrHer(player)
-    $ attackerYouOrMonsterName = getYouOrMonsterName(player)
-
-    $ holder = HealCalc(player, skillChoice)
-    $ player = holder[0]
-    $ display += holder[1]
-
-    if skillChoice.costType == "ep":
-        $ player.stats.ep -= skillChoice.cost
-    elif skillChoice.costType == "hp":
-        $ actualCost = skillChoice.cost + (player.stats.max_true_hp-100)*0.15
-        $ actualCost = math.floor(actualCost)
-        $ actualCost = int(actualCost)
-        $ player.stats.hp += actualCost
-    elif skillChoice.costType == "sp":
-        $ player.stats.sp -= skillChoice.cost
-
-    $ display = returnReaderDiction(display)
-    $ characterMenuTooltip = display
-
-    $ tt = Tooltip(display)
-
-    $ _game_menu_screen="ON_CharacterDisplayScreen" # replaces SkillsDisplayScreen
-    #call _game_menu from _call__game_menu
-    python:
-        renpy.call_in_new_context('_game_menu')
-
-    jump exitCombatFunction
+label itemEventHandler():
+    call read() from _call_read_1
+    $ itemEvent = 0
+    $ config.keymap['game_menu'].append('mouseup_3')
+    $ config.keymap['game_menu'].append('K_ESCAPE')
+    $ config.keymap['game_menu'].append('K_MENU')
+    $ renpy.clear_keymap_cache()

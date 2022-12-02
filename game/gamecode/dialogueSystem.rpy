@@ -440,7 +440,6 @@ label resumeSceneAfterCombat:
                                     what_suffix='"')
             $ lineOfScene += 1
             $ readLine = 1
-            $ print("This did NOT work as I thought!")
         elif displayingScene.theScene[lineOfScene] == "PlayerSpeaksSkill":
             if len(monsterEncounter) >= 1:
                 $ Speaker = Character(_(player.name+attackTitle) )
@@ -1499,33 +1498,57 @@ label resumeSceneAfterCombat:
                 "[display]"
 
         elif displayingScene.theScene[lineOfScene] == "ChangeFetish":
-            $ FETISH_MAX_LEVEL = ptceConfig.get("fetishGain").get("fetishMaxLevel")
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
             $ lineOfScene += 1
             $ resAmount = int(displayingScene.theScene[lineOfScene])
 
-            $ playersFetish = player.getFetishObject(resTarget)
-            $ playersFetish.increaseTemp(resAmount)
 
-            if playersFetish.Type == "Fetish":
+            $ baseFetish = player.getFetish(resTarget)
 
-                if playersFetish.Level < FETISH_MAX_LEVEL:
+            $ fetchFetish = getFromName(resTarget, player.FetishList)
+            if player.FetishList[fetchFetish].Type == "Fetish":
+                while resAmount + baseFetish > 100 and resAmount > 0:
+                    $ resAmount-=1
+
+                    if resAmount < 0:
+                        $ resAmount = 0
+
+
+            $ baseFetish += resAmount
+
+            $ player.setFetish(resTarget, baseFetish)
+
                     if (resAmount > 0):
-                        if playersFetish.Level - resAmount == 0:
+                $ L = 0
+                python:
+                    for fet in TempFetishes:
+                        if fet.name == resTarget and player.FetishList[L].Type == "Fetish":
+
+                            TempFetishes[L].Level += resAmount
+
+                            if TempFetishes[L].Level > 100 - baseFetish + TempFetishes[L].Level and baseFetish <100:
+                                TempFetishes[L].Level = 100 - baseFetish + TempFetishes[L].Level
+                        L += 1
+
+            if player.FetishList[fetchFetish].Type == "Fetish":
+
+                if baseFetish < 100:
+                    if (resAmount > 0):
+                        if baseFetish - resAmount == 0:
                             $ display = "You have started getting a fetish for " + resTarget +  "..."
-                        elif playersFetish.Level - resAmount < 25 and playersFetish.Level >= 25:
+                        elif baseFetish - resAmount < 25 and baseFetish >= 25:
                             $ display = "You have acquired a fetish for " + resTarget +  "."
                         else:
                             $ display = "Your fetish for " + resTarget +  " has intensified!"
 
                     elif (resAmount < 0):
-                        if playersFetish.Level <= 0:
+                        if baseFetish <= 0:
                             $ display = "You have lost your fetish for " + resTarget +  "."
                         else:
                             $ display = "Your fetish for " + resTarget +  " has receded."
-                if playersFetish.Level >= FETISH_MAX_LEVEL:
-                    if playersFetish.Level >= FETISH_MAX_LEVEL:
+                if baseFetish >= 100:
+                    if baseFetish >= 100:
                         $ display = "Your fetish for " + resTarget +  " has become a complete and total obsession, but it can't get any worse than it is now...."
                     #elif baseFetish > 10:
                         #$ display = "Fantasies of " + resTarget +  " swirl through your mind as your heart pounds in your chest... You have {i}permanently{/i} gained a fetish level for " + resTarget + ", temporarily bringing your obsessive fetish of " + resTarget +  " to level " + str(fetchFetish) + "..."
@@ -1535,20 +1558,20 @@ label resumeSceneAfterCombat:
 
 
         elif displayingScene.theScene[lineOfScene] == "PermanentlyChangeFetish":
-            $ FETISH_MAX_LEVEL = ptceConfig.get("fetishGain").get("fetishMaxLevel")
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
             $ lineOfScene += 1
             $ resAmount = int(displayingScene.theScene[lineOfScene])
 
-            $ playersFetish = player.getFetishObject(resTarget)
-            $ playersFetish.increasePerm(resAmount)
+            $ baseFetish = player.getFetish(resTarget)
+            $ baseFetish += resAmount
 
-            $ baseFetish = playersFetish.Level
+            $ player.setFetish(resTarget, baseFetish)
 
-            if playersFetish.Type == "Fetish":
+            $ fetchFetish = getFromName(resTarget, player.FetishList)
+            if player.FetishList[fetchFetish].Type == "Fetish":
 
-                if baseFetish < FETISH_MAX_LEVEL:
+                if baseFetish < 100:
                     if (int(displayingScene.theScene[lineOfScene]) >= 1):
                         if resAmount > 1:
                             $ display = "You {i}permanently{/i} gained " + str(resAmount) + " fetish levels for " + resTarget +  "..."
@@ -1561,13 +1584,11 @@ label resumeSceneAfterCombat:
                             $ display = "You have {i}permanently{/i} lost " + str(resAmount) +" fetish levels for " + resTarget +  "."
                         else:
                             $ display = "You have {i}permanently{/i} lost a fetish level for " + resTarget +  "."
-                if baseFetish > FETISH_MAX_LEVEL and resAmount >= 1:
+                if baseFetish > 100 and resAmount >= 1:
                     $ display = "Fantasies of " + resTarget +  " swirl through your mind, and your heart beats faster, you have {i}permanently{/i} gained a fetish level for " + resTarget + ", exceeding your normal obsession..."
 
                 if (resAmount != 0):
                     "[display]"
-
-
         elif displayingScene.theScene[lineOfScene] == "SetFetish":
             $ lineOfScene += 1
             $ resTarget = displayingScene.theScene[lineOfScene]
@@ -1600,7 +1621,6 @@ label resumeSceneAfterCombat:
 
         elif displayingScene.theScene[lineOfScene] == "PlayerOrgasm":
             $ lineOfScene += 1
-                    
             $ player.stats.hp = 0
             $ spiritLostO = SpiritCalulation(player, int(displayingScene.theScene[lineOfScene]))
             $ player.stats.sp -= spiritLostO
@@ -2762,6 +2782,8 @@ label resumeSceneAfterCombat:
             $ onGridMap = 0
             $ runAndStayInEvent = 0
             $ RanAway = "False"
+            $ InventoryAvailable = True
+            $ DenyGridInventory = False
             hide screen Gridmap
             hide screen GridmapPlayer
             hide screen GridmapNPCs
@@ -2961,7 +2983,8 @@ label resumeSceneAfterCombat:
                     elif displayingScene.theScene[lineOfScene] == "Sight":
                         $ lineOfScene += 1
                         $ PlayerGridSight = int(displayingScene.theScene[lineOfScene])
-
+                    elif displayingScene.theScene[lineOfScene] == "DenyGridInventory":
+                        $ DenyGridInventory = True
                     elif displayingScene.theScene[lineOfScene] == "NPC":
                         $ newNPC = GridNPC()
                         while displayingScene.theScene[lineOfScene] != "EndLoop":
@@ -3588,16 +3611,24 @@ label resumeSceneAfterCombat:
             $ monsterEncounter[CombatFunctionEnemytarget].moneyDropped += int(displayingScene.theScene[lineOfScene])
         elif displayingScene.theScene[lineOfScene] == "RecalculateMonsterErosDrop":
             $ lineOfScene += 1
+            $ eroMod = 1
+            if displayingScene.theScene[lineOfScene] == "AlterByPercent":
+                $ lineOfScene += 1
+                $ eroMod = int(displayingScene.theScene[lineOfScene])*0.01
             $ lvlchek = monsterEncounter[CombatFunctionEnemytarget].stats.lvl
-            $ monsterEncounter[CombatFunctionEnemytarget].stats.Exp = int((lvlchek)^2+(lvlchek*10)+48)
+            $ monsterEncounter[CombatFunctionEnemytarget].stats.Exp = int((lvlchek)^2+(lvlchek*10)+48)*eroMod
         elif displayingScene.theScene[lineOfScene] == "ChangeMonsterExpDrop":
             $ lineOfScene += 1
             $ monsterEncounter[CombatFunctionEnemytarget].stats.Exp += int(displayingScene.theScene[lineOfScene])
 
         elif displayingScene.theScene[lineOfScene] == "RecalculateMonsterExpDrop":
             $ lineOfScene += 1
+            $ expMod = 1
+            if displayingScene.theScene[lineOfScene] == "AlterByPercent":
+                $ lineOfScene += 1
+                $ expMod = int(displayingScene.theScene[lineOfScene])*0.01
             $ lvlchek = monsterEncounter[CombatFunctionEnemytarget].stats.lvl
-            $ monsterEncounter[CombatFunctionEnemytarget].stats.Exp = int((0.4*(lvlchek*lvlchek))+(2*lvlchek)+(15*math.sqrt(lvlchek)-8))
+            $ monsterEncounter[CombatFunctionEnemytarget].stats.Exp = int((0.4*(lvlchek*lvlchek))+(2*lvlchek)+(15*math.sqrt(lvlchek)-8))*expMod
 
         elif displayingScene.theScene[lineOfScene] == "RefreshMonster":
             $ monsterEncounter[CombatFunctionEnemytarget] = monsterEncounter[CombatFunctionEnemytarget].statusEffects.refresh(monsterEncounter[CombatFunctionEnemytarget])
@@ -3935,6 +3966,13 @@ label resumeSceneAfterCombat:
             $ recoil =  int(math.floor(recoil))
             $ monsterEncounter[CombatFunctionEnemytarget].stats.hp += recoil
             $ player.stats.hp += holder[0]
+        elif displayingScene.theScene[lineOfScene] == "IfAttackCrits":
+            $ lineOfScene += 1
+            if Crit == 1:
+                $ display = displayingScene.theScene[lineOfScene]
+                call sortMenuD from _call_sortMenuD_92
+                if len(monsterEncounter) > 0:
+                    return
         elif displayingScene.theScene[lineOfScene] == "DamagePlayerFromMonster":
             $ recoil = 0
             $ lineOfScene += 1
@@ -5115,7 +5153,9 @@ label resumeSceneAfterCombat:
             $ showOnSide = 1
             while displayingScene.theScene[lineOfScene] != "EndLoop":
                 $ lineOfScene += 1
-                if displayingScene.theScene[lineOfScene] != "EndLoop":
+                if displayingScene.theScene[lineOfScene] == "PurchasesToProgress":
+                    $ PurchasesToProgress = 1
+                elif displayingScene.theScene[lineOfScene] != "EndLoop":
                     $ dataTarget = getFromName(displayingScene.theScene[lineOfScene], SkillsDatabase)
                     $ blankItem = SkillsDatabase[dataTarget]
                     $ ShoppingSkillList.append(blankItem)
@@ -5137,8 +5177,11 @@ label resumeSceneAfterCombat:
             $ showOnSide = 1
             while displayingScene.theScene[lineOfScene] != "EndLoop":
                 $ lineOfScene += 1
-                if displayingScene.theScene[lineOfScene] != "EndLoop":
-                    $dataTarget = getFromName(displayingScene.theScene[lineOfScene], ItemDatabase)
+
+                if displayingScene.theScene[lineOfScene] == "PurchasesToProgress":
+                    $ PurchasesToProgress = 1
+                elif displayingScene.theScene[lineOfScene] != "EndLoop":
+                    $ dataTarget = getFromName(displayingScene.theScene[lineOfScene], ItemDatabase)
                     $ blankItem = ItemDatabase[dataTarget]
                     $ ShoppingItemList.append(blankItem)
 
@@ -5153,6 +5196,7 @@ label resumeSceneAfterCombat:
             hide screen ON_ShoppingScreen
             $ showOnSide = 0
             $ ShoppingSkillList = []
+            $ PurchasesToProgress = 0
 
 
         elif displayingScene.theScene[lineOfScene] == "InputProgress":

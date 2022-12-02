@@ -342,10 +342,15 @@ screen ON_AdventureSetupMenu:
                             $ numberInDeck += 1
 
                 if hasReq >= len(currentCard.requires) + len(currentCard.requiresEvent):
+
                     hbox:
                         fixed:
+                            if renpy.variant("touch"):
+                                ysize 75
+                            else:
+                                ysize 60
                             xsize 120
-                            ysize 60
+
 
                             imagebutton:
                                 idle "gui/ListEntryBack.png"
@@ -371,59 +376,121 @@ screen ON_AdventureSetupMenu:
                                         action SetVariable("currentCardName", currentCard.name), Jump("AddToDeck")
 
                             else:
-                                if tabToggle != 1:
-                                    imagebutton:
-                                        idle "gui/Button_dec_idle.png"
-                                        hover "gui/Button_dec_hover.png"
-                                        xalign 0.0
-                                        yalign 0.5
-                                        action [SensitiveIf(numberInDeck > 0), SetVariable("currentCardName", currentCard.name), Jump ("RemoveFromDeck")]
+                                if renpy.variant("touch"):
+                                    $ buttonIdleImgDown = "gui/Button_dec_idle_Jumbo.png"
+                                    $ buttonHoverImgDown = "gui/Button_dec_hover_Jumbo.png"
+                                    $ buttonIdleImgUp = "gui/Button_inc_idle_Jumbo.png"
+                                    $ buttonHoverImgUp = "gui/Button_inc_hover_Jumbo.png"
+                                    hbox:
+                                        if tabToggle != 1:
+                                            imagebutton:
+                                                idle buttonIdleImgDown
+                                                hover buttonHoverImgDown
+                                                xalign 0.0
+                                                yalign 0.5
+                                                action [SensitiveIf(numberInDeck > 0), SetVariable("currentCardName", currentCard.name), Jump ("RemoveFromDeck")]
+                                        else:
+                                            imagebutton:
+                                                idle buttonIdleImgDown
+                                                hover buttonHoverImgDown
+                                                xalign 0.0
+                                                yalign 0.5
+                                                action [SensitiveIf(numberInDeck > 0), SetVariable("currentCardName", currentCard.IDname), Jump ("RemoveFromDeck")]
+
+                                        if tabToggle == 1:
+                                            $ numText = str(numberInDeck)
+                                        else:
+                                            $ numText = str(numberInDeck) + "/" + str(currentCard.CardLimit)
+
+                                        fixed:
+                                            xalign 0.5
+                                            yalign 0.5
+                                            #add "gui/circlebuttonlarge.png"
+                                            text numText xalign 0.5 yalign 0.5
+
+                                        $ addible = False
+                                        if currentMax > len(currentDeck):
+                                            if tabToggle == 2:
+                                                if numberInDeck < currentCard.CardLimit:
+                                                    $ addible = True
+                                            else:
+                                                $ addible = True
+
+                                        if tabToggle != 1:
+                                            imagebutton:
+                                                idle buttonIdleImgUp
+                                                hover buttonHoverImgUp
+                                                xalign 1.0
+                                                yalign 0.5
+                                                action [SensitiveIf(addible), SetVariable("currentCardName", currentCard.name), Jump ("AddToDeck")]
+                                        else:
+                                            imagebutton:
+                                                idle buttonIdleImgUp
+                                                hover buttonHoverImgUp
+                                                xalign 1.0
+                                                yalign 0.5
+                                                action [SensitiveIf(addible), SetVariable("currentCardName", currentCard.IDname), Jump ("AddToDeck")]
                                 else:
-                                    imagebutton:
-                                        idle "gui/Button_dec_idle.png"
-                                        hover "gui/Button_dec_hover.png"
-                                        xalign 0.0
-                                        yalign 0.5
-                                        action [SensitiveIf(numberInDeck > 0), SetVariable("currentCardName", currentCard.IDname), Jump ("RemoveFromDeck")]
-
-                                if tabToggle == 1:
-                                    $ numText = str(numberInDeck)
-                                else:
-                                    $ numText = str(numberInDeck) + "/" + str(currentCard.CardLimit)
-
-                                fixed:
-                                    xalign 0.5
-                                    yalign 0.5
-                                    #add "gui/circlebuttonlarge.png"
-                                    text numText xalign 0.5 yalign 0.5
-
-                                $ addible = False
-                                if currentMax > len(currentDeck):
-                                    if tabToggle == 2:
-                                        if numberInDeck < currentCard.CardLimit:
-                                            $ addible = True
+                                    $ buttonIdleImgDown = "gui/Button_dec_idle.png"
+                                    $ buttonHoverImgDown = "gui/Button_dec_hover.png"
+                                    $ buttonIdleImgUp = "gui/Button_inc_idle.png"
+                                    $ buttonHoverImgUp = "gui/Button_inc_hover.png" 
+                                    if tabToggle != 1:
+                                        imagebutton:
+                                            idle buttonIdleImgDown
+                                            hover buttonHoverImgDown
+                                            xalign 0.0
+                                            yalign 0.5
+                                            action [SensitiveIf(numberInDeck > 0), SetVariable("currentCardName", currentCard.name), Jump ("RemoveFromDeck")]
                                     else:
-                                        $ addible = True
+                                        imagebutton:
+                                            idle buttonIdleImgDown
+                                            hover buttonHoverImgDown
+                                            xalign 0.0
+                                            yalign 0.5
+                                            action [SensitiveIf(numberInDeck > 0), SetVariable("currentCardName", currentCard.IDname), Jump ("RemoveFromDeck")]
 
-                                if tabToggle != 1:
-                                    imagebutton:
-                                        idle "gui/Button_inc_idle.png"
-                                        hover "gui/Button_inc_hover.png"
-                                        xalign 1.0
+                                    if tabToggle == 1:
+                                        $ numText = str(numberInDeck)
+                                    else:
+                                        $ numText = str(numberInDeck) + "/" + str(currentCard.CardLimit)
+
+                                    fixed:
+                                        xalign 0.5
                                         yalign 0.5
-                                        action [SensitiveIf(addible), SetVariable("currentCardName", currentCard.name), Jump ("AddToDeck")]
-                                else:
-                                    imagebutton:
-                                        idle "gui/Button_inc_idle.png"
-                                        hover "gui/Button_inc_hover.png"
-                                        xalign 1.0
-                                        yalign 0.5
-                                        action [SensitiveIf(addible), SetVariable("currentCardName", currentCard.IDname), Jump ("AddToDeck")]
+                                        #add "gui/circlebuttonlarge.png"
+                                        text numText xalign 0.5 yalign 0.5
+
+                                    $ addible = False
+                                    if currentMax > len(currentDeck):
+                                        if tabToggle == 2:
+                                            if numberInDeck < currentCard.CardLimit:
+                                                $ addible = True
+                                        else:
+                                            $ addible = True
+
+                                    if tabToggle != 1:
+                                        imagebutton:
+                                            idle buttonIdleImgUp
+                                            hover buttonHoverImgUp
+                                            xalign 1.0
+                                            yalign 0.5
+                                            action [SensitiveIf(addible), SetVariable("currentCardName", currentCard.name), Jump ("AddToDeck")]
+                                    else:
+                                        imagebutton:
+                                            idle buttonIdleImgUp
+                                            hover buttonHoverImgUp
+                                            xalign 1.0
+                                            yalign 0.5
+                                            action [SensitiveIf(addible), SetVariable("currentCardName", currentCard.IDname), Jump ("AddToDeck")]
 
                         if tabToggle == 3:
                             text currentCard.name xpos -10 yalign 0.5 size 26
                         else:
-                            text currentCard.name xpos 13 yalign 0.5 size 26
+                            if renpy.variant("touch"):
+                                text currentCard.name xpos 65 yalign 0.5 size 26
+                            else:
+                                text currentCard.name xpos 13 yalign 0.5 size 26
 
     if hoveredCard is not None:
         fixed:

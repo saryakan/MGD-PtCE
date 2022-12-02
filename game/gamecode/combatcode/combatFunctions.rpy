@@ -2141,7 +2141,7 @@ label combatFunctions:
             return [attacker, theTarget, justEscapedStance]
 
         def AttackCalc(attacker, theTarget, move, autoHits=0, increaseFetishOnHit = False):
-
+            global Crit
             defenceMod = 1
             stanceApply = "False"
             effectiveText = ""
@@ -2400,6 +2400,8 @@ label combatFunctions:
                         finalDamage *= critDamage
                         Crit = 1
                         critText = "{color=#ff587d}Passionate!{/color} "
+                    else:
+                        Crit = 0
                     #elif critChance + getCritReduction(theTarget) >= critRoll:
                     #    critText = "{color=#535F98}Passion Endured!{/color} "
 
@@ -3043,8 +3045,10 @@ label combatFunctions:
             if(healingArousal != 0):
                 attacker.stats.hp -= healingArousal
                 if healingArousal > 0:
+                    healingArousal = abs(healingArousal)
                     display += " Arousal lowered by " + str(healingArousal) + "! "
                 else:
+                    healingArousal = abs(healingArousal)
                     display += " Arousal increased by " + str(healingArousal) + "! "
             if(healingEnergy != 0):
                 attacker.stats.ep += healingEnergy

@@ -66,7 +66,7 @@ init python:
     theTimeType = ""
     perkDurationTip = 0
     LostGameOver = 0
-
+    Crit = 0
     itemEvent = 0
 
     inCalledSceneJump = 0
@@ -75,6 +75,8 @@ init python:
     specifyDataLocation = 0
 
     MotionEffectLoop = 0
+
+    PurchasesToProgress = 0
 
     spaceNext = 0
 
@@ -446,6 +448,7 @@ init:
 
     $ config.layers = ['master', 'transient', 'visualEffects', 'screens',  'overlay' ]
     #$ config.say_layer = "sayScreen"
+
 
 
     define config.gl2 = True

@@ -344,7 +344,7 @@ init python:
     if renpy.variant("small"):
         config.overlay_screens.append("quick_menu")
     else:
-        config.overlay_screens.append("quick_menuDetector")
+        #config.overlay_screens.append("quick_menuDetector")
         config.overlay_screens.append("quick_menu")
 
     isDeletingSave = False
@@ -741,7 +741,7 @@ screen about():
             text "  Made art for: Vivian and Selena."
             text ""
             text "Otani - {a=https://twitter.com/tani_00tani}Twitter{/a} - {a=https://tanitani00tani34.wixsite.com/gottanitei/blank}Website{/a} - {a=https://www.pixiv.net/en/users/20325366}Pixiv{/a}"
-            text "  Made art for: The generic imp, Vili, Catherine, Jennifer, Heather, the mimic, and golden treasure chest."
+            text "  Made art for: The generic imp, Vili, Catherine, Jennifer, Heather, the mimic, and golden mimic."
             text ""
             text "Crescentia - {a=https://twitter.com/Crescentia4tuna}Twitter{/a} - {a=https://crescentia-fortuna.newgrounds.com/}Newgrounds{/a}"
             text "  Made art for: Beris."
@@ -765,10 +765,13 @@ screen about():
             text "  Wrote the Solo Imp loss scene, Solo Imp Brothel Scene, Solo Elf Brothel Scene, Elf Sex Dream Scene, the Nara neutral loss scene, and Galvi's intro, sex scene, and titfuck scene."
             text ""
             text "GameSalamander - Discord:(GameSalamander#0820) - {a=https://twitter.com/GameSalamander?s=09}Twitter{/a} - Does writing commissions."
-            text "  Wrote the Kunoichi Feet Dream, the sex loss scene for Kyra, and the three roleplay scenes for Beris."
+            text "  Wrote the Kunoichi Feet Dream, the sex loss scene for Kyra, breast smothering minotaur loss, and the three roleplay scenes for Beris."
             text ""
             text "Oluap"
-            text "  Wrote the Kunoichi Bottom brothel scene and Mara Glory Hole scene."
+            text "  Wrote the Kunoichi Bottom brothel scene, defeating the bubble slime sex, and Mara Glory Hole scene."
+            text ""
+            text "Zhuan"
+            text "  Wrote the Shizu Punishment Training scene and Camilla titfuck loss scene."
             text ""
             text "WilliamTheShatner - The now retired, unofficial, official editor. Also wrote some of the Ancilla random facts."
             text ""
@@ -2121,7 +2124,7 @@ style pref_vbox:
 ## Since a mouse may not be present, we replace the quick menu with a version
 ## that uses fewer and bigger buttons that are easier to touch.
 screen quick_menu():
-    variant "small"
+    variant "touch"
 
     zorder 300
 

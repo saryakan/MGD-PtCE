@@ -1756,7 +1756,7 @@ label PostCombatWin:
 
         $ ExpBoost = 1
         python:
-            for perk in attacker.perks:
+            for perk in player.perks:
                 p = 0
                 while  p < len(perk.PerkType):
                     if perk.PerkType[p] == "ExpBoost":
